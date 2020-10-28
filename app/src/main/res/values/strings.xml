@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TakeMeHome_Android</string>
+    <string name="title_activity_map_test">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
 </resources>
