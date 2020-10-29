@@ -31,7 +31,6 @@ class UpdateFragment : Fragment() {
 
         val rangeButton = root.findViewById<Button>(R.id.rangeConfirm)
 
-
         rangeButton.setOnClickListener {
             val range = editRange.text.toString()
             val manager: InputMethodManager? = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
