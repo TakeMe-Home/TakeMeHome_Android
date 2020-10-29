@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.garam.takemehome_android.signUp.SignUpActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +29,11 @@ class MainActivity : AppCompatActivity() {
             val nextIntent = Intent(this,MapTest::class.java)
             startActivity(nextIntent)
 
+        }
+
+        signUpText.setOnClickListener {
+            val nextIntent = Intent(this,SignUpActivity::class.java)
+            startActivity(nextIntent)
         }
     }
 
