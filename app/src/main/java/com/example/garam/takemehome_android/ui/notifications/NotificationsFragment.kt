@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.ui.SharedViewModel
+import com.example.garam.takemehome_android.ui.dashboard.location_List
 import com.example.garam.takemehome_android.ui.home.call_List
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.order_info_dialog.*
@@ -28,7 +29,6 @@ class NotificationsFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private var lists = arrayListOf<order_List>()
     private lateinit var dialog : Dialog
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

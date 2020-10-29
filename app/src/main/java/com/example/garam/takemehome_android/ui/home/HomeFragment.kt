@@ -18,6 +18,7 @@ import com.example.garam.takemehome_android.network.KakaoApi
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.ui.SharedViewModel
+import com.example.garam.takemehome_android.ui.dashboard.location_List
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import org.json.JSONObject
@@ -33,6 +34,8 @@ class HomeFragment : Fragment() {
     private lateinit var callRecycler : CallViewAdapter
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var sharedViewModel: SharedViewModel
+    private var loc_lists = arrayListOf<location_List>()
+
     /*val networkService : NetworkService by lazy {
         NetworkController.instance.networkService
     } */
@@ -47,39 +50,8 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)
 
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL).addConverterFactory(
-            GsonConverterFactory.create()).build()
-
-        val networkService = retrofit.create(NetworkService::class.java)
-        val testAddress : Call<JsonObject> = networkService.address(
-            KakaoApi.instance.kakaoKey,
-        "굴포로 81")
-        Log.e("카카오 키 ", KakaoApi.instance.kakaoKey)
-        testAddress.enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                val res = response.body()
-                val body = response.code()
-                val fa = response.message()
-                Log.e("바디", "$body")
-                Log.e("메시지", fa)
-                Log.e("리스폰스", res.toString())
-                if (response.isSuccessful) {
-                    val kakao = res?.getAsJsonArray("documents")
-                    Log.e("카카오","$kakao")
-                    val add = kakao?.asJsonArray?.get(0)
-                    Log.e("ㄹㅁ","$add")
-                    val addInfo = add?.asJsonObject?.get("address")
-                    val x = JSONObject(addInfo.toString()).getString("x")
-                    val y = JSONObject(addInfo.toString()).getString("y")
-                    Log.e("검색한 주소 좌표:" , "$x + $y")
-                }
-            }
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(root.context,"실패",Toast.LENGTH_LONG)
-            }
-        })
-        lists.add(call_List("곱창고","삼산1동","오후8시"))
-        lists.add(call_List("라무진","삼산2동","오후9시"))
+        lists.add(call_List("곱창고","굴포로81","오후8시"))
+        lists.add(call_List("라무진","충선로209번길 13","오후9시"))
         lists.add(call_List("드롭탑","갈산2동","오후6시"))
         lists.add(call_List("스타벅스","갈산1동","오후2시"))
 
@@ -107,6 +79,7 @@ class HomeFragment : Fragment() {
 
         dialog.testConfirmbutton.setOnClickListener {
             sharedViewModel.setData(callList)
+            searchLocation(callList)
             dialog.dismiss()
             lists.remove(callList)
             callRecycler.notifyDataSetChanged()
@@ -115,6 +88,44 @@ class HomeFragment : Fragment() {
         dialog.testCancelbutton.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun searchLocation(callList: call_List){
+
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL).addConverterFactory(
+            GsonConverterFactory.create()).build()
+
+        val networkService = retrofit.create(NetworkService::class.java)
+        val testAddress : Call<JsonObject> = networkService.address(
+            KakaoApi.instance.kakaoKey,
+            callList.storeAddress
+        )
+        Log.e("카카오 키 ", KakaoApi.instance.kakaoKey)
+        testAddress.enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+                val body = response.code()
+                val fa = response.message()
+                Log.e("바디", "$body")
+                Log.e("메시지", fa)
+                Log.e("리스폰스", res.toString())
+                if (response.isSuccessful) {
+                    val kakao = res?.getAsJsonArray("documents")
+                    Log.e("카카오","$kakao")
+                    val add = kakao?.asJsonArray?.get(0)
+                    Log.e("ㄹㅁ","$add")
+                    val addInfo = add?.asJsonObject?.get("address")
+                    val x = JSONObject(addInfo.toString()).getString("x")
+                    val y = JSONObject(addInfo.toString()).getString("y")
+                    loc_lists.add(location_List(x,y))
+                    sharedViewModel.setLocation(loc_lists[loc_lists.lastIndex])
+                    Log.e("검색한 주소 좌표:" , "$x + $y")
+                }
+            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                //Toast.makeText(.context,"실패",Toast.LENGTH_LONG)
+            }
+        })
     }
 
 }

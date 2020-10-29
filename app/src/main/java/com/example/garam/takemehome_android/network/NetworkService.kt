@@ -12,5 +12,20 @@ interface NetworkService {
         @Query("query") query: String
     ): Call<JsonObject>
 
+    @POST("")
+    fun signUpStore(
+        @Body storeInfo : JsonObject
+    ):Call<JsonObject>
+
+    @POST("")
+    fun signUpRider(
+        @Body riderInfo : JsonObject
+    ): Call<JsonObject>
+
+    @POST("")
+    fun signUpCustomer(
+        @Body customerInfo : JsonObject
+    ): Call<JsonObject>
+
 
 }
