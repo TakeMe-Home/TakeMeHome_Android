@@ -14,14 +14,15 @@ class NetworkController : Application(){
     lateinit var networkService: NetworkService
 
     companion object{
-         lateinit var instance: NetworkController
- //       var instance: NetworkController = NetworkController()
+//         lateinit var instance: NetworkController
+        var instance: NetworkController = NetworkController()
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        buildNetwork()
+    //    kakaoinstance = this
+     //   buildNetwork()
     }
 
     fun buildNetwork(){
