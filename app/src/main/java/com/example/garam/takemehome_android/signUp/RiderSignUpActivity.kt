@@ -18,7 +18,7 @@ import java.util.regex.Pattern
 
 class RiderSignUpActivity : AppCompatActivity() {
 
-    val networkService: NetworkService by lazy {
+    private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
 
@@ -47,7 +47,6 @@ class RiderSignUpActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
 
