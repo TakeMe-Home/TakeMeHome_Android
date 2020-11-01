@@ -9,14 +9,14 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_rider_sign_up.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 
-class SignUpActivity : AppCompatActivity() {
+class RiderSignUpActivity : AppCompatActivity() {
 
     val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
@@ -24,7 +24,7 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_rider_sign_up)
 
         val signInfo = JSONObject()
 
@@ -35,45 +35,51 @@ class SignUpActivity : AppCompatActivity() {
 
         riderSignUp.setOnClickListener {
 
-            textCheck(email.toString(), name.toString(),password.toString(),phone.toString())
-
-            if (!checkEmail(email.toString())){
-                Toast.makeText(this,"올바른 이메일 형식으로 입력하세요",Toast.LENGTH_LONG).show()
-            }
-            else if (!checkPhone(phone.toString())){
-                Toast.makeText(this,"올바른 휴대폰 번호 형식으로 입력하세요",Toast.LENGTH_LONG).show()
-            }
-            else {
-                signInfo.put("email",email)
-                signInfo.put("name",name)
-                signInfo.put("password",password)
-                signInfo.put("phoneNumber",phone)
+            if (textCheck(email.toString(), name.toString(),password.toString(),phone.toString())) {
+                signInfo.put("email", email)
+                signInfo.put("name", name)
+                signInfo.put("password", password)
+                signInfo.put("phoneNumber", phone)
                 val riderObject = JsonParser().parse(signInfo.toString()) as JsonObject
-                Log.e("라이더 정보","$riderObject")
+                Log.e("라이더 정보", "$riderObject")
 
                 //  sign(riderObject)
             }
-
         }
     }
 
-    private fun textCheck(email: String, name: String, password: String, phone: String){
+
+    private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
 
         when {
             email == "" -> {
                 Toast.makeText(this,"이메일을 입력하세요",Toast.LENGTH_LONG).show()
+                return false
+            }
+            !checkEmail(email) -> {
+                Toast.makeText(this, "올바른 이메일 형식으로 입력하세요", Toast.LENGTH_LONG).show()
+                return false
             }
             name == "" -> {
                 Toast.makeText(this,"이름을 입력하세요",Toast.LENGTH_LONG).show()
+                return false
             }
             password == "" -> {
                 Toast.makeText(this,"비밀번호를 입력하세요",Toast.LENGTH_LONG).show()
+                return false
             }
             phone == "" -> {
                 Toast.makeText(this,"휴대폰 번호를 입력하세요",Toast.LENGTH_LONG).show()
+                return false
+            }
+            !checkPhone(phone.toString()) -> {
+                Toast.makeText(this, "올바른 휴대폰 번호 형식으로 입력하세요", Toast.LENGTH_LONG).show()
+                return false
+            }
+            else ->{
+                return true
             }
         }
-
     }
 
     private fun sign(riderInfo : JsonObject){
@@ -81,10 +87,10 @@ class SignUpActivity : AppCompatActivity() {
 
            signUp.enqueue(object : Callback<JsonObject>{
                 override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                   Toast.makeText(this@SignUpActivity,"회원가입에 실패하였습니다",Toast.LENGTH_LONG).show()
+                   Toast.makeText(this@RiderSignUpActivity,"회원가입에 실패하였습니다",Toast.LENGTH_LONG).show()
                 }
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    Toast.makeText(this@SignUpActivity,"회원가입에 성공하였습니다",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RiderSignUpActivity,"회원가입에 성공하였습니다",Toast.LENGTH_LONG).show()
                     finish()
                 }
             })
