@@ -18,7 +18,7 @@ import java.util.regex.Pattern
 
 class RiderSignUpActivity : AppCompatActivity() {
 
-    val networkService: NetworkService by lazy {
+    private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
 

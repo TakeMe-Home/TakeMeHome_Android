@@ -48,8 +48,8 @@ class CustomerSignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun sign(riderInfo : JsonObject){
-        val signUp = networkService.signUpCustomer(riderInfo)
+    private fun sign(customerInfo : JsonObject){
+        val signUp = networkService.signUpCustomer(customerInfo)
 
         signUp.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
