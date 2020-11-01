@@ -48,7 +48,6 @@ class RiderSignUpActivity : AppCompatActivity() {
         }
     }
 
-
     private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
 
         when {
