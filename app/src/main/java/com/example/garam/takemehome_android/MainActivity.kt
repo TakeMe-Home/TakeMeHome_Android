@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val but = findViewById<TextView>(R.id.loginText)
         but.setOnClickListener{
-            val nextIntent = Intent(this,MapTest::class.java)
+            val nextIntent = Intent(this,ForRiderActivity::class.java)
             startActivity(nextIntent)
 
         }

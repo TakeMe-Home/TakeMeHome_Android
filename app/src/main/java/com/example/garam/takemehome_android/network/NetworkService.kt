@@ -27,5 +27,4 @@ interface NetworkService {
         @Body customerInfo : JsonObject
     ): Call<JsonObject>
 
-
 }

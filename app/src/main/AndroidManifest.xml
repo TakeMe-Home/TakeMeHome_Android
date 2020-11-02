@@ -17,11 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".signUp.RestaurantSignUpActivity"></activity>
+        <activity android:name=".signUp.RestaurantSignUpActivity" />
         <activity android:name=".signUp.CustomerSignUpActivity" />
         <activity android:name=".signUp.RiderSignUpActivity" />
         <activity
-            android:name=".MapTest"
+            android:name=".ForRiderActivity"
             android:label="@string/title_activity_map_test" />
         <activity android:name=".MainActivity">
             <intent-filter>

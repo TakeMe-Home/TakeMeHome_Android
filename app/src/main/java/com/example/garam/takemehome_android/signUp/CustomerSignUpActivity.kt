@@ -85,7 +85,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
                 Toast.makeText(this,"휴대폰 번호를 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
-            !checkPhone(phone.toString()) -> {
+            !checkPhone(phone) -> {
                 Toast.makeText(this, "올바른 휴대폰 번호 형식으로 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
