@@ -38,7 +38,6 @@ class RestaurantSignUpActivity : AppCompatActivity() {
         val password = restaurantPassword.text
         val phone = restaurantPhone.text
         val address = restaurantAddress.text
-        val detail_Address = detailAddress.text
         var testAddress = ""
 
         detailAddress.addTextChangedListener(object : TextWatcher {
@@ -62,7 +61,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                 testAddress = s.toString()
             }
         })
-        
+
         restaurantSignUp.setOnClickListener {
             if (textCheck(email.toString(), name.toString(),password.toString(),phone.toString())) {
                 signInfo.put("email", email)
@@ -102,20 +101,29 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                 Log.e("메시지", fa)
                 Log.e("리스폰스", res.toString())
                 val kakao = res?.getAsJsonArray("documents")
-                if (kakao != null) {
+                val test = res?.getAsJsonObject("meta")
+                val total_count = test?.get("total_count")?.asInt
+                if (total_count == 1) {
                     Log.e("카카오", "$kakao")
-                    val add = kakao.asJsonArray?.get(0)
+                    val add = kakao?.asJsonArray?.get(0)
                     Log.e("ㄹㅁ", "$add")
                     val addInfo = add?.asJsonObject?.get("address")
-                    val address_name = JSONObject(addInfo.toString()).getString("address_name")
-                    val x = JSONObject(addInfo.toString()).getString("x")
-                    val y = JSONObject(addInfo.toString()).getString("y")
-                    Log.e("검색한 주소 좌표:", "$x + $y")
-                    detailAddress.setText(address_name)
-                    Log.e("도로명 주소 : ", address_name)
-                    Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 성공하였습니다",Toast.LENGTH_LONG).show()
-                }
-                else {
+                    if (addInfo != null) {
+                        val address_name = JSONObject(addInfo.toString()).getString("address_name")
+                        val x = JSONObject(addInfo.toString()).getString("x")
+                        val y = JSONObject(addInfo.toString()).getString("y")
+                        Log.e("검색한 주소 좌표:", "$x + $y")
+                        detailAddress.setText(address_name)
+                        Log.e("도로명 주소 : ", address_name)
+                        Toast.makeText(
+                            this@RestaurantSignUpActivity,
+                            "주소 검색에 성공하였습니다",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Log.e("null", "null")
+                    }
+                } else {
                     Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다",Toast.LENGTH_LONG).show()
                 }
             }

@@ -5,12 +5,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.garam.takemehome_android.ui.SharedViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ForRiderActivity : AppCompatActivity() {
