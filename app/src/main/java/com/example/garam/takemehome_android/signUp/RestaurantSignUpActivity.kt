@@ -72,10 +72,10 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                 val restaurantObject = JsonParser().parse(signInfo.toString()) as JsonObject
                 Log.e("Restaurant 정보", "$restaurantObject")
 
-                //  sign(restaurantObject)
+                sign(restaurantObject)
             }
         }
-        searchAddress.setOnClickListener {
+        searchAddressButton.setOnClickListener {
              restaurantAddress(address.toString())
         }
     }
@@ -131,7 +131,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
     }
 
     private fun sign(restaurantInfo : JsonObject){
-        val signUp = networkService.signUpStore(restaurantInfo)
+        val signUp = networkService.signUpRestaurant(restaurantInfo)
 
         signUp.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
