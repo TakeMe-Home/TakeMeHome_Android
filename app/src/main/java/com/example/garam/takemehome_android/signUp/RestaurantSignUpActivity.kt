@@ -20,6 +20,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.regex.Pattern
+import kotlin.properties.Delegates
 
 class RestaurantSignUpActivity : AppCompatActivity() {
 
@@ -27,16 +28,23 @@ class RestaurantSignUpActivity : AppCompatActivity() {
         NetworkController.instance.networkService
     }
 
+    private var latitude by Delegates.notNull<Double>()
+    private var longitude by Delegates.notNull<Double>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_sign_up)
 
         val signInfo = JSONObject()
+        val ownerSignUpRequest = JSONObject()
+        val restaurantSaveRequest = JSONObject()
+        val location = JSONObject()
 
         val email = restaurantEmail.text
         val name = restaurantName.text
         val password = restaurantPassword.text
         val phone = restaurantPhone.text
+        val ownerPhone = ownerPhone.text
         val address = restaurantAddress.text
         var testAddress = ""
 
@@ -63,12 +71,25 @@ class RestaurantSignUpActivity : AppCompatActivity() {
         })
 
         restaurantSignUp.setOnClickListener {
-            if (textCheck(email.toString(), name.toString(),password.toString(),phone.toString())) {
-                signInfo.put("email", email)
-                signInfo.put("name", name)
-                signInfo.put("password", password)
-                signInfo.put("number", phone)
-                signInfo.put("",testAddress)
+            if (textCheck(email.toString(), name.toString(),password.toString(),ownerPhone.toString())) {
+
+                location.put("x",latitude)
+                location.put("y",longitude)
+
+                ownerSignUpRequest.put("email", email)
+                ownerSignUpRequest.put("name", name)
+                ownerSignUpRequest.put("password", password)
+                ownerSignUpRequest.put("phoneNumber", ownerPhone)
+                ownerSignUpRequest.put("address",testAddress)
+
+                restaurantSaveRequest.put("address",testAddress)
+                restaurantSaveRequest.put("location",location)
+
+                signInfo.put("name",name)
+                signInfo.put("number",phone)
+                signInfo.put("ownerSignUpRequest",ownerSignUpRequest)
+                signInfo.put("restaurantSaveRequest",restaurantSaveRequest)
+
                 val restaurantObject = JsonParser().parse(signInfo.toString()) as JsonObject
                 Log.e("Restaurant 정보", "$restaurantObject")
 
@@ -110,9 +131,11 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                     val addInfo = add?.asJsonObject?.get("address")
                     if (addInfo != null) {
                         val address_name = JSONObject(addInfo.toString()).getString("address_name")
-                        val x = JSONObject(addInfo.toString()).getString("x")
-                        val y = JSONObject(addInfo.toString()).getString("y")
+                        val x = JSONObject(addInfo.toString()).getDouble("x")
+                        val y = JSONObject(addInfo.toString()).getDouble("y")
                         Log.e("검색한 주소 좌표:", "$x + $y")
+                        latitude = y
+                        longitude = x
                         detailAddress.setText(address_name)
                         Log.e("도로명 주소 : ", address_name)
                         Toast.makeText(

@@ -15,7 +15,6 @@ class NetworkController : Application(){
 
     companion object{
          lateinit var instance: NetworkController
- //       var instance: NetworkController = NetworkController()
     }
 
     override fun onCreate() {
