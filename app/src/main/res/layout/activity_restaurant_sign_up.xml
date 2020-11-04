@@ -17,18 +17,40 @@
         android:text="회원가입"
         android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/restaurantAddress"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="주소를 검색해주세요"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/restaurantAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:hint="주소를 검색해주세요"
+            android:paddingTop="30dp"
+            android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/searchAddressButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="검색" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/detailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="30dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:hint="상세 주소를 입력해주세요" />
 
     <EditText
         android:id="@+id/restaurantEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="이메일을 입력해주세요"
@@ -36,20 +58,9 @@
         android:paddingTop="30dp"
         android:paddingBottom="10dp" />
 
-
-    <EditText
-        android:id="@+id/restaurantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="이름을 입력해주세요"
-        android:inputType="textPersonName"
-        android:paddingTop="30dp"
-        android:paddingBottom="10dp" />
-
     <EditText
         android:id="@+id/restaurantPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="비밀번호를 입력해주세요"
@@ -58,11 +69,21 @@
         android:paddingBottom="10dp" />
 
     <EditText
-        android:id="@+id/restaurantPhone"
-        android:layout_width="wrap_content"
+        android:id="@+id/restaurantName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="핸드폰 번호를 입력해주세요"
+        android:hint="가게 이름을 입력해주세요"
+        android:inputType="textPersonName"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp" />
+
+    <EditText
+        android:id="@+id/restaurantPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="가게 번호를 입력해주세요"
         android:inputType="number"
         android:maxLength="11"
         android:paddingTop="30dp"
