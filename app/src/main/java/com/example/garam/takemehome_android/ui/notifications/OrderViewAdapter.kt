@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 
 class OrderViewAdapter (
-    val items: ArrayList<order_List>,
+    val items: ArrayList<OrderList>,
     val context:Context,
-    val itemClick:(order_List) -> Unit) : RecyclerView.Adapter<OrderViewAdapter.ViewHolder>(){
+    val itemClick:(OrderList) -> Unit) : RecyclerView.Adapter<OrderViewAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewAdapter.ViewHolder {
         return ViewHolder(
@@ -28,12 +28,12 @@ class OrderViewAdapter (
          holder?.bind(items[position])
     }
 
-    inner class ViewHolder(itemView: View, itemClick: (order_List) -> Unit) : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View, itemClick: (OrderList) -> Unit) : RecyclerView.ViewHolder(itemView){
         val storeName = itemView?.findViewById<TextView>(R.id.orderstoreName)
         val storeAddress = itemView?.findViewById<TextView>(R.id.orderstoreAddress)
         val finishTime = itemView?.findViewById<TextView>(R.id.orderfinishTime)
 
-        fun bind(list:order_List){
+        fun bind(list:OrderList){
             storeName.text = "$adapterPosition " + list.storeName
             storeAddress.text = list.storeAddress
             finishTime.text = list.finishTime

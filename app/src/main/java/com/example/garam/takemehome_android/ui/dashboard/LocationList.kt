@@ -1,6 +1,6 @@
 package com.example.garam.takemehome_android.ui.dashboard
 
-class location_List (
+class LocationList (
     val x : String,
     val y : String
 )

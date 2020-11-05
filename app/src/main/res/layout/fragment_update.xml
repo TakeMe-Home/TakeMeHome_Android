@@ -30,7 +30,7 @@
             android:textColorHint="#575757" />
 
         <Button
-            android:id="@+id/rangeConfirm"
+            android:id="@+id/rangeConfirmButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

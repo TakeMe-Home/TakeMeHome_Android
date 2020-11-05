@@ -1,18 +1,18 @@
 package com.example.garam.takemehome_android.ui
 
 import androidx.lifecycle.ViewModel
-import com.example.garam.takemehome_android.ui.dashboard.location_List
-import com.example.garam.takemehome_android.ui.home.call_List
+import com.example.garam.takemehome_android.ui.dashboard.LocationList
+import com.example.garam.takemehome_android.ui.home.CallList
 
 class SharedViewModel : ViewModel() {
 
-    private val livePost = ArrayList<call_List>()
+    private val livePost = ArrayList<CallList>()
     private var liveRange = 500
-    private val liveLocation = ArrayList<location_List>()
-    fun getData(): ArrayList<call_List> {
+    private val liveLocation = ArrayList<LocationList>()
+    fun getData(): ArrayList<CallList> {
         return livePost
     }
-    fun setData(callList: call_List){
+    fun setData(callList: CallList){
         livePost.add(callList)
     }
 
@@ -24,12 +24,11 @@ class SharedViewModel : ViewModel() {
         return liveRange
     }
 
-    fun setLocation(loc: location_List){
+    fun setLocation(loc: LocationList){
          liveLocation.add(loc)
     }
 
-    fun getLoaction(): ArrayList<location_List>{
+    fun getLocation(): ArrayList<LocationList>{
         return liveLocation
     }
-
 }

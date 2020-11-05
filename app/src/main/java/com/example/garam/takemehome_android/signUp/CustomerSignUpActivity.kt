@@ -13,7 +13,6 @@ import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_customer_sign_up.*
-import kotlinx.android.synthetic.main.activity_restaurant_sign_up.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,15 +20,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.regex.Pattern
-import kotlin.properties.Delegates
 
 class CustomerSignUpActivity : AppCompatActivity() {
 
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
-    private var latitude by Delegates.notNull<Double>()
-    private var longitude by Delegates.notNull<Double>()
+    private var latitude : Double = 0.0
+    private var longitude : Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +44,8 @@ class CustomerSignUpActivity : AppCompatActivity() {
 
         customerSignUp.setOnClickListener {
 
-            if (textCheck(email.toString(), name.toString(),password.toString(),phone.toString())) {
+            if (textCheck(email.toString(), name.toString(),password.toString(),
+                    phone.toString(), latitude, longitude)) {
 
                 location.put("x",latitude)
                 location.put("y",longitude)
@@ -59,7 +58,6 @@ class CustomerSignUpActivity : AppCompatActivity() {
                 signInfo.put("location",location)
 
                 val customerObject = JsonParser().parse(signInfo.toString()) as JsonObject
-                Log.e("고객 정보", "$customerObject")
 
                 sign(customerObject)
             }
@@ -94,36 +92,37 @@ class CustomerSignUpActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
-                val body = response.code()
-                val fa = response.message()
-                Log.e("바디", "$body")
-                Log.e("메시지", fa)
-                Log.e("리스폰스", res.toString())
-                val kakao = res?.getAsJsonArray("documents")
+
+                val documents = res?.getAsJsonArray("documents")
                 val test = res?.getAsJsonObject("meta")
-                val total_count = test?.get("total_count")?.asInt
-                if (total_count == 1) {
-                    Log.e("카카오", "$kakao")
-                    val add = kakao?.asJsonArray?.get(0)
+                val totalCount = test?.get("total_count")?.asInt
+                if (totalCount == 1) {
+                    Log.e("카카오", "$documents")
+                    val add = documents?.asJsonArray?.get(0)
                     Log.e("ㄹㅁ", "$add")
                     val addInfo = add?.asJsonObject?.get("address")
-                    if (addInfo != null) {
-                        val address_name = JSONObject(addInfo.toString()).getString("address_name")
-                        val x = JSONObject(addInfo.toString()).getDouble("x")
-                        val y = JSONObject(addInfo.toString()).getDouble("y")
-                        Log.e("검색한 주소 좌표:", "$x + $y")
-                        latitude = y
-                        longitude = x
+                    when {
+                        addInfo != null -> {
+                            val addressName =
+                                JSONObject(addInfo.toString()).getString("address_name")
+                            val x = JSONObject(addInfo.toString()).getDouble("x")
+                            val y = JSONObject(addInfo.toString()).getDouble("y")
+                            latitude = y
+                            longitude = x
 
-                        customerDetailAddress.setText(address_name)
-                        Log.e("도로명 주소 : ", address_name)
-                        Toast.makeText(
-                            this@CustomerSignUpActivity,
-                            "주소 검색에 성공하였습니다",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        Log.e("null", "null")
+                            customerDetailAddress.setText(addressName)
+                            Toast.makeText(
+                                this@CustomerSignUpActivity,
+                                "주소 검색에 성공하였습니다",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                this@CustomerSignUpActivity, "주소 검색에 실패하였습니다"
+                                , Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 } else {
                     Toast.makeText(this@CustomerSignUpActivity,"주소 검색에 실패하였습니다"
@@ -142,22 +141,29 @@ class CustomerSignUpActivity : AppCompatActivity() {
                     ,Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                Toast.makeText(this@CustomerSignUpActivity,"회원가입에 성공하였습니다"
-                    ,Toast.LENGTH_LONG).show()
-                finish()
+                val res = response.body()?.asJsonObject
+                val message = res?.get("message")?.asString
+                when {
+                    message.equals("고객 회원 가입 성공") -> {
+                        Toast.makeText(this@CustomerSignUpActivity,
+                            "회원가입에 성공하였습니다", Toast.LENGTH_LONG).show()
+                            finish ()
+                    }
+                    message.equals("고객 회원 가입 실패") || response.body().toString().equals("null")-> {
+                        Toast.makeText(this@CustomerSignUpActivity,
+                            "회원가입에 실패하였습니다", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         })
     }
 
-    private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
+    private fun textCheck(email: String, name: String, password: String,
+                          phone: String, x: Double, y: Double): Boolean{
 
         when {
-            email == "" -> {
-                Toast.makeText(this,"이메일을 입력하세요", Toast.LENGTH_LONG).show()
-                return false
-            }
-            !checkEmail(email) -> {
-                Toast.makeText(this, "올바른 이메일 형식으로 입력하세요", Toast.LENGTH_LONG).show()
+            email == "" || !checkEmail(email)-> {
+                Toast.makeText(this,"올바른 이메일 형식으로 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
             name == "" -> {
@@ -168,12 +174,12 @@ class CustomerSignUpActivity : AppCompatActivity() {
                 Toast.makeText(this,"비밀번호를 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
-            phone == "" -> {
-                Toast.makeText(this,"휴대폰 번호를 입력하세요", Toast.LENGTH_LONG).show()
+            phone == "" || !checkPhone(phone)-> {
+                Toast.makeText(this,"올바른 휴대폰 번호 형식으로 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
-            !checkPhone(phone) -> {
-                Toast.makeText(this, "올바른 휴대폰 번호 형식으로 입력하세요", Toast.LENGTH_LONG).show()
+            x == 0.0 || y == 0.0 -> {
+                Toast.makeText(this,"주소를 검색하세요", Toast.LENGTH_LONG).show()
                 return false
             }
             else ->{
@@ -181,15 +187,12 @@ class CustomerSignUpActivity : AppCompatActivity() {
             }
         }
     }
-
     private val PHONE_NUMBER_PATTERN : Pattern = Pattern.compile(
         "01[016789][0-9]{3,4}[0-9]{4}$"
     )
-
     private fun checkPhone(phone: String): Boolean{
         return PHONE_NUMBER_PATTERN.matcher(phone).matches()
     }
-
     private val EMAIL_ADDRESS_PATTERN : Pattern = Pattern.compile(
         "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
@@ -199,7 +202,6 @@ class CustomerSignUpActivity : AppCompatActivity() {
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
     )
-
     private fun checkEmail(email: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
