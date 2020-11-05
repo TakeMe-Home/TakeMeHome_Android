@@ -12,7 +12,7 @@ interface NetworkService {
         @Query("query") query: String
     ): Call<JsonObject>
 
-    @POST("/api/v1/restaurants")
+    @POST("/api/v1/owners/with/restaurant")
     fun signUpRestaurant(
         @Body storeInfo : JsonObject
     ):Call<JsonObject>

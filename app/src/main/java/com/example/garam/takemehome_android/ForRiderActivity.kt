@@ -24,10 +24,10 @@ class ForRiderActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_update
+                R.id.navigation_home, R.id.navigation_dashboard,
+                R.id.navigation_notifications, R.id.navigation_update
             )
         )
-
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.setOnNavigationItemReselectedListener(ItemSelectedListener())
@@ -38,20 +38,21 @@ class ForRiderActivity : AppCompatActivity() {
         override fun onNavigationItemReselected(item: MenuItem) {
             Log.e("메시지","다시 선택")
         }
-
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         lateinit var toast: Toast
-        if (System.currentTimeMillis() >= backKeyPressedTime + 1500) {
-            backKeyPressedTime = System.currentTimeMillis()
-            toast = Toast.makeText(this, "종료 하려면 한번 더 누르세요.", Toast.LENGTH_LONG)
-            toast.show()
-            return
-        }
-        if (System.currentTimeMillis() < backKeyPressedTime + 1500) {
-            finish()
+        when {
+            System.currentTimeMillis() >= backKeyPressedTime + 1500 -> {
+                backKeyPressedTime = System.currentTimeMillis()
+                toast = Toast.makeText(this, "종료 하려면 한번 더 누르세요.", Toast.LENGTH_LONG)
+                toast.show()
+                return
+            }
+
+            System.currentTimeMillis() < backKeyPressedTime + 1500 -> {
+                finish()
+            }
         }
     }
 

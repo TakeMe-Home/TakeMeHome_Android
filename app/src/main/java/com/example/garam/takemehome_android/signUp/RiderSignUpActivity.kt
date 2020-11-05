@@ -41,13 +41,11 @@ class RiderSignUpActivity : AppCompatActivity() {
                 signInfo.put("password", password)
                 signInfo.put("phoneNumber", phone)
                 val riderObject = JsonParser().parse(signInfo.toString()) as JsonObject
-                Log.e("라이더 정보", "$riderObject")
 
                 sign(riderObject)
             }
         }
     }
-
     private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
 
         when {
@@ -80,29 +78,38 @@ class RiderSignUpActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun sign(riderInfo : JsonObject){
             val signUp = networkService.signUpRider(riderInfo)
 
            signUp.enqueue(object : Callback<JsonObject>{
                 override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                   Toast.makeText(this@RiderSignUpActivity,"회원가입에 실패하였습니다",Toast.LENGTH_LONG).show()
+                   Toast.makeText(this@RiderSignUpActivity,"회원가입에 실패하였습니다"
+                       ,Toast.LENGTH_LONG).show()
                 }
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    Toast.makeText(this@RiderSignUpActivity,"회원가입에 성공하였습니다",Toast.LENGTH_LONG).show()
-                    finish()
+                    val res = response.body()?.asJsonObject
+                    val message = res?.get("message")?.asString
+
+                    when {
+                     message.equals("라이더 회원 가입 성공") -> {
+                         Toast.makeText(this@RiderSignUpActivity, "회원가입에 성공하였습니다"
+                             , Toast.LENGTH_LONG).show()
+                         finish()
+                     }
+                     message.equals("라이더 회원 가입 실패") || response.body().toString().equals("null") -> {
+                         Toast.makeText(this@RiderSignUpActivity, "회원가입에 실패하였습니다"
+                             , Toast.LENGTH_LONG).show()
+                     }
+                    }
                 }
             })
     }
-
     private val PHONE_NUMBER_PATTERN : Pattern = Pattern.compile(
         "01[016789][0-9]{3,4}[0-9]{4}$"
     )
-
     private fun checkPhone(phone: String): Boolean{
         return PHONE_NUMBER_PATTERN.matcher(phone).matches()
     }
-
     private val EMAIL_ADDRESS_PATTERN : Pattern = Pattern.compile(
            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
@@ -112,7 +119,6 @@ class RiderSignUpActivity : AppCompatActivity() {
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
     )
-
     private fun checkEmail(email: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }

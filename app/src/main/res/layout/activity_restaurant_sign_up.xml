@@ -59,6 +59,15 @@
         android:paddingBottom="10dp" />
 
     <EditText
+        android:id="@+id/ownerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="이름을 입력해주세요"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"/>
+
+    <EditText
         android:id="@+id/ownerPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
