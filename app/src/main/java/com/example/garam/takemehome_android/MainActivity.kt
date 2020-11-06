@@ -22,11 +22,9 @@ import retrofit2.*;
 
 class MainActivity : AppCompatActivity() {
 
-
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
-
     private lateinit var nextIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,8 +92,6 @@ class MainActivity : AppCompatActivity() {
                         startActivity(nextIntent)
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
-                startActivity(nextIntent)
 
             }
             1 -> {

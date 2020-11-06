@@ -36,12 +36,16 @@ interface NetworkService {
     @POST("/api/v1/owners/login")
     fun loginOwner(
         @Body loginRequest: JsonObject
-    ): Callback<JsonObject>
+    ): Call<JsonObject>
 
     @POST("/api/v1/customers/login")
     fun loginCustomer(
         @Body loginRequest: JsonObject
-    ): Callback<JsonObject>
+    ): Call<JsonObject>
+
+    @GET("/api/v1/orders/status/request")
+    fun callLockUp() : Call<JsonObject>
+
 
 
 }

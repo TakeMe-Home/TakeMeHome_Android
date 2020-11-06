@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.dashboard
+package com.example.garam.takemehome_android.ui.map
 
 import android.Manifest
 import android.content.Context
@@ -21,9 +21,9 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
-class DashboardFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEventListener {
+class MapFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEventListener {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var mapViewModel: MapViewModel
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
@@ -31,9 +31,9 @@ class DashboardFragment : Fragment(),  MapView.POIItemEventListener, MapView.Map
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        mapViewModel =
+            ViewModelProviders.of(this).get(MapViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_map, container, false)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         val range = sharedViewModel.getRange()

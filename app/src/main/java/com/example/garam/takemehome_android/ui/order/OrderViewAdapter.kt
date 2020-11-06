@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.notifications
+package com.example.garam.takemehome_android.ui.order
 
 import android.content.Context
 import android.view.LayoutInflater

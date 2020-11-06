@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.dashboard
+package com.example.garam.takemehome_android.ui.map
 
 class LocationList (
     val x : String,

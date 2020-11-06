@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.notifications
+package com.example.garam.takemehome_android.ui.order
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,9 +15,9 @@ import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import kotlinx.android.synthetic.main.order_info_dialog.*
 
-class NotificationsFragment : Fragment() {
+class OrdersFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var ordersViewModel: OrdersViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private var lists = arrayListOf<OrderList>()
     private lateinit var dialog : Dialog
@@ -27,10 +27,10 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
+        ordersViewModel =
+            ViewModelProviders.of(this).get(OrdersViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+        val root = inflater.inflate(R.layout.fragment_order, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.orderRecycler)
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.home
+package com.example.garam.takemehome_android.ui.call
 
 class CallList (
     val storeName: String,

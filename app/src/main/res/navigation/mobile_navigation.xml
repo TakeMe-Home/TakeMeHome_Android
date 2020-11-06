@@ -7,21 +7,21 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.garam.takemehome_android.ui.home.HomeFragment"
+        android:name="com.example.garam.takemehome_android.ui.call.CallFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_call"/>
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.garam.takemehome_android.ui.dashboard.DashboardFragment"
+        android:name="com.example.garam.takemehome_android.ui.map.MapFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.garam.takemehome_android.ui.notifications.NotificationsFragment"
+        android:name="com.example.garam.takemehome_android.ui.order.OrdersFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_order" />
 
     <fragment
         android:id="@+id/navigation_update"
