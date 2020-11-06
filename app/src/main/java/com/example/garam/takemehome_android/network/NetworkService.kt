@@ -2,6 +2,7 @@ package com.example.garam.takemehome_android.network
 
 import com.google.gson.JsonObject
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.*
 
 interface NetworkService {
@@ -26,5 +27,21 @@ interface NetworkService {
     fun signUpCustomer(
         @Body customerInfo : JsonObject
     ): Call<JsonObject>
+
+    @POST("/api/v1/riders/login")
+    fun loginRider(
+        @Body loginRequest : JsonObject
+    ): Call<JsonObject>
+
+    @POST("/api/v1/owners/login")
+    fun loginOwner(
+        @Body loginRequest: JsonObject
+    ): Callback<JsonObject>
+
+    @POST("/api/v1/customers/login")
+    fun loginCustomer(
+        @Body loginRequest: JsonObject
+    ): Callback<JsonObject>
+
 
 }

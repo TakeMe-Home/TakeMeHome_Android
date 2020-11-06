@@ -41,47 +41,56 @@ class DashboardFragment : Fragment(),  MapView.POIItemEventListener, MapView.Map
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
 
-        if(requireActivity().let {
-                ContextCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-            } != PackageManager.PERMISSION_GRANTED ||
+        when {
             requireActivity().let {
                 ContextCompat.checkSelfPermission(
                     it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-            } != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION),100)
-        }
-        val shared = sharedViewModel.getLocation()
-        val lm: LocationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        val latitude = location.latitude
-        val longitude = location.longitude
-        val currentLocation = MapPoint.mapPointWithGeoCoord(latitude,longitude)
-        Log.e("위치정보: ", "$latitude , $longitude")
-        val marker = MapPOIItem()
-        marker.itemName = "내 위치"
-        marker.mapPoint = currentLocation
-        for (i in 0 until shared.size){
-            val mark = MapPOIItem()
-            mark.mapPoint = MapPoint.mapPointWithGeoCoord(shared.get(i).y.toDouble(),shared.get(i).x.toDouble())
-            mark.itemName = "$i 가게"
-            Log.e("$i 가게", "${shared.get(i).x} , ${shared[i].y}")
-            mapView.addPOIItem(mark)
-        }
-        mapView.setMapCenterPointAndZoomLevel(currentLocation,3,true)
-        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving
-        mapView.setShowCurrentLocationMarker(true)
-        mapView.setCurrentLocationRadius(range)
-        mapView.setCurrentLocationRadiusStrokeColor(Color.RED)
-        mapView.mapType = MapView.MapType.Standard
-        //mapView.addPOIItem(marker)
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED ||
+                    requireActivity().let {
+                        ContextCompat.checkSelfPermission(
+                            it,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    } != PackageManager.PERMISSION_GRANTED -> {
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION), 100 )
+            }
+            else -> {
+                val shared = sharedViewModel.getLocation()
+                val lm : LocationManager = requireActivity()
+                    .getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                val latitude = location.latitude
+                val longitude = location.longitude
+                val currentLocation = MapPoint.mapPointWithGeoCoord(latitude, longitude)
+                Log.e("위치정보: ", "$latitude , $longitude")
+                val marker = MapPOIItem()
+                marker.itemName = "내 위치"
+                marker.mapPoint = currentLocation
+                for (i in 0 until shared.size) {
+                    val mark = MapPOIItem()
+                    mark.mapPoint = MapPoint.mapPointWithGeoCoord(
+                        shared[i].y.toDouble(), shared[i].x.toDouble() )
+                    mark.itemName = "$i 가게"
+                    Log.e("$i 가게", "${shared[i].x} , ${shared[i].y}")
+                    mapView.addPOIItem(mark)
+                }
+                mapView.setMapCenterPointAndZoomLevel(currentLocation, 3, true)
+                mapView.currentLocationTrackingMode =
+                    MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving
+                mapView.setShowCurrentLocationMarker(true)
+                mapView.setCurrentLocationRadius(range)
+                mapView.setCurrentLocationRadiusStrokeColor(Color.RED)
+                mapView.mapType = MapView.MapType.Standard
+                //mapView.addPOIItem(marker)
 
-        val mapViewContainer = root.findViewById<ConstraintLayout>(R.id.frameTest)
-        mapViewContainer.addView(mapView)
-
+                val mapViewContainer = root.findViewById<ConstraintLayout>(R.id.frameTest)
+                mapViewContainer.addView(mapView)
+            }
+        }
         return root
     }
 
