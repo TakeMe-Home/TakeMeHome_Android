@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -51,7 +52,7 @@ class CallFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_call, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)
 
-        callLockUp()
+        callLookUp()
 
         lists.add(CallList("곱창고","굴포로81","오후8시"))
         lists.add(CallList("라무진","충선로209번길 13","오후9시"))
@@ -75,8 +76,8 @@ class CallFragment : Fragment() {
         return root
     }
 
-    private fun callLockUp(){
-        networkService.callLockUp().enqueue(object : Callback<JsonObject>{
+    private fun callLookUp(){
+        networkService.callLookUp().enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
