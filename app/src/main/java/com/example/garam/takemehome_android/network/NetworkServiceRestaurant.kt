@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
 
-interface NetworkService_Restaurant {
+interface NetworkServiceRestaurant {
 
     @POST("/api/v1/owners/with/restaurant")
     fun signUpRestaurant(

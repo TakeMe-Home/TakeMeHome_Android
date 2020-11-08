@@ -34,7 +34,6 @@ class ForRiderActivity : AppCompatActivity() {
     }
 
     class ItemSelectedListener : BottomNavigationView.OnNavigationItemReselectedListener{
-
         override fun onNavigationItemReselected(item: MenuItem) {
             Log.e("메시지","다시 선택")
         }
@@ -49,11 +48,9 @@ class ForRiderActivity : AppCompatActivity() {
                 toast.show()
                 return
             }
-
             System.currentTimeMillis() < backKeyPressedTime + 1500 -> {
                 finish()
             }
         }
     }
-
 }

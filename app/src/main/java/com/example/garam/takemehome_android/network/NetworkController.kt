@@ -5,16 +5,15 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 class NetworkController : Application(){
 
-    val baseURL = "http://b8a707fec94f.ngrok.io"
+    val baseURL = "http://309b082876d4.ngrok.io"
 
     lateinit var networkService: NetworkService
-    lateinit var networkServiceRider: NetworkService_Rider
-    lateinit var networkServiceRestaurant : NetworkService_Restaurant
+    lateinit var networkServiceRider: NetworkServiceRider
+    lateinit var networkServiceRestaurant : NetworkServiceRestaurant
 
     companion object{
          lateinit var instance: NetworkController
@@ -32,8 +31,8 @@ class NetworkController : Application(){
                 .writeTimeout(30,TimeUnit.SECONDS).addInterceptor(HttpLoggingInterceptor()).build()).build()
 
         networkService = retrofit.create(NetworkService::class.java)
-        networkServiceRider = retrofit.create(NetworkService_Rider::class.java)
-        networkServiceRestaurant = retrofit.create(NetworkService_Restaurant::class.java)
+        networkServiceRider = retrofit.create(NetworkServiceRider::class.java)
+        networkServiceRestaurant = retrofit.create(NetworkServiceRestaurant::class.java)
     }
 
 

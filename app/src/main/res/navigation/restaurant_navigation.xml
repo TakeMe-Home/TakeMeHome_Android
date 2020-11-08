@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/restaurant_navigation"
+    app:startDestination="@id/navigation_restaurant_home">
+
+    <fragment
+        android:id="@+id/navigation_restaurant_home"
+        android:name="com.example.garam.takemehome_android.restaurant.ReceiptFragment"
+        tools:layout="@layout/fragment_receipt"
+        android:label="restaurantHome" />
+
+    <fragment
+        android:id="@+id/navigation_restaurant_dashboard"
+        android:name="com.example.garam.takemehome_android.restaurant.OrderListFragment"
+        tools:layout="@layout/fragment_order_list"
+        android:label="orderList"/>
+
+
+    <fragment
+        android:id="@+id/navigation_restaurant_notifications"
+        android:name="com.example.garam.takemehome_android.restaurant.PickUpFragment"
+        tools:layout="@layout/fragment_pick_up"
+        android:label="pickUp"/>
+
+    <fragment
+        android:id="@+id/navigation_restaurant_update"
+        android:name="com.example.garam.takemehome_android.restaurant.RestaurantUpdateFragment"
+        tools:layout="@layout/fragment_restaurant_update"
+        android:label="restaurantUpdate"/>
+</navigation>

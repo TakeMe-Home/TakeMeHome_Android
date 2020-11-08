@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
 import com.example.garam.takemehome_android.signUp.RiderSignUpActivity
@@ -47,12 +48,10 @@ class MainActivity : AppCompatActivity() {
         loginInfo.put("password",pwInfo)
 
         val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
-
         val items = arrayOf("Rider","Customer","Restaurant")
         val dialog = AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
 
         loginText.setOnClickListener{
-
             when {
                 idInfo.toString() == "" || !checkEmail(idInfo.toString()) -> {
                     Toast.makeText(this,"올바른 이메일 형식으로 입력하세요",Toast.LENGTH_LONG).show()
@@ -67,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
         signUpText.setOnClickListener {
            dialog.setTitle("회원가입 유형을 선택하세요").setItems(items) { dialogInterface, i ->
                nextActivity(i)
@@ -121,6 +119,8 @@ class MainActivity : AppCompatActivity() {
 
                     }
                 })
+                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
+                startActivity(nextIntent)
             }
         }
     }

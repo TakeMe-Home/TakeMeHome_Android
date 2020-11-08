@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
 
-interface NetworkService_Rider {
+interface NetworkServiceRider {
 
     @POST("/api/v1/riders")
     fun signUpRider(

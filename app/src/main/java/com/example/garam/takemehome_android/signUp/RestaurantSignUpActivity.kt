@@ -167,7 +167,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                             , Toast.LENGTH_LONG).show()
                         finish()
                     }
-                    message.equals("가게 주인 등록 실패") || response.body().toString().equals("null") -> {
+                    message.equals("가게 주인 등록 실패") || response.body().toString() == "null" -> {
                         Toast.makeText(this@RestaurantSignUpActivity,"회원가입에 실패하였습니다"
                             , Toast.LENGTH_LONG).show()
                     }

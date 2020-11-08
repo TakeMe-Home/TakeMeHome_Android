@@ -4,5 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-
+    <string name="title_activity_for_restaurant">MainActivity</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>
