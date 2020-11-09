@@ -18,4 +18,15 @@ interface NetworkServiceRider {
 
     @GET("/api/v1/orders/status/request")
     fun callLookUp() : Call<JsonObject>
+
+    @DELETE("/api/v1/riders/{id}")
+    fun deleteRider(
+        @Path("id") id : Int
+    ): Call<JsonObject>
+
+    @PUT("/api/v1/riders/{id}")
+    fun updateRider(
+        @Path("id") id : Int,
+        @Body updateRequest : JsonObject
+    ): Call<JsonObject>
 }

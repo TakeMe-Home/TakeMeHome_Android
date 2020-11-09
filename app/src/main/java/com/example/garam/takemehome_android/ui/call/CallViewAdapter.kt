@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 
 class CallViewAdapter (
-    val items: ArrayList<CallList>,
+    private val items: ArrayList<CallList>,
     val context: Context,
     val itemClick: (CallList)-> Unit) : RecyclerView.Adapter<CallViewAdapter.ViewHolder>(){
 

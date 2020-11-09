@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.garam.takemehome_android.customer.ForCustomerActivity
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
@@ -105,6 +106,8 @@ class MainActivity : AppCompatActivity() {
 
                     }
                 })
+                nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
+                startActivity(nextIntent)
             }
             2 -> {
                 networkService.signUpRestaurant(loginInfo).enqueue(object : Callback<JsonObject>{

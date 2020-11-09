@@ -85,15 +85,22 @@ class CallFragment : Fragment() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
                 val message = res?.get("message")?.asString
+                val data = res?.get("data")?.asJsonObject
+
                 when{
                     message == "주문 조회 성공" -> {
-                        val data = res.get("data").asJsonObject
                         Log.e("데이터", "$data")
-                       // val orderArray = data.get("orderFindRequestStatusResponses").asJsonArray.get(0)
-                       // val customerName = orderArray.asJsonObject["orderCustomer"].asJsonObject.get("name").asString
+                       // val orderArray = data.get("orderFindRequestStatusResponses").asJsonArray
+                        // .asJsonArray.get(0)
+                       // val customerName = orderArray.asJsonObject["orderCustomer"]
+                        // .asJsonObject.get("name").asString
                        // Log.e("고객 이름", customerName)
-                   }
 
+                   }
+                    data?.get("orderFindRequestStatusResponses")?.asJsonArray?.size() == 0 -> {
+                        Toast.makeText(this@CallFragment.requireContext(),"조회할 주문이 없습니다"
+                            ,Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         })

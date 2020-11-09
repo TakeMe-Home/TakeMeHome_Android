@@ -55,4 +55,9 @@ interface NetworkService {
         @Body saveRequest : JsonObject
     ): Call<JsonObject>
 
+    @POST("/api/v1/menus")
+    fun menuRequest(
+        @Body registerRequest: JsonObject
+    ): Call<JsonObject>
+
 }

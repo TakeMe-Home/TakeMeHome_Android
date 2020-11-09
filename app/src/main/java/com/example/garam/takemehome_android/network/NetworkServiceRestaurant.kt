@@ -15,4 +15,5 @@ interface NetworkServiceRestaurant {
     fun loginOwner(
         @Body loginRequest: JsonObject
     ): Call<JsonObject>
+
 }
