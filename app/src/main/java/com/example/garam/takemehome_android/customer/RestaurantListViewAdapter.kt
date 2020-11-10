@@ -30,13 +30,9 @@ class RestaurantListViewAdapter(
     inner class ViewHolder(itemView: View, itemClick:(RestaurantList) -> Unit): RecyclerView.ViewHolder(itemView){
 
         private val restaurantName = itemView.findViewById<TextView>(R.id.restaurantNameTextView)
-        private val restaurantAddress = itemView.findViewById<TextView>(R.id.restaurantAddressTextView)
-        private val restaurantPhone = itemView.findViewById<TextView>(R.id.restaurantPhoneTextView)
 
         fun bind(list: RestaurantList){
             restaurantName.text = list.restaurantName
-            restaurantAddress.text = list.restaurantAddress
-            restaurantPhone.text = list.restaurantPhone
 
             itemView.setOnClickListener {
                 itemClick(list)

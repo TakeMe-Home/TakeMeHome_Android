@@ -6,11 +6,18 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/restaurantNameTextView"
+        android:id="@+id/menuNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_weight="0"
         android:text="TextView"
-        android:textSize="30sp" />
+        android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/menuPriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="TextView"
+        android:textSize="24sp" />
 </LinearLayout>

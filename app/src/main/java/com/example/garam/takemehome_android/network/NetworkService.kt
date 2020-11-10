@@ -60,4 +60,12 @@ interface NetworkService {
         @Body registerRequest: JsonObject
     ): Call<JsonObject>
 
+    @GET("/api/v1/restaurants")
+    fun restaurantLookUp() : Call<JsonObject>
+
+    @GET("/api/v1/menus/{restaurantId}")
+    fun menuLookUp(
+        @Path("restaurantId") id : Int
+    ): Call<JsonObject>
+
 }
