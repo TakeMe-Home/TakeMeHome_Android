@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -41,18 +42,20 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION),100)
         }
-        val idInfo = IdText.text
-        val pwInfo = passwordText.text
 
-        val loginInfo = JSONObject()
-        loginInfo.put("email",idInfo)
-        loginInfo.put("password",pwInfo)
-
-        val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
         val items = arrayOf("Rider","Customer","Restaurant")
         val dialog = AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
 
         loginText.setOnClickListener{
+            val idInfo = IdText.text
+            val pwInfo = passwordText.text
+
+            val loginInfo = JSONObject()
+            loginInfo.put("email",idInfo)
+            loginInfo.put("password",pwInfo)
+
+            val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
+
             when {
                 idInfo.toString() == "" || !checkEmail(idInfo.toString()) -> {
                     Toast.makeText(this,"올바른 이메일 형식으로 입력하세요",Toast.LENGTH_LONG).show()
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun login(i: Int, loginInfo: JsonObject ){
         when(i) {
             0 -> {
-                networkService.signUpRider(loginInfo).enqueue(object : Callback<JsonObject>{
+                networkService.loginRider(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                         Toast.makeText(this@MainActivity, "로그인에 실패 하였습니다",
                             Toast.LENGTH_SHORT).show()
@@ -87,14 +90,26 @@ class MainActivity : AppCompatActivity() {
                         call: Call<JsonObject>,
                         response: Response<JsonObject>
                     ) {
-                        nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
-                        startActivity(nextIntent)
+                        val res = response.body()
+                        val message = res?.get("message")?.asString
+                        val data = JSONObject(res?.asJsonObject.toString())
+                        Log.e("로그인 정보",res.toString())
+                        when{
+                            message == "로그인 성공" ->{
+                                nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
+                                nextIntent.putExtra("riderId",data.getInt("data"))
+                                startActivity(nextIntent)
+                                IdText.setText("")
+                                passwordText.setText("")
+                            }
+                        }
                     }
                 })
 
             }
             1 -> {
-                networkService.signUpCustomer(loginInfo).enqueue(object : Callback<JsonObject>{
+                Log.e("loginInfo",loginInfo.toString())
+                networkService.loginCustomer(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
                     }
@@ -103,14 +118,25 @@ class MainActivity : AppCompatActivity() {
                         call: Call<JsonObject>,
                         response: Response<JsonObject>
                     ) {
+                        val res = response.body()
+                        val message = res?.get("message")?.asString
+                        val data = JSONObject(res?.asJsonObject.toString())
+                        Log.e("로그인 정보",res.toString())
+                        when{
+                            message == "로그인 성공" ->{
+                                nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
+                                nextIntent.putExtra("customerId",data.getInt("data"))
+                                startActivity(nextIntent)
+                                IdText.setText("")
+                                passwordText.setText("")
+                            }
 
+                        }
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
-                startActivity(nextIntent)
             }
             2 -> {
-                networkService.signUpRestaurant(loginInfo).enqueue(object : Callback<JsonObject>{
+                networkService.loginOwner(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
                     }
@@ -119,11 +145,22 @@ class MainActivity : AppCompatActivity() {
                         call: Call<JsonObject>,
                         response: Response<JsonObject>
                     ) {
+                        val res = response.body()
+                        val message = res?.get("message")?.asString
+                        val data = JSONObject(res?.asJsonObject.toString())
+                        Log.e("로그인 정보",res.toString())
+                        when{
+                            message == "로그인 성공" ->{
+                                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
+                                nextIntent.putExtra("restaurant",data.getInt("data"))
+                                startActivity(nextIntent)
+                                IdText.setText("")
+                                passwordText.setText("")
+                            }
 
+                        }
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
-                startActivity(nextIntent)
             }
         }
     }

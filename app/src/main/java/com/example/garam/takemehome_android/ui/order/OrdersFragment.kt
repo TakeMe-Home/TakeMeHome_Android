@@ -40,7 +40,8 @@ class OrdersFragment : Fragment() {
         for (i in 0  until sharedData.size)
         {
             lists.add(0, OrderList(sharedData[i].storeName,
-                sharedData[i].storeAddress,sharedData[i].finishTime))
+                sharedData[i].storeAddress,sharedData[i].deliveryAddress,sharedData[i].deliveryPrice,
+            0.0))
         }
 
         val orderRecycler = OrderViewAdapter(lists,root.context){ orderList ->
@@ -58,12 +59,12 @@ class OrdersFragment : Fragment() {
     private fun showDialog(orderList: OrderList){
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.orderAddress.text = "주소 : ${orderList.storeAddress}"
-        dialog.orderTime.text = "도착 예정 시간 : ${orderList.finishTime}"
+        dialog.orderAddress.text = "가게 주소 : ${orderList.storeAddress}"
+        dialog.orderDeliveryAddressTextView.text = "배달 주소 : ${orderList.deliveryAddress}"
         dialog.orderPrice.text = "가격 : $"
         dialog.orderMethod.text = "결제 수단 : "
         dialog.orderRequest.text = "요청 사항 : "
-
+        dialog.deliveryPriceTextView.text = "배달료 : 원"
         dialog.order_info_confirm.setOnClickListener {
             dialog.dismiss()
         }

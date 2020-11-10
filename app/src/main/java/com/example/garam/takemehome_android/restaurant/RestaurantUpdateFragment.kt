@@ -14,7 +14,6 @@ class RestaurantUpdateFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_restaurant_update, container, false)
 
-
         return root
     }
 }

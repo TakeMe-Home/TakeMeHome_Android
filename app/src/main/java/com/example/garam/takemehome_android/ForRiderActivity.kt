@@ -19,7 +19,8 @@ class ForRiderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_for_rider)
         navView = findViewById(R.id.nav_view)
-
+        val intent = intent
+        val riderId = intent.getIntExtra("riderId",0)
         val navController = findNavController(R.id.nav_host_fragment)
 
         val appBarConfiguration = AppBarConfiguration(

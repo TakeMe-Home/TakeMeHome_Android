@@ -32,17 +32,18 @@ class CallViewAdapter (
 
         private val storeName = itemView.findViewById<TextView>(R.id.storeName)
         private val storeAddress = itemView.findViewById<TextView>(R.id.storeAddress)
-        private val finishTime = itemView.findViewById<TextView>(R.id.finishTime)
+        private val deliveryAddress = itemView.findViewById<TextView>(R.id.deliveryAddress)
+        private val deliveryPrice = itemView.findViewById<TextView>(R.id.deliveryPrice)
 
         fun bind(list: CallList) {
-            storeName.text = list.storeName
-            storeAddress.text = list.storeAddress
-            finishTime.text = list.finishTime
+            storeName.text = "가게 명 : ${list.storeName}"
+            storeAddress.text = "가게 주소 : ${list.storeAddress}"
+            deliveryAddress.text = "배달 주소 : ${list.deliveryAddress}"
+            deliveryPrice.text = "배달료 : ${list.deliveryPrice.toString()}원"
 
             itemView.setOnClickListener {
                 itemClick(list)
             }
-
         }
     }
 

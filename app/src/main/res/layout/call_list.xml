@@ -25,9 +25,23 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/finishTime"
+        android:id="@+id/deliveryAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/deliveryPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/nearByDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text=""/>
 </LinearLayout>

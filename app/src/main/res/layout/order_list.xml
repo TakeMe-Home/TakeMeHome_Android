@@ -26,10 +26,24 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/orderfinishTime"
+        android:id="@+id/orderDeliveryAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/orderDeliveryPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/orderDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text=""/>
 
 </LinearLayout>

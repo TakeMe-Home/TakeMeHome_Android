@@ -29,14 +29,16 @@ class OrderViewAdapter (
     }
 
     inner class ViewHolder(itemView: View, itemClick: (OrderList) -> Unit) : RecyclerView.ViewHolder(itemView){
-        private val storeName = itemView?.findViewById<TextView>(R.id.orderstoreName)
-        private val storeAddress = itemView?.findViewById<TextView>(R.id.orderstoreAddress)
-        private val finishTime = itemView?.findViewById<TextView>(R.id.orderfinishTime)
+        private val storeName = itemView.findViewById<TextView>(R.id.orderstoreName)
+        private val storeAddress = itemView.findViewById<TextView>(R.id.orderstoreAddress)
+        private val orderDeliveryAddress = itemView.findViewById<TextView>(R.id.orderDeliveryAddress)
+        private val orderDeliveryPrice = itemView.findViewById<TextView>(R.id.orderDeliveryPrice)
 
         fun bind(list:OrderList){
             storeName.text = list.storeName
             storeAddress.text = list.storeAddress
-            finishTime.text = list.finishTime
+            orderDeliveryAddress.text = list.deliveryAddress
+            orderDeliveryPrice.text = list.deliveryPrice.toString()
 
             itemView.setOnClickListener { itemClick(list) }
         }

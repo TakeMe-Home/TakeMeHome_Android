@@ -45,11 +45,6 @@ interface NetworkService {
     @GET("/api/v1/orders/status/request")
     fun callLookUp() : Call<JsonObject>
 
-    @POST("/api/v1/menus")
-    fun menuOrder(
-        @Body menuRequest : JsonObject
-    ): Call<JsonObject>
-
     @POST("/api/v1/orders/reception")
     fun reception(
         @Body saveRequest : JsonObject

@@ -53,18 +53,17 @@ class CallFragment : Fragment() {
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)
 
         callLookUp()
-
+ /*
         lists.add(CallList("곱창고","굴포로81","오후8시"))
         lists.add(CallList("라무진","충선로209번길 13","오후9시"))
         lists.add(CallList("드롭탑","갈산2동","오후6시"))
         lists.add(CallList("스타벅스","갈산1동","오후2시"))
-
+*/
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.confirm_dialog)
 
         callRecycler = CallViewAdapter(lists, root.context) { callList ->
-            Log.e("홈 프래그먼트","콜 리스트 눌러짐")
             showDialog(callList)
         }
 
@@ -85,22 +84,39 @@ class CallFragment : Fragment() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
                 val message = res?.get("message")?.asString
-                val data = res?.get("data")?.asJsonObject
 
                 when{
                     message == "주문 조회 성공" -> {
+                        val data = res.get("data")?.asJsonObject
                         Log.e("데이터", "$data")
-                       // val orderArray = data.get("orderFindRequestStatusResponses").asJsonArray
-                        // .asJsonArray.get(0)
-                       // val customerName = orderArray.asJsonObject["orderCustomer"]
-                        // .asJsonObject.get("name").asString
-                       // Log.e("고객 이름", customerName)
+                        val orderArray = data?.get("orderFindRequestStatusResponses")?.asJsonArray
+                        for (i in 0 ..orderArray?.size()!!) {
+                            val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
+                                ?.asJsonObject?.get("name")?.toString()
+                               Log.e("고객 이름", customerName)
+                            val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
+                                ?.asJsonObject?.get("phoneNumber")?.toString()
+                            val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
+                                ?.asJsonObject?.get("name")?.toString()
+                            val restaurantNumber = orderArray.get(i).asJsonObject?.get("orderRestaurant")
+                                ?.asJsonObject?.get("number")?.toString()
+                            val restaurantAddress = orderArray.get(i).asJsonObject?.get("orderRestaurant")
+                                ?.asJsonObject?.get("address")?.toString()
+                            val deliveryAddress = orderArray.get(i).asJsonObject?.get("orderDelivery")
+                                ?.asJsonObject?.get("address")?.toString()
+                            val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
+                                ?.asJsonObject?.get("price")?.asInt
 
+                            lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
+                            deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
+                        }
                    }
-                    data?.get("orderFindRequestStatusResponses")?.asJsonArray?.size() == 0 -> {
-                        Toast.makeText(this@CallFragment.requireContext(),"조회할 주문이 없습니다"
-                            ,Toast.LENGTH_LONG).show()
+
+                    message == "주문 조회 실패" -> {
+                        Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
+                        Toast.LENGTH_LONG).show()
                     }
+
                 }
             }
         })

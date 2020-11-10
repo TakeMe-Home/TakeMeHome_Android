@@ -29,6 +29,8 @@ class ForCustomerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_for_customer)
         val recycler = findViewById<RecyclerView>(R.id.restaurantRecyclerView)
+        val intent = intent
+        val customerId = intent.getIntExtra("customerId",0)
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
         lookUp()
         val nextIntent = Intent(this,MenuListActivity::class.java)
@@ -36,7 +38,7 @@ class ForCustomerActivity : AppCompatActivity() {
         restaurantRecycler = RestaurantListViewAdapter(lists,this){
             RestaurantList->
             nextIntent.putExtra("restaurantId",RestaurantList.restaurantId)
-            Log.e("고객 액티비티",RestaurantList.restaurantId.toString())
+            nextIntent.putExtra("customerId",customerId)
             startActivity(nextIntent)
 
         }
@@ -56,7 +58,6 @@ class ForCustomerActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
-                Log.e("리스폰스",res.toString())
                 val message = res?.get("message")?.asString
                 val data = res?.get("data")?.asJsonObject
                 val dataObject = JSONObject(data.toString())
@@ -66,7 +67,6 @@ class ForCustomerActivity : AppCompatActivity() {
                         for (i in 0 .. data!!.size()){
                             lists.add(RestaurantList(restaurantResponse.getJSONObject(i).getString("name"),
                                 restaurantResponse.getJSONObject(i).getInt("id")))
-                            Log.e("가게 정보",restaurantResponse.getJSONObject(i).getString("name"))
                             viewModel.setRestaurantId(restaurantResponse.getJSONObject(i).getInt("id"))
                         }
                         restaurantRecycler.notifyDataSetChanged()

@@ -19,15 +19,15 @@
         android:id="@+id/orderAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="주소 : "
+        android:text="가게 주소 : "
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/orderTime"
+        android:id="@+id/orderDeliveryAddressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="도착 예정 시간 : "
+        android:text="배달 주소 :"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
@@ -54,6 +54,14 @@
         android:text="요청 사항 : "
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/deliveryPriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="배달료 : "
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/order_info_confirm"
