@@ -16,4 +16,8 @@ interface NetworkServiceRestaurant {
         @Body loginRequest: JsonObject
     ): Call<JsonObject>
 
+    @POST("/api/v1/menus")
+    fun menuRequest(
+        @Body registerRequest: JsonObject
+    ): Call<JsonObject>
 }

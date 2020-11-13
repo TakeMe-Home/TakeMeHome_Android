@@ -1,17 +1,18 @@
 package com.example.garam.takemehome_android.restaurant
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
-import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.fragment_receipt.*
+import kotlinx.android.synthetic.main.fragment_receipt.view.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,8 +20,8 @@ import retrofit2.Response
 
 class ReceiptFragment : Fragment() {
 
-    private val networkService: NetworkService by lazy {
-        NetworkController.instance.networkService
+    private val networkService: NetworkServiceRestaurant by lazy {
+        NetworkController.instance.networkServiceRestaurant
     }
 
     override fun onCreateView(
@@ -32,7 +33,7 @@ class ReceiptFragment : Fragment() {
         val menu = JSONObject()
         val sharedViewModel = ViewModelProvider(this).get(RestaurantSharedViewModel::class.java)
         val restaurantId = sharedViewModel.getId()
-        menuRegisterConfirmButton.setOnClickListener {
+        root.menuRegisterConfirmButton.setOnClickListener {
             val name = menuRegisterName.text
             val price = menuRegisterPrice.text
 

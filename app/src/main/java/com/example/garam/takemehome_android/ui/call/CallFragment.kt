@@ -17,6 +17,7 @@ import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.KakaoApi
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import com.example.garam.takemehome_android.ui.map.LocationList
 import com.google.gson.JsonObject
@@ -30,8 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CallFragment : Fragment() {
 
-    private val networkService: NetworkService by lazy {
-        NetworkController.instance.networkService
+    private val networkService: NetworkServiceRider by lazy {
+        NetworkController.instance.networkServiceRider
     }
 
     private var lists = arrayListOf<CallList>()

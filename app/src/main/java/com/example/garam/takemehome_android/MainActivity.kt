@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import com.example.garam.takemehome_android.customer.ForCustomerActivity
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
@@ -27,6 +29,12 @@ class MainActivity : AppCompatActivity() {
 
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
+    }
+    private val networkServiceRider: NetworkServiceRider by lazy {
+        NetworkController.instance.networkServiceRider
+    }
+    private val networkServiceRestaurant: NetworkServiceRestaurant by lazy {
+        NetworkController.instance.networkServiceRestaurant
     }
     private lateinit var nextIntent: Intent
 
@@ -53,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             val loginInfo = JSONObject()
             loginInfo.put("email",idInfo)
             loginInfo.put("password",pwInfo)
+            loginInfo.put("token","")
 
             val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
 
@@ -80,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     private fun login(i: Int, loginInfo: JsonObject ){
         when(i) {
             0 -> {
-                networkService.loginRider(loginInfo).enqueue(object : Callback<JsonObject>{
+                networkServiceRider.loginRider(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                         Toast.makeText(this@MainActivity, "로그인에 실패 하였습니다",
                             Toast.LENGTH_SHORT).show()
@@ -105,6 +114,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
+                nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
+                startActivity(nextIntent)
 
             }
             1 -> {
@@ -134,9 +145,11 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
+                nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
+                startActivity(nextIntent)
             }
             2 -> {
-                networkService.loginOwner(loginInfo).enqueue(object : Callback<JsonObject>{
+                networkServiceRestaurant.loginOwner(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
                     }
@@ -157,10 +170,12 @@ class MainActivity : AppCompatActivity() {
                                 IdText.setText("")
                                 passwordText.setText("")
                             }
-
                         }
                     }
                 })
+                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
+                startActivity(nextIntent)
+
             }
         }
     }

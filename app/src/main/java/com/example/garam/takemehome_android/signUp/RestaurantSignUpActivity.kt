@@ -9,6 +9,7 @@ import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.KakaoApi
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_restaurant_sign_up.*
@@ -22,8 +23,8 @@ import java.util.regex.Pattern
 
 class RestaurantSignUpActivity : AppCompatActivity() {
 
-    private val networkService: NetworkService by lazy {
-        NetworkController.instance.networkService
+    private val networkService: NetworkServiceRestaurant by lazy {
+        NetworkController.instance.networkServiceRestaurant
     }
 
     private var latitude : Double = 0.0

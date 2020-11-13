@@ -1,12 +1,11 @@
 package com.example.garam.takemehome_android.signUp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
-import com.example.garam.takemehome_android.network.NetworkService
+import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_rider_sign_up.*
@@ -18,8 +17,8 @@ import java.util.regex.Pattern
 
 class RiderSignUpActivity : AppCompatActivity() {
 
-    private val networkService: NetworkService by lazy {
-        NetworkController.instance.networkService
+    private val networkService: NetworkServiceRider by lazy {
+        NetworkController.instance.networkServiceRider
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
