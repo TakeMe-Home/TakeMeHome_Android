@@ -24,21 +24,27 @@ import retrofit2.Response
 class MenuListActivity : AppCompatActivity() {
     private lateinit var viewModel : MenuSharedViewModel
     private var menuLists = arrayListOf<MenuList>()
+    private var choiceLists = arrayListOf<MenuChoiceList>()
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
+
     private lateinit var dialog: Dialog
     private lateinit var menuRecycler:MenuListViewAdapter
+    private lateinit var choiceRecycler: ChoiceListViewAdapter
     private var menuIdCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_list)
         val recycler = findViewById<RecyclerView>(R.id.menuRecycler)
+        val choiceRecyclerView = findViewById<RecyclerView>(R.id.choiceRecyclerView)
         val intent = intent
         val restaurantId = intent.getIntExtra("restaurantId",0)
         val customerId = intent.getIntExtra("customerId",0)
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
         menuLookUp(restaurantId)
+
         dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.menu_dialog)
@@ -52,7 +58,13 @@ class MenuListActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.setHasFixedSize(true)
 
-        menuToTalPrice.setOnClickListener {
+        choiceRecycler = ChoiceListViewAdapter(choiceLists,this)
+
+        choiceRecyclerView.adapter = choiceRecycler
+        choiceRecyclerView.layoutManager = LinearLayoutManager(this)
+        choiceRecyclerView.setHasFixedSize(false)
+
+        paymentButton.setOnClickListener {
             val receptionObject = JSONObject()
             val menuIdCounts = JSONObject()
             val menuIdArray = JSONArray()
@@ -74,6 +86,10 @@ class MenuListActivity : AppCompatActivity() {
             Log.e("reception", receptionObject.toString())
             val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
             orderReception(receptionInfo)
+        }
+
+        payConfirmButton.setOnClickListener {
+             paymentTextView.text = ""
         }
     }
 
@@ -145,15 +161,17 @@ class MenuListActivity : AppCompatActivity() {
         }
 
         dialog.menuConfirmButton.setOnClickListener {
-            menuDetailName.text = menuList.menuName
+            /*menuDetailName.text = menuList.menuName
             menuDetailPrice.text = menuList.menuPrice.toString()
             menuToTalPrice.text = (((dialog.menuCountTextView.text as String).toInt()
                     * menuList.menuPrice.toInt()).toString())
             menuIdCount += 1
+            */
+            choiceLists.add(MenuChoiceList(menuList.menuName,menuList.menuPrice.toInt(),
+                ((dialog.menuCountTextView.text as String).toInt()
+                        * menuList.menuPrice.toInt())))
+            choiceRecycler.notifyDataSetChanged()
             dialog.dismiss()
         }
     }
-
-
-
 }
