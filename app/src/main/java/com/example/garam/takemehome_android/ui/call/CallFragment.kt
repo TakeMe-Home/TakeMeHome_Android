@@ -115,7 +115,6 @@ class CallFragment : Fragment() {
 
         }
             return root
-
     }
 
     private fun callLookUp(){
@@ -154,12 +153,10 @@ class CallFragment : Fragment() {
                             deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
                         }
                    }
-
                     message == "주문 조회 실패" -> {
                         Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
                         Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
         })

@@ -8,6 +8,7 @@ class SharedViewModel : ViewModel() {
 
     private val livePost = ArrayList<CallList>()
     private var liveRange = 500
+    private var riderId = 0
     private val liveLocation = ArrayList<LocationList>()
     fun getData(): ArrayList<CallList> {
         return livePost
@@ -30,5 +31,11 @@ class SharedViewModel : ViewModel() {
 
     fun getLocation(): ArrayList<LocationList>{
         return liveLocation
+    }
+    fun setRiderId(id : Int){
+        riderId = id
+    }
+    fun getRiderId() : Int {
+        return riderId
     }
 }

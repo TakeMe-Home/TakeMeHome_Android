@@ -32,10 +32,19 @@ class MenuListViewAdapter(
     inner class ViewHolder(itemView: View, itemClick: (MenuList) -> Unit) : RecyclerView.ViewHolder(itemView){
         private val menuName = itemView.findViewById<TextView>(R.id.menuNameTextView)
         private val menuPrice = itemView.findViewById<TextView>(R.id.menuPriceTextView)
+        private val menuStatus = itemView.findViewById<TextView>(R.id.menuStatusTextView)
 
         fun bind(list: MenuList){
             menuName.text = list.menuName
             menuPrice.text = list.menuPrice.toString()
+            when {
+                list.menuStatus == "SALE" ->{
+                    menuStatus.text = "판매 중"
+                }
+                list.menuStatus == "SOLDOUT" ->{
+                    menuStatus.text = "품절"
+                }
+            }
 
             itemView.setOnClickListener {
                 itemClick(list)

@@ -81,7 +81,7 @@ class MenuListActivity : AppCompatActivity() {
             receptionObject.put("paymentStatus","COMPLITE")
             receptionObject.put("paymentType","CARD")
             receptionObject.put("restaurantId",restaurantId)
-            receptionObject.put("totalPrice",(menuToTalPrice.text as String).toInt())
+            receptionObject.put("totalPrice",(paymentTextView.text as String).toInt())
 
             Log.e("reception", receptionObject.toString())
             val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
@@ -120,9 +120,10 @@ class MenuListActivity : AppCompatActivity() {
                         val resObject = JSONObject(res.toString())
                         val data = resObject.getJSONArray("data")
                         for( i in 0 until data.length()){
-                            menuLists.add(MenuList(data.getJSONObject(i).getString("name"),
-                            data.getJSONObject(i).getInt("price"),
-                                data.getJSONObject(i).getInt("id")))
+                            val dataObject = data.getJSONObject(i)
+                            menuLists.add(MenuList(dataObject.getString("name"),
+                            dataObject.getInt("price"),
+                                dataObject.getInt("id"),dataObject.getString("menuStatus")))
                         }
                         menuRecycler.notifyDataSetChanged()
 
