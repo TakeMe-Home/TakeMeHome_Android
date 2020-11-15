@@ -18,12 +18,18 @@ import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
 import com.example.garam.takemehome_android.signUp.RiderSignUpActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
-import retrofit2.*;
+import com.google.firebase.iid.InstanceIdResult
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         NetworkController.instance.networkServiceRestaurant
     }
     private lateinit var nextIntent: Intent
+
+    private var token : String = null.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +61,16 @@ class MainActivity : AppCompatActivity() {
 
         val items = arrayOf("Rider","Customer","Restaurant")
         val dialog = AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
+        getToken()
 
         loginText.setOnClickListener{
             val idInfo = IdText.text
             val pwInfo = passwordText.text
-
             val loginInfo = JSONObject()
             loginInfo.put("email",idInfo)
             loginInfo.put("password",pwInfo)
-            loginInfo.put("token","")
+            loginInfo.put("token",token)
+            Log.e("토큰", token)
 
             val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
 
@@ -84,6 +93,13 @@ class MainActivity : AppCompatActivity() {
                nextActivity(i)
            }.setCancelable(false).show()
         }
+    }
+
+    private fun getToken(){
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener {
+            task ->
+            token = task.result?.token.toString()
+        })
     }
 
     private fun login(i: Int, loginInfo: JsonObject ){
