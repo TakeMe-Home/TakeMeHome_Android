@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface NetworkServiceRider {
 
@@ -24,5 +25,15 @@ interface NetworkServiceRider {
     @POST("/api/v1/orders/nearby")
     fun nearBy(
         @Body locationInfo : JsonObject
+    ): Call<JsonObject>
+
+    @GET("/api/v1/orders/riders/{riderId}")
+    fun orderListForRider(
+        @Path("riderId") id : Int
+    ): Call<JsonObject>
+
+    @GET("/api/v1/orders/riders/{riderId}/assigned")
+    fun orderForRider(
+        @Path("riderId") id : Int
     ): Call<JsonObject>
 }

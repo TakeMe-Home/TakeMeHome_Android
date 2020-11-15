@@ -5,15 +5,18 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.garam.takemehome_android.ui.SharedViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ForRiderActivity : AppCompatActivity() {
     private var backKeyPressedTime: Long = 0
     private lateinit var navView: BottomNavigationView
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +25,8 @@ class ForRiderActivity : AppCompatActivity() {
         val intent = intent
         val riderId = intent.getIntExtra("riderId",0)
         val navController = findNavController(R.id.nav_host_fragment)
+        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        sharedViewModel.setRiderId(riderId)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
