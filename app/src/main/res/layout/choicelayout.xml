@@ -8,30 +8,27 @@
         android:id="@+id/choiceMenuName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|center_vertical"
-        android:background="@drawable/round_corner"
         android:layout_weight="1"
+        android:gravity="center|center_vertical"
         android:text="test"
-        android:textSize="24sp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/choiceMenuPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|center_vertical"
         android:layout_weight="1"
-        android:background="@drawable/round_corner"
+        android:gravity="center|center_vertical"
         android:text="test"
-        android:textSize="24sp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/choiceMiddlePrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|center_vertical"
         android:layout_weight="1"
+        android:gravity="center|center_vertical"
         android:text="test"
-        android:background="@drawable/round_corner"
-        android:textSize="24sp"/>
+        android:textSize="18sp" />
 
 </LinearLayout>

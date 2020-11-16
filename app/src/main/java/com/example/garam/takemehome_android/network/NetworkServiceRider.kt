@@ -2,10 +2,7 @@ package com.example.garam.takemehome_android.network
 
 import com.google.gson.JsonObject
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface NetworkServiceRider {
 
@@ -22,9 +19,10 @@ interface NetworkServiceRider {
     @GET("/api/v1/orders/status/request")
     fun callLookUp() : Call<JsonObject>
 
-    @POST("/api/v1/orders/nearby")
+    @GET("/api/v1/orders/nearby")
     fun nearBy(
-        @Body locationInfo : JsonObject
+        @Query("") x : Double,
+        @Query("") y : Double
     ): Call<JsonObject>
 
     @GET("/api/v1/orders/riders/{riderId}")

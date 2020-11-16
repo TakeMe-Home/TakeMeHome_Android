@@ -102,10 +102,7 @@ class CallFragment : Fragment() {
                     val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                     val latitude = location.latitude
                     val longitude = location.longitude
-                    locationDetail.put("x",latitude)
-                    locationDetail.put("x",longitude)
-                    val locationInfo = JsonParser().parse(locationDetail.toString()).asJsonObject
-                    nearByCall(locationInfo)
+                    nearByCall(latitude,longitude)
                 }
                 else -> {
                     callLookUp()
@@ -162,8 +159,8 @@ class CallFragment : Fragment() {
         })
     }
 
-    private fun nearByCall(locationInfo: JsonObject) {
-        networkService.nearBy(locationInfo).enqueue(object : Callback<JsonObject>{
+    private fun nearByCall(x: Double, y: Double) {
+        networkService.nearBy(x,y).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }

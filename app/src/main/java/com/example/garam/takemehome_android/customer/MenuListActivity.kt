@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,11 +29,13 @@ class MenuListActivity : AppCompatActivity() {
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
+    private var totalPayPrice = 0
+    private var menuCountSize = 0
 
     private lateinit var dialog: Dialog
     private lateinit var menuRecycler:MenuListViewAdapter
     private lateinit var choiceRecycler: ChoiceListViewAdapter
-    private var menuIdCount = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,7 @@ class MenuListActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId",0)
         val customerId = intent.getIntExtra("customerId",0)
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
+
         menuLookUp(restaurantId)
 
         dialog = Dialog(this)
@@ -51,7 +55,15 @@ class MenuListActivity : AppCompatActivity() {
 
         menuRecycler = MenuListViewAdapter(menuLists,this){
             menuList ->
-            showDialog(menuList)
+            when {
+                menuList.menuStatus == "SOLD_OUT" ->{
+                    recycler.isEnabled = false
+                }
+                else -> {
+                    showDialog(menuList)
+                }
+            }
+
         }
 
         recycler.adapter = menuRecycler
@@ -65,14 +77,14 @@ class MenuListActivity : AppCompatActivity() {
         choiceRecyclerView.setHasFixedSize(false)
 
         paymentButton.setOnClickListener {
+            menuCountSize = viewModel.getCountInfo()
+
             val receptionObject = JSONObject()
             val menuIdCounts = JSONObject()
             val menuIdArray = JSONArray()
-            val menuArray = JSONObject()
-            for (i in 0 .. menuIdCount) {
-                menuArray.put("count", menuIdCount)
-                menuArray.put("menuId", 0)
-                menuIdArray.put(i,menuArray)
+            Log.e("메뉴 카운트 크기",menuCountSize.toString())
+            for (i in 0 until menuCountSize) {
+                menuIdArray.put(i,viewModel.getMenuArray()[i])
             }
             menuIdCounts.put("menuIdCounts",menuIdArray)
 
@@ -81,15 +93,34 @@ class MenuListActivity : AppCompatActivity() {
             receptionObject.put("paymentStatus","COMPLITE")
             receptionObject.put("paymentType","CARD")
             receptionObject.put("restaurantId",restaurantId)
-            receptionObject.put("totalPrice",(paymentTextView.text as String).toInt())
+            when {
+                /* (paymentTextView.text as String).toString() == "" ->{
+                    Toast.makeText(this,"결제 금액 조회를 눌러주세요",Toast.LENGTH_LONG).show()
+                } */
+                menuCountSize == 0 -> {
+                    Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
+                }
+                else -> {
+//            receptionObject.put("totalPrice",(paymentTextView.text as String).toInt())
 
-            Log.e("reception", receptionObject.toString())
-            val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
-            orderReception(receptionInfo)
+                    Log.e("reception", receptionObject.toString())
+                    val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
+                    orderReception(receptionInfo)
+                }
+            }
         }
 
         payConfirmButton.setOnClickListener {
-             paymentTextView.text = ""
+            menuCountSize = viewModel.getCountInfo()
+            when {
+                menuCountSize == 0 -> {
+                    Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
+                }
+                else -> {
+
+                }
+            }
+            paymentTextView.text = ""
         }
     }
 
@@ -141,7 +172,7 @@ class MenuListActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.menuNameConfirm.text = menuList.menuName
         var menuCount = 0
-
+        Log.e("뭐지",menuList.menuStatus)
         dialog.menuCountTextView.text = menuCount.toString()
 
         dialog.menuMinusButton.setOnClickListener {
@@ -162,17 +193,27 @@ class MenuListActivity : AppCompatActivity() {
         }
 
         dialog.menuConfirmButton.setOnClickListener {
-            /*menuDetailName.text = menuList.menuName
-            menuDetailPrice.text = menuList.menuPrice.toString()
-            menuToTalPrice.text = (((dialog.menuCountTextView.text as String).toInt()
-                    * menuList.menuPrice.toInt()).toString())
-            menuIdCount += 1
-            */
-            choiceLists.add(MenuChoiceList(menuList.menuName,menuList.menuPrice.toInt(),
-                ((dialog.menuCountTextView.text as String).toInt()
-                        * menuList.menuPrice.toInt())))
-            choiceRecycler.notifyDataSetChanged()
-            dialog.dismiss()
+
+            when{
+                (dialog.menuCountTextView.text as String).toInt() != 0 -> {
+                    choiceLists.add(MenuChoiceList(menuList.menuName,menuList.menuPrice.toInt(),
+                        ((dialog.menuCountTextView.text as String).toInt()
+                                * menuList.menuPrice.toInt())))
+                    val menuArray = JSONObject()
+
+                    menuArray.put("count" , (dialog.menuCountTextView.text as String).toInt())
+                    menuArray.put("menuId",menuList.menuId)
+                    viewModel.setMenuArray(menuArray)
+                    viewModel.setCountInfo(menuList.menuId,(dialog.menuCountTextView.text as String).toInt())
+                    Log.e("테스트",viewModel.getCountInfo().toString())
+                    choiceRecycler.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
+                (dialog.menuCountTextView.text as String).toInt() == 0 -> {
+                    dialog.dismiss()
+                }
+            }
+
         }
     }
 }

@@ -34,8 +34,8 @@ class ChoiceListViewAdapter(
 
         fun bind(list: MenuChoiceList){
             choiceMenu.text = list.choiceMenuName
-            choicePrice.text = list.choiceMenuPrice.toString()
-            choiceMiddlePrice.text = list.choiceMiddlePrice.toString()
+            choicePrice.text = list.choiceMenuPrice.toString() +"원"
+            choiceMiddlePrice.text = list.choiceMiddlePrice.toString() +"원"
         }
     }
 }
