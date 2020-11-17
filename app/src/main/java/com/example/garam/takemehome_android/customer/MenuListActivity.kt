@@ -1,6 +1,7 @@
 package com.example.garam.takemehome_android.customer
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -94,18 +95,25 @@ class MenuListActivity : AppCompatActivity() {
             receptionObject.put("paymentType","CARD")
             receptionObject.put("restaurantId",restaurantId)
             when {
-                /* (paymentTextView.text as String).toString() == "" ->{
-                    Toast.makeText(this,"결제 금액 조회를 눌러주세요",Toast.LENGTH_LONG).show()
-                } */
-                menuCountSize == 0 -> {
+                menuCountSize == 0 || (paymentTextView.text as String).toString() == "0원" -> {
                     Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
                 }
+
+                 (paymentTextView.text as String).toString() == "" ||
+                         (paymentTextView.text as String).toString() == "0원" ->{
+                    Toast.makeText(this,"결제 금액 조회를 눌러주세요",Toast.LENGTH_LONG).show()
+                }
+
                 else -> {
-//            receptionObject.put("totalPrice",(paymentTextView.text as String).toInt())
+                    receptionObject.put("totalPrice",viewModel.getLastPayPrice())
 
                     Log.e("reception", receptionObject.toString())
-                    val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
-                    orderReception(receptionInfo)
+                   // val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
+                    viewModel.setReceptionInfo(receptionObject)
+
+                    Log.e("??",viewModel.getReceptionInfo().toString())
+                   // val nextIntent = Intent(this,PaymentActivity::class.java)
+                    //startActivity(nextIntent)
                 }
             }
         }
@@ -120,21 +128,11 @@ class MenuListActivity : AppCompatActivity() {
 
                 }
             }
-            paymentTextView.text = ""
+            paymentTextView.text = viewModel.getLastPayPrice().toString() + "원"
         }
     }
 
-    private fun orderReception(receptionInfo: JsonObject){
-        networkService.reception(receptionInfo).enqueue(object : Callback<JsonObject>{
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
-            }
-
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-
-            }
-        })
-    }
 
     private fun menuLookUp(id :Int){
         networkService.menuLookUp(id).enqueue(object : Callback<JsonObject> {
@@ -205,6 +203,8 @@ class MenuListActivity : AppCompatActivity() {
                     menuArray.put("menuId",menuList.menuId)
                     viewModel.setMenuArray(menuArray)
                     viewModel.setCountInfo(menuList.menuId,(dialog.menuCountTextView.text as String).toInt())
+                    viewModel.setLastPayPrice((dialog.menuCountTextView.text as String).toInt()
+                            * menuList.menuPrice.toInt())
                     Log.e("테스트",viewModel.getCountInfo().toString())
                     choiceRecycler.notifyDataSetChanged()
                     dialog.dismiss()

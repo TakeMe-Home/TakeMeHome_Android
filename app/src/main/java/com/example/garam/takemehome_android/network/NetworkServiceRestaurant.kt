@@ -2,10 +2,7 @@ package com.example.garam.takemehome_android.network
 
 import com.google.gson.JsonObject
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface NetworkServiceRestaurant {
 
@@ -33,4 +30,5 @@ interface NetworkServiceRestaurant {
     fun menuSoldOut(
         @Path ("id") menuId : Int
     ): Call<JsonObject>
+
 }

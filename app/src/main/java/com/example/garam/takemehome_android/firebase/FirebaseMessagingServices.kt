@@ -13,5 +13,4 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
     override fun onMessageReceived(p0: RemoteMessage) {
 
     }
-
 }

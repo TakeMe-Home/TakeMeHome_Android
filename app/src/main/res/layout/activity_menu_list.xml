@@ -113,11 +113,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="총 결제 금액 조회" />
+
             <TextView
                 android:id="@+id/paymentTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/paymentButton"
