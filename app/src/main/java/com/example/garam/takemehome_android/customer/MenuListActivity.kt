@@ -46,6 +46,7 @@ class MenuListActivity : AppCompatActivity() {
         val intent = intent
         val restaurantId = intent.getIntExtra("restaurantId",0)
         val customerId = intent.getIntExtra("customerId",0)
+        val restaurantName = intent.getStringExtra("restaurantName")
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
 
         menuLookUp(restaurantId)
@@ -106,14 +107,13 @@ class MenuListActivity : AppCompatActivity() {
 
                 else -> {
                     receptionObject.put("totalPrice",viewModel.getLastPayPrice())
-
-                    Log.e("reception", receptionObject.toString())
-                   // val receptionInfo = JsonParser().parse(receptionObject.toString()).asJsonObject
-                    viewModel.setReceptionInfo(receptionObject)
-
-                    Log.e("??",viewModel.getReceptionInfo().toString())
-                   // val nextIntent = Intent(this,PaymentActivity::class.java)
-                    //startActivity(nextIntent)
+                    val nextIntent = Intent(this,PaymentActivity::class.java)
+                    nextIntent.putExtra("lastPrice",viewModel.getLastPayPrice())
+                    nextIntent.putExtra("restaurantName",restaurantName)
+                    nextIntent.putExtra("restaurantId",restaurantId)
+                    nextIntent.putExtra("customerId",customerId)
+                    nextIntent.putExtra("json",receptionObject.toString())
+                    startActivity(nextIntent)
                 }
             }
         }
@@ -132,12 +132,11 @@ class MenuListActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun menuLookUp(id :Int){
         networkService.menuLookUp(id).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                Toast.makeText(this@MenuListActivity,"메뉴 조회에 실패하였습니다"
+                    ,Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {

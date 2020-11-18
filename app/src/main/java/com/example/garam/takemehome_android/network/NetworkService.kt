@@ -37,8 +37,8 @@ interface NetworkService {
 
     @GET("/api/v1/restaurants/restaurant/{restaurantId}/{customerId}/distance")
     fun deliveryPrice(
-        @Path("customerId") customerId: Int,
-        @Path("restaurantId") restaurantId : Int
+        @Path("restaurantId") restaurantId: Int,
+        @Path("customerId") customerId : Int
     ): Call<JsonObject>
 
 }

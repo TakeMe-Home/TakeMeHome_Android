@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class ForCustomerActivity : AppCompatActivity() {
         restaurantRecycler = RestaurantListViewAdapter(lists,this){
             RestaurantList->
             nextIntent.putExtra("restaurantId",RestaurantList.restaurantId)
+            nextIntent.putExtra("restaurantName",RestaurantList.restaurantName)
             nextIntent.putExtra("customerId",customerId)
             startActivity(nextIntent)
 
@@ -53,7 +55,8 @@ class ForCustomerActivity : AppCompatActivity() {
     private fun lookUp(){
         networkService.restaurantLookUp().enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                Toast.makeText(this@ForCustomerActivity,"가게 조회에 실패하였습니다."
+                    ,Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {

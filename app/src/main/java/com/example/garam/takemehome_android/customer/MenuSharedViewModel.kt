@@ -11,21 +11,10 @@ import kotlin.collections.ArrayList
 class MenuSharedViewModel : ViewModel() {
 
     private var lastPayPrice = 0
+    private var lastTotalPrice = 0
     private var restaurantId = ArrayList<Int>()
     private var menuIdCount = Hashtable<Int,Int>()
     private var menuArray = ArrayList<JSONObject>()
-    private var receptionInfo = MutableLiveData<JSONObject>()
-
-    fun setReceptionInfo(reception: JSONObject) {
-        receptionInfo.value = reception
-        Log.e("리셉션",receptionInfo.value.toString())
-    }
-
-    fun getReceptionInfo() : JSONObject? {
-        Log.e("왜 안돼",receptionInfo.value.toString())
-        return receptionInfo.value
-    }
-
 
     fun setRestaurantId(id: Int)
     {
@@ -67,5 +56,11 @@ class MenuSharedViewModel : ViewModel() {
         return lastPayPrice
     }
 
+    fun setTotalPrice(price: Int){
+        lastTotalPrice = price
+    }
 
+    fun getTotalPrice() : Int{
+        return lastTotalPrice
+    }
 }

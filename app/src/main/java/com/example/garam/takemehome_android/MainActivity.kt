@@ -103,12 +103,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun login(i: Int, loginInfo: JsonObject ){
+        val failMessage = Toast.makeText(this@MainActivity,"로그인에 실패하였습니다",Toast.LENGTH_LONG)
         when(i) {
             0 -> {
                 networkServiceRider.loginRider(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        Toast.makeText(this@MainActivity, "로그인에 실패 하였습니다",
-                            Toast.LENGTH_SHORT).show()
+                        failMessage.show()
                     }
 
                     override fun onResponse(
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("loginInfo",loginInfo.toString())
                 networkService.loginCustomer(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                        failMessage.show()
                     }
 
                     override fun onResponse(
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
             2 -> {
                 networkServiceRestaurant.loginOwner(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                        failMessage.show()
                     }
 
                     override fun onResponse(
