@@ -23,6 +23,7 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var viewModel : MenuSharedViewModel
     private var lastTotalPrice = 0
     private var orderPrice = 0
+    private var receptionInfo = JSONObject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pay_ment)
@@ -33,7 +34,7 @@ class PaymentActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId",0)
         val customerId = intent.getIntExtra("customerId",0)
         val restaurantName = intent.getStringExtra("restaurantName")
-        val receptionInfo = JSONObject(intent.getStringExtra("json"))
+        receptionInfo = JSONObject(intent.getStringExtra("json"))
         Log.e("받을때 Json",receptionInfo.toString())
 
         deliveryPriceInquiry(restaurantId,customerId)
@@ -42,15 +43,17 @@ class PaymentActivity : AppCompatActivity() {
         paymentOrderPriceTextView.text = orderPrice.toString() + "원"
 
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when{
-                i == R.id.unTactCard -> {
+            when (i) {
+                R.id.unTactCard -> {
                     receptionInfo.put("paymentStatus","COMPLITE")
                     receptionInfo.put("paymentType","CARD")
                 }
-                i == R.id.contactCash -> {
+                R.id.contactCash -> {
+                    receptionInfo.put("paymentStatus","NONE")
                     receptionInfo.put("paymentType","CASH")
                 }
-                i == R.id.contactCard -> {
+                R.id.contactCard -> {
+                    receptionInfo.put("paymentStatus","NONE")
                     receptionInfo.put("paymentType","CARD")
                 }
             }
@@ -69,7 +72,7 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun deliveryPriceInquiry(restaurantId: Int,customerId: Int){
-        networkService.deliveryPrice(restaurantId, 33).enqueue(object : Callback<JsonObject>{
+        networkService.deliveryPrice(restaurantId, customerId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -83,8 +86,9 @@ class PaymentActivity : AppCompatActivity() {
                     response.body()?.get("statusCode")?.asInt == 200 -> {
                         deliveryPrice = response.body()
                             ?.getAsJsonObject("data")?.get("price")?.asInt!!
+                        receptionInfo.put("totalPrice",lastPrice.text.toString().toInt())
                         paymentDeliveryPriceTextView.text = deliveryPrice.toString() + "원"
-                        lastPrice.text = (orderPrice + deliveryPrice?.toInt()).toString() + "원"
+                        lastPrice.text = (orderPrice + deliveryPrice.toInt()).toString() + "원"
 
                     }
                     message.toString() == "배달 가격 조회 실패" -> {

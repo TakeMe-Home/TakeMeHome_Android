@@ -31,4 +31,9 @@ interface NetworkServiceRestaurant {
         @Path ("id") menuId : Int
     ): Call<JsonObject>
 
+    @GET("/api/v1/restaurants/{ownerId}")
+    fun restaurantManage(
+        @Path ("ownerId") ownerId : Int
+    ): Call<JsonObject>
+
 }

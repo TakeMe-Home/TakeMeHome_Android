@@ -15,6 +15,7 @@ import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
+import com.example.garam.takemehome_android.restaurant.RestaurantManageActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
 import com.example.garam.takemehome_android.signUp.RiderSignUpActivity
@@ -117,10 +118,10 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         val res = response.body()
                         val message = res?.get("message")?.asString
-                        val data = JSONObject(res?.asJsonObject.toString())
                         Log.e("로그인 정보",res.toString())
                         when{
                             message == "로그인 성공" ->{
+                                val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
                                 nextIntent.putExtra("riderId",data.getInt("data"))
                                 startActivity(nextIntent)
@@ -130,9 +131,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
-                startActivity(nextIntent)
-
             }
             1 -> {
                 Log.e("loginInfo",loginInfo.toString())
@@ -147,10 +145,10 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         val res = response.body()
                         val message = res?.get("message")?.asString
-                        val data = JSONObject(res?.asJsonObject.toString())
                         Log.e("로그인 정보",res.toString())
                         when{
                             message == "로그인 성공" ->{
+                                val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
                                 nextIntent.putExtra("customerId",data.getInt("data"))
                                 startActivity(nextIntent)
@@ -161,8 +159,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
-                startActivity(nextIntent)
             }
             2 -> {
                 networkServiceRestaurant.loginOwner(loginInfo).enqueue(object : Callback<JsonObject>{
@@ -176,12 +172,12 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         val res = response.body()
                         val message = res?.get("message")?.asString
-                        val data = JSONObject(res?.asJsonObject.toString())
                         Log.e("로그인 정보",res.toString())
                         when{
                             message == "로그인 성공" ->{
-                                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
-                                nextIntent.putExtra("restaurant",data.getInt("data"))
+                                val data = res.get("data").asInt
+                                nextIntent = Intent(this@MainActivity, RestaurantManageActivity::class.java)
+                                nextIntent.putExtra("ownerId",data)
                                 startActivity(nextIntent)
                                 IdText.setText("")
                                 passwordText.setText("")
@@ -189,9 +185,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
-                nextIntent = Intent(this@MainActivity, ForRestaurantActivity::class.java)
-                startActivity(nextIntent)
-
             }
         }
     }
