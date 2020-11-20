@@ -37,6 +37,7 @@ class RestaurantManageActivity : AppCompatActivity() {
                 RestaurantManageList ->
             val nextIntent = Intent(this,ForRestaurantActivity::class.java)
             nextIntent.putExtra("restaurantId",RestaurantManageList.restaurantId)
+            Log.e("뭐지",RestaurantManageList.restaurantId.toString())
             startActivity(nextIntent)
         }
 
@@ -65,14 +66,13 @@ class RestaurantManageActivity : AppCompatActivity() {
                         val dataObject = JSONObject(data.toString())
                         val restaurantResponse = dataObject.getJSONArray("restaurantFindAllResponse")
                         for (i in 0 until restaurantResponse.length()){
-                            Log.e("가게 숫자",restaurantResponse.length().toString())
                             lists.add(RestaurantManageList(restaurantResponse.getJSONObject(i)
                                 .getString("address"),restaurantResponse.getJSONObject(i).getString("name"),
                             restaurantResponse.getJSONObject(i).getInt("id"),
                             restaurantResponse.getJSONObject(i).getJSONObject("location").getDouble("x"),
                                 restaurantResponse.getJSONObject(i).getJSONObject("location").getDouble("y"),
                                 restaurantResponse.getJSONObject(i).getString("number")))
-                            Log.e("가게 목록들",lists[i].restaurantName)
+                            Log.e("가게 아이디",lists[i].restaurantId.toString())
                         }
                         restaurantManageRecycler.notifyDataSetChanged()
 

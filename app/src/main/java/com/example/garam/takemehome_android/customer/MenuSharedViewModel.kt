@@ -15,6 +15,7 @@ class MenuSharedViewModel : ViewModel() {
     private var restaurantId = ArrayList<Int>()
     private var menuIdCount = Hashtable<Int,Int>()
     private var menuArray = ArrayList<JSONObject>()
+    private var menuNameArray = ArrayList<JSONObject>()
 
     fun setRestaurantId(id: Int)
     {
@@ -38,6 +39,14 @@ class MenuSharedViewModel : ViewModel() {
 
     fun getCountInfo() : Int{
         return menuIdCount.size
+    }
+
+    fun setMenuNameArray(menuNameJson: JSONObject){
+        menuNameArray.add(menuNameJson)
+    }
+
+    fun getMenuNameArray() : ArrayList<JSONObject>{
+        return menuNameArray
     }
 
     fun setMenuArray(menuJson : JSONObject) {

@@ -28,5 +28,9 @@
         android:id="@+id/navigation_restaurant_update"
         android:name="com.example.garam.takemehome_android.restaurant.RestaurantUpdateFragment"
         tools:layout="@layout/fragment_restaurant_update"
-        android:label="restaurantUpdate"/>
+        android:label="restaurantUpdate">
+        <argument
+            android:name="restaurantId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

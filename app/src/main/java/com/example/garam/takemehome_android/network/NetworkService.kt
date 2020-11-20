@@ -41,4 +41,9 @@ interface NetworkService {
         @Path("customerId") customerId : Int
     ): Call<JsonObject>
 
+    @POST("/api/v1/customers/customer/order")
+    fun orderRequest(
+        @Body customerOrderRequest: JsonObject
+    ): Call<JsonObject>
+
 }

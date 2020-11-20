@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 class NetworkController : Application(){
 
-    val baseURL = "http://5ed98b70e181.ngrok.io"
+    val baseURL = "http://7e57622f1246.ngrok.io"
 
     lateinit var networkService: NetworkService
     lateinit var networkServiceRider: NetworkServiceRider
@@ -34,6 +34,5 @@ class NetworkController : Application(){
         networkServiceRider = retrofit.create(NetworkServiceRider::class.java)
         networkServiceRestaurant = retrofit.create(NetworkServiceRestaurant::class.java)
     }
-
 
 }

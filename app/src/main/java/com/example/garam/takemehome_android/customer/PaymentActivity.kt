@@ -1,5 +1,6 @@
 package com.example.garam.takemehome_android.customer
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,9 @@ class PaymentActivity : AppCompatActivity() {
     private var lastTotalPrice = 0
     private var orderPrice = 0
     private var receptionInfo = JSONObject()
+
+    private var orderInfo = JSONObject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pay_ment)
@@ -35,6 +39,8 @@ class PaymentActivity : AppCompatActivity() {
         val customerId = intent.getIntExtra("customerId",0)
         val restaurantName = intent.getStringExtra("restaurantName")
         receptionInfo = JSONObject(intent.getStringExtra("json"))
+
+        orderInfo = JSONObject(intent.getStringExtra("orderInfo"))
         Log.e("받을때 Json",receptionInfo.toString())
 
         deliveryPriceInquiry(restaurantId,customerId)
@@ -60,14 +66,29 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         lastPaymentButton.setOnClickListener {
+
+            val nextIntent = Intent(this,StandByActivity::class.java)
+            nextIntent.putExtra("orderInfo",orderInfo.toString())
+            startActivityForResult(nextIntent,100)
+
             val lastReceptionInfo = JsonParser().parse(receptionInfo.toString()).asJsonObject
             Log.e("최종 결제 정보",lastReceptionInfo.toString())
-            orderReception(lastReceptionInfo)
+        //    orderReception(lastReceptionInfo)
         }
 
         paymentCancelButton.setOnClickListener {
             finish()
             Toast.makeText(this,"결제를 취소했습니다.",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when {
+            requestCode == 100 -> {
+
+            }
         }
     }
 
@@ -86,9 +107,10 @@ class PaymentActivity : AppCompatActivity() {
                     response.body()?.get("statusCode")?.asInt == 200 -> {
                         deliveryPrice = response.body()
                             ?.getAsJsonObject("data")?.get("price")?.asInt!!
-                        receptionInfo.put("totalPrice",lastPrice.text.toString().toInt())
                         paymentDeliveryPriceTextView.text = deliveryPrice.toString() + "원"
                         lastPrice.text = (orderPrice + deliveryPrice.toInt()).toString() + "원"
+                        receptionInfo.put("totalPrice",(orderPrice + deliveryPrice.toInt())
+                            .toString().toInt())
 
                     }
                     message.toString() == "배달 가격 조회 실패" -> {
@@ -99,6 +121,8 @@ class PaymentActivity : AppCompatActivity() {
             }
         })
     }
+
+
 
     private fun orderReception(receptionInfo: JsonObject){
         networkService.reception(receptionInfo).enqueue(object : Callback<JsonObject> {

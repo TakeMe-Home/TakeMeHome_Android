@@ -26,7 +26,6 @@ import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import com.example.garam.takemehome_android.ui.map.LocationList
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import kotlinx.android.synthetic.main.fragment_call.view.*
 import org.json.JSONObject

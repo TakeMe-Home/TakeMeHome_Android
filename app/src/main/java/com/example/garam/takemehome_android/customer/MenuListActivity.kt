@@ -84,11 +84,19 @@ class MenuListActivity : AppCompatActivity() {
             val receptionObject = JSONObject()
             val menuIdCounts = JSONObject()
             val menuIdArray = JSONArray()
+
+            val orderInfo = JSONObject()
+            val menuNameCounts = JSONObject()
+            val menuNameArray = JSONArray()
+
             Log.e("메뉴 카운트 크기",menuCountSize.toString())
             for (i in 0 until menuCountSize) {
                 menuIdArray.put(i,viewModel.getMenuArray()[i])
+                menuNameArray.put(i,viewModel.getMenuNameArray()[i])
             }
             menuIdCounts.put("menuIdCounts",menuIdArray)
+
+            menuNameCounts.put("menuNameCounts",menuNameArray)
 
             receptionObject.put("customerId",customerId)
             receptionObject.put("menuIdCounts",menuIdCounts)
@@ -106,13 +114,23 @@ class MenuListActivity : AppCompatActivity() {
                 }
 
                 else -> {
+
+                    orderInfo.put("customerAddress","")
+                    orderInfo.put("menuNameCounts",menuNameCounts)
+                    orderInfo.put("restaurantId",restaurantId)
+                    orderInfo.put("totalPrice",viewModel.getLastPayPrice())
+
+
                     receptionObject.put("totalPrice",viewModel.getLastPayPrice())
+
                     val nextIntent = Intent(this,PaymentActivity::class.java)
                     nextIntent.putExtra("lastPrice",viewModel.getLastPayPrice())
                     nextIntent.putExtra("restaurantName",restaurantName)
                     nextIntent.putExtra("restaurantId",restaurantId)
                     nextIntent.putExtra("customerId",customerId)
                     nextIntent.putExtra("json",receptionObject.toString())
+
+                    nextIntent.putExtra("orderInfo",orderInfo.toString())
                     startActivity(nextIntent)
                 }
             }
@@ -120,8 +138,8 @@ class MenuListActivity : AppCompatActivity() {
 
         payConfirmButton.setOnClickListener {
             menuCountSize = viewModel.getCountInfo()
-            when {
-                menuCountSize == 0 -> {
+            when (menuCountSize) {
+                0 -> {
                     Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
                 }
                 else -> {
@@ -197,10 +215,17 @@ class MenuListActivity : AppCompatActivity() {
                         ((dialog.menuCountTextView.text as String).toInt()
                                 * menuList.menuPrice.toInt())))
                     val menuArray = JSONObject()
+                    val menuNameArray = JSONObject()
 
                     menuArray.put("count" , (dialog.menuCountTextView.text as String).toInt())
                     menuArray.put("menuId",menuList.menuId)
+
+                    menuNameArray.put("count",(dialog.menuCountTextView.text as String).toInt())
+                    menuNameArray.put("name",dialog.menuNameConfirm.text as String)
+
                     viewModel.setMenuArray(menuArray)
+                    viewModel.setMenuNameArray(menuNameArray)
+
                     viewModel.setCountInfo(menuList.menuId,(dialog.menuCountTextView.text as String).toInt())
                     viewModel.setLastPayPrice((dialog.menuCountTextView.text as String).toInt()
                             * menuList.menuPrice.toInt())

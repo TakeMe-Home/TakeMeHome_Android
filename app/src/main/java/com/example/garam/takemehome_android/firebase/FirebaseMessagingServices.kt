@@ -12,5 +12,7 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
 
     override fun onMessageReceived(p0: RemoteMessage) {
         Log.e("FCM" , p0.data.toString())
+        Log.e("message",p0.notification?.body.toString())
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.garam.takemehome_android.restaurant
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class RestaurantUpdateFragment : Fragment() {
 
             menu.put("name",name.toString())
             menu.put("price",price.toString().toInt())
+            Log.e("레스토랑 아이디",restaurantId.toString())
             menu.put("restaurantId",restaurantId)
 
             val json = JsonParser().parse(menu.toString()).asJsonObject

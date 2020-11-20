@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,17 +22,21 @@ class ForRestaurantActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_for_restaurant)
         val sharedViewModel = ViewModelProvider(this).get(RestaurantSharedViewModel::class.java)
-        val navView :BottomNavigationView = findViewById(R.id.nav_view_restaurant)
-        val navController = findNavController(R.id.nav_host_fragment_restaurant)
+        val navView : BottomNavigationView = findViewById(R.id.nav_view_restaurant)
         val intent = intent
         val restaurantId = intent.getIntExtra("restaurantId",0)
         sharedViewModel.setId(restaurantId)
+
+        val navController = findNavController(R.id.nav_host_fragment_restaurant)
+
+        Log.e("레스토랑" , restaurantId.toString())
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_restaurant_home,R.id.navigation_restaurant_dashboard,
                 R.id.navigation_restaurant_notifications,R.id.navigation_restaurant_update
             )
         )
+
         setupActionBarWithNavController(navController,appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.setOnNavigationItemReselectedListener(ItemSelectedListener())

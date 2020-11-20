@@ -3,6 +3,7 @@ package com.example.garam.takemehome_android.signUp
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.garam.takemehome_android.R
@@ -85,14 +86,14 @@ class RestaurantSignUpActivity : AppCompatActivity() {
 
                 restaurantSaveRequest.put("address",testAddress)
                 restaurantSaveRequest.put("location",location)
+                restaurantSaveRequest.put("name",name)
+                restaurantSaveRequest.put("number",phone)
 
-                signInfo.put("name",name)
-                signInfo.put("number",phone)
                 signInfo.put("ownerSignUpRequest",ownerSignUpRequest)
-                signInfo.put("restaurantSaveRequest",restaurantSaveRequest)
+                signInfo.put("restaurantSaveWithoutIdRequest",restaurantSaveRequest)
 
                 val restaurantObject = JsonParser().parse(signInfo.toString()) as JsonObject
-
+                Log.e("회원가입 정보",restaurantObject.toString())
                 sign(restaurantObject)
             }
         }
