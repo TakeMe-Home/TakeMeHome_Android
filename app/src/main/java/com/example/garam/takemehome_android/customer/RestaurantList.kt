@@ -1,6 +1,6 @@
 package com.example.garam.takemehome_android.customer
 
-class RestaurantList(
+data class RestaurantList(
     val restaurantName: String,
     val restaurantId : Int
 )

@@ -1,37 +1,65 @@
 package com.example.garam.takemehome_android.customer
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.garam.takemehome_android.R
-import com.example.garam.takemehome_android.firebase.FirebaseMessagingServices
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.activity_stand_by.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class StandByActivity : AppCompatActivity() {
 
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
+    private var orderState = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stand_by)
 
         val intent = intent
-        val orderInfoJson = JSONObject(intent.getStringExtra("orderInfo"))
-        val orderInfo = JsonParser().parse(orderInfoJson.toString()).asJsonObject
+        val receptionInfo = JSONObject(intent.getStringExtra("receptionInfo"))
+        val receptionInfoJson = JsonParser().parse(receptionInfo.toString()).asJsonObject
 
-        order(orderInfo)
+
+        customerHomeButton.setOnClickListener {
+            when(orderState){
+                "" -> {
+
+                }
+                "주문이 취소 됐어요." -> {
+                    orderResultTextView.text = "결과: $orderState"
+                    orderResultReason.text = "이유: "
+
+                    finish()
+                }
+                "주문이 수락 됐어요." -> {
+                    Toast.makeText(this,"주문이 수락 됐습니다.",Toast.LENGTH_LONG).show()
+                    receptionRequest(receptionInfoJson)
+
+                    finish()
+                }
+            }
+        }
     }
 
-    private fun order(orderInfo: JsonObject){
-        networkService.orderRequest(orderInfo).enqueue(object : Callback<JsonObject>{
+    private fun receptionRequest(receptionInfo: JsonObject){
+        networkService.reception(receptionInfo).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -41,5 +69,25 @@ class StandByActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            mMessageReceiver,
+            IntentFilter("MyData")
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver)
+    }
+
+    private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            orderState = intent.getStringExtra("test")
+            Log.e("???",intent.getStringExtra("test"))
+        }
     }
 }

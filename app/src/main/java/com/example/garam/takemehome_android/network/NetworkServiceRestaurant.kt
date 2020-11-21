@@ -36,4 +36,9 @@ interface NetworkServiceRestaurant {
         @Path ("ownerId") ownerId : Int
     ): Call<JsonObject>
 
+    @POST("/api/v1/orders/refuse")
+    fun refuseOrder(
+        @Body refuseRequest : JsonObject
+    ): Call<JsonObject>
+
 }

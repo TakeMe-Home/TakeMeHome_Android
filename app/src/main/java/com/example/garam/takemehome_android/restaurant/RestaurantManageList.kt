@@ -1,6 +1,6 @@
 package com.example.garam.takemehome_android.restaurant
 
-class RestaurantManageList(
+data class RestaurantManageList(
     val address : String,
     val restaurantName : String,
     val restaurantId : Int,

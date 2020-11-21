@@ -1,6 +1,6 @@
 package com.example.garam.takemehome_android.ui.call
 
-class CallList (
+data class CallList (
     val storeName: String,
     val storeAddress: String,
     val deliveryAddress: String,

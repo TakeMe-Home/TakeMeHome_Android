@@ -58,8 +58,17 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="결과"
+            android:text=""
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/orderResultReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text=""
+            android:textSize="24sp"/>
 
         <Button
             android:id="@+id/customerHomeButton"

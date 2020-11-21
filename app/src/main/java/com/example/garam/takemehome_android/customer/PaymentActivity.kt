@@ -68,27 +68,19 @@ class PaymentActivity : AppCompatActivity() {
         lastPaymentButton.setOnClickListener {
 
             val nextIntent = Intent(this,StandByActivity::class.java)
-            nextIntent.putExtra("orderInfo",orderInfo.toString())
-            startActivityForResult(nextIntent,100)
+            nextIntent.putExtra("receptionInfo",receptionInfo.toString())
 
-            val lastReceptionInfo = JsonParser().parse(receptionInfo.toString()).asJsonObject
-            Log.e("최종 결제 정보",lastReceptionInfo.toString())
-        //    orderReception(lastReceptionInfo)
+            val orderInfo = JsonParser().parse(orderInfo.toString()).asJsonObject
+            order(orderInfo)
+            Log.e("주문 요청 정보",orderInfo.toString())
+
+            startActivity(nextIntent)
+
         }
 
         paymentCancelButton.setOnClickListener {
             finish()
             Toast.makeText(this,"결제를 취소했습니다.",Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when {
-            requestCode == 100 -> {
-
-            }
         }
     }
 
@@ -122,22 +114,14 @@ class PaymentActivity : AppCompatActivity() {
         })
     }
 
-
-
-    private fun orderReception(receptionInfo: JsonObject){
-        networkService.reception(receptionInfo).enqueue(object : Callback<JsonObject> {
+    private fun order(orderInfo: JsonObject){
+        networkService.orderRequest(orderInfo).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                when{
-                    response.isSuccessful -> {
-                        Toast.makeText(this@PaymentActivity, "주문에 성공하였습니다",
-                            Toast.LENGTH_LONG).show()
-                        finish()
-                    }
-                }
+
             }
         })
     }
