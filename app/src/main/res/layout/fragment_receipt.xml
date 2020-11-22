@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="주문 대기 목록"
-        android:textSize="36sp"
+        android:textSize="32sp"
         android:textStyle="bold" />
 
     <ScrollView

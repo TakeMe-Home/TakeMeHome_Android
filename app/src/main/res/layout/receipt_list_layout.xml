@@ -23,4 +23,5 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="24sp" />
+
 </LinearLayout>
