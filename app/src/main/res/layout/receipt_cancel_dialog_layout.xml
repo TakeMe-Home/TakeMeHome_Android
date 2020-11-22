@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
             android:text="취소 사유를 선택해 주세요"
             android:textSize="24sp" />
         
@@ -24,32 +28,41 @@
                 android:id="@+id/cancelReason1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="재료 부족"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/cancelReason2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="마감"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/cancelReason3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="거리가 멀음"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </RadioGroup>
         
         
     </LinearLayout>
-    
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
         <Button
             android:id="@+id/receiptAcceptButton"

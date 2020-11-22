@@ -12,7 +12,7 @@ import com.example.garam.takemehome_android.R
 class ReceiptViewAdapter(
     private val items: ArrayList<ReceiptList>,
     val context: Context,
-    private val itemClick:(ReceiptList)-> Unit) : RecyclerView.Adapter<ReceiptViewAdapter.ViewHolder>() {
+    private val itemClick:(ReceiptList,ReceiptMenuList)-> Unit) : RecyclerView.Adapter<ReceiptViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,7 +29,7 @@ class ReceiptViewAdapter(
         holder.bind(items[position])
     }
 
-    inner class ViewHolder(itemView: View, itemClick: (ReceiptList) -> Unit) :
+    inner class ViewHolder(itemView: View, itemClick: (ReceiptList,ReceiptMenuList) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
         private val innerRecycler = itemView.findViewById<RecyclerView>(R.id.menuNameRecycler)
@@ -50,7 +50,7 @@ class ReceiptViewAdapter(
             innerRecycler.setHasFixedSize(true)
 
             itemView.setOnClickListener {
-                itemClick(list)
+                itemClick(list,list.menuNameCount)
             }
         }
     }

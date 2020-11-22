@@ -30,6 +30,7 @@ class ReceiptFragment : Fragment() {
     private lateinit var dialog : Dialog
     private lateinit var receiptRecycler : ReceiptViewAdapter
     private val lists = arrayListOf<ReceiptList>()
+    private lateinit var menuList : ReceiptMenuList
     private var refuseJson = JSONObject()
     private lateinit var root : View
     override fun onCreateView(
@@ -39,16 +40,16 @@ class ReceiptFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_receipt, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.receiptRecycler)
         dialog = Dialog(root.context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.receipt_cancel_dialog_layout)
-
-        lists.add(ReceiptList("굴포로81",15000,(ReceiptMenuList("케이크",1))))
-        lists.add(ReceiptList("평천로286",20000,(ReceiptMenuList("아메리카노",3))))
+        menuList = ReceiptMenuList("케이크",1)
+        lists.add(ReceiptList("굴포로81",15000,menuList))
+      //  lists.add(ReceiptList("평천로286",20000,(ReceiptMenuList("아메리카노",3))))
 
         receiptRecycler = ReceiptViewAdapter(lists,root.context){
-            ReceiptList ->{
+            ReceiptList, ReceiptMenuList ->{
         }
-            refuseDialog(1,ReceiptList)
+            refuseDialog(1,ReceiptList,ReceiptMenuList)
         }
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
@@ -59,12 +60,15 @@ class ReceiptFragment : Fragment() {
         return root
     }
 
-    private fun refuseDialog(customerId: Int,receiptList: ReceiptList){
+    private fun refuseDialog(customerId: Int,receiptList: ReceiptList,receiptMenu: ReceiptMenuList){
+
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
         var refuseReason = ""
         refuseJson.put("customerId",customerId)
+
         dialog.receiptRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
+
             when(i){
                 R.id.cancelReason1 -> {
                     refuseReason = "재료부족"
@@ -80,8 +84,8 @@ class ReceiptFragment : Fragment() {
                 }
             }
         }
-
         dialog.receiptRefuseButton.setOnClickListener {
+
             when(refuseReason){
                 "" -> {
                     Toast.makeText(root.context,"취소 사유를 선택해주세요",Toast.LENGTH_LONG).show()

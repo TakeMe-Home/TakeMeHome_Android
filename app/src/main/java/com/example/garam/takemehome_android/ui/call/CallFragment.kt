@@ -121,17 +121,16 @@ class CallFragment : Fragment() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
-                val message = res?.get("message")?.asString
 
-                when{
-                    message == "주문 조회 성공" -> {
+                when (res?.get("message")?.asString) {
+                    "주문 조회 성공" -> {
                         val data = res.get("data")?.asJsonObject
                         Log.e("데이터", "$data")
                         val orderArray = data?.get("orderFindRequestStatusResponses")?.asJsonArray
                         for (i in 0 ..orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
-                               Log.e("고객 이름", customerName)
+                            Log.e("고객 이름", customerName)
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("phoneNumber")?.toString()
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
@@ -146,12 +145,12 @@ class CallFragment : Fragment() {
                                 ?.asJsonObject?.get("price")?.asInt
 
                             lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
-                            deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
+                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
                         }
-                   }
-                    message == "주문 조회 실패" -> {
+                    }
+                    "주문 조회 실패" -> {
                         Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
-                        Toast.LENGTH_LONG).show()
+                            Toast.LENGTH_LONG).show()
                     }
                 }
             }
