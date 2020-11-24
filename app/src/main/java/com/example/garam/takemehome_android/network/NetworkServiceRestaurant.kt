@@ -41,4 +41,9 @@ interface NetworkServiceRestaurant {
         @Body refuseRequest : JsonObject
     ): Call<JsonObject>
 
+    @GET("/api/v1/menus/{restaurantId}")
+    fun menuLookUp(
+        @Path("restaurantId") id : Int
+    ): Call<JsonObject>
+
 }

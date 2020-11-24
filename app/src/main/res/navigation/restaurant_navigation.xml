@@ -9,7 +9,13 @@
         android:id="@+id/navigation_restaurant_home"
         android:name="com.example.garam.takemehome_android.restaurant.ReceiptFragment"
         tools:layout="@layout/fragment_receipt"
-        android:label="restaurantHome" />
+        android:label="restaurantHome">
+
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_restaurant_dashboard"

@@ -30,4 +30,10 @@
             android:layout_height="wrap_content"/>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/restaurantAddButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="가게 추가 등록" />
 </LinearLayout>

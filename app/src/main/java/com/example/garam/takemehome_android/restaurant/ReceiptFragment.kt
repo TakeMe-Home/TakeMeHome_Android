@@ -2,12 +2,14 @@ package com.example.garam.takemehome_android.restaurant
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
@@ -33,15 +35,26 @@ class ReceiptFragment : Fragment() {
     private lateinit var menuList : ReceiptMenuList
     private var refuseJson = JSONObject()
     private lateinit var root : View
+    private lateinit var sharedViewModel : RestaurantSharedViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_receipt, container, false)
+
         val recycler = root.findViewById<RecyclerView>(R.id.receiptRecycler)
+
         dialog = Dialog(root.context)
-        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.receipt_cancel_dialog_layout)
+
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
+        Log.e("될까",sharedViewModel.getId().toString())
+      //  val restaurantId = arguments?.getInt("id")
+        //Log.e("아이디",restaurantId.toString())
+       // sharedViewModel.setId(restaurantId!!)
         menuList = ReceiptMenuList("케이크",1)
         lists.add(ReceiptList("굴포로81",15000,menuList))
       //  lists.add(ReceiptList("평천로286",20000,(ReceiptMenuList("아메리카노",3))))
