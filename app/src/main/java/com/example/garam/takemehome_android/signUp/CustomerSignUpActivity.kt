@@ -80,7 +80,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
     private fun customerAddress(keyword: String) {
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL).addConverterFactory(
             GsonConverterFactory.create()).build()
-
+        val failMessage = Toast.makeText(this@CustomerSignUpActivity,"주소 검색에 실패하였습니다",Toast.LENGTH_LONG)
         val networkService = retrofit.create(NetworkService::class.java)
         val addressSearch : Call<JsonObject> = networkService.address(
             KakaoApi.instance.kakaoKey,
@@ -88,7 +88,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
         )
         addressSearch.enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(this@CustomerSignUpActivity,"주소 검색에 실패하였습니다",Toast.LENGTH_LONG).show()
+                failMessage.show()
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
@@ -118,15 +118,11 @@ class CustomerSignUpActivity : AppCompatActivity() {
                             ).show()
                         }
                         else -> {
-                            Toast.makeText(
-                                this@CustomerSignUpActivity, "주소 검색에 실패하였습니다"
-                                , Toast.LENGTH_LONG
-                            ).show()
+                            failMessage.show()
                         }
                     }
                 } else {
-                    Toast.makeText(this@CustomerSignUpActivity,"주소 검색에 실패하였습니다"
-                        ,Toast.LENGTH_LONG).show()
+                    failMessage.show()
                 }
             }
         })
@@ -134,11 +130,11 @@ class CustomerSignUpActivity : AppCompatActivity() {
 
     private fun sign(customerInfo : JsonObject){
         val signUp = networkService.signUpCustomer(customerInfo)
-
+        val failMessage = Toast.makeText(this@CustomerSignUpActivity,"회원가입에 실패하였습니다"
+            ,Toast.LENGTH_LONG)
         signUp.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(this@CustomerSignUpActivity,"회원가입에 실패하였습니다"
-                    ,Toast.LENGTH_LONG).show()
+                failMessage.show()
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
@@ -150,8 +146,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
                             finish ()
                     }
                     message.equals("고객 회원 가입 실패") || response.body().toString().equals("null")-> {
-                        Toast.makeText(this@CustomerSignUpActivity,
-                            "회원가입에 실패하였습니다", Toast.LENGTH_LONG).show()
+                        failMessage.show()
                     }
                 }
             }

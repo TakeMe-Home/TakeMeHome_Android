@@ -53,10 +53,11 @@ class ForCustomerActivity : AppCompatActivity() {
     }
 
     private fun lookUp(){
+        val failMessage = Toast.makeText(this@ForCustomerActivity,"가게 조회에 실패하였습니다."
+            ,Toast.LENGTH_LONG)
         networkService.restaurantLookUp().enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(this@ForCustomerActivity,"가게 조회에 실패하였습니다."
-                    ,Toast.LENGTH_LONG).show()
+                failMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -75,6 +76,9 @@ class ForCustomerActivity : AppCompatActivity() {
                             viewModel.setRestaurantId(restaurantResponse.getJSONObject(i).getInt("id"))
                         }
                         restaurantRecycler.notifyDataSetChanged()
+                    }
+                    message == "가게 정보 조회 실패" -> {
+                        failMessage.show()
                     }
                 }
             }

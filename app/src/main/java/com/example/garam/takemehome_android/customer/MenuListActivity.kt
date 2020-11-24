@@ -151,10 +151,11 @@ class MenuListActivity : AppCompatActivity() {
     }
 
     private fun menuLookUp(id :Int){
+        val failMessage = Toast.makeText(this@MenuListActivity,"메뉴 조회에 실패하였습니다"
+            ,Toast.LENGTH_LONG)
         networkService.menuLookUp(id).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(this@MenuListActivity,"메뉴 조회에 실패하였습니다"
-                    ,Toast.LENGTH_LONG).show()
+                failMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -174,8 +175,8 @@ class MenuListActivity : AppCompatActivity() {
                         menuRecycler.notifyDataSetChanged()
 
                     }
-                    else -> {
-
+                    message == "메뉴 조회 실패" -> {
+                        failMessage.show()
                     }
                 }
             }

@@ -49,9 +49,12 @@ class RestaurantManageActivity : AppCompatActivity() {
     }
 
     private fun restaurantLookUp(ownerId : Int){
+        val failMessage = Toast.makeText(this@RestaurantManageActivity,"가게 조회에 실패했습니다"
+            ,Toast.LENGTH_LONG)
+
         networkService.restaurantManage(ownerId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                failMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -79,8 +82,7 @@ class RestaurantManageActivity : AppCompatActivity() {
                     }
 
                     message.toString() == "가게 정보 조회 실패" -> {
-                        Toast.makeText(this@RestaurantManageActivity,"가게 조회에 실패했습니다"
-                            ,Toast.LENGTH_LONG).show()
+                        failMessage.show()
                     }
                 }
             }

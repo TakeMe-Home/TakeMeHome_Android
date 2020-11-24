@@ -103,6 +103,8 @@ class RestaurantSignUpActivity : AppCompatActivity() {
     }
 
     private fun restaurantAddress(keyword: String) {
+        val failMessage = Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다"
+            ,Toast.LENGTH_LONG)
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
@@ -113,8 +115,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
         )
         addressSearch.enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-               Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다"
-                   ,Toast.LENGTH_LONG).show()
+               failMessage.show()
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
@@ -140,13 +141,11 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                             ).show()
                         }
                         else -> {
-                            Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다"
-                            ,Toast.LENGTH_LONG).show()
+                            failMessage.show()
                     }
                     }
                 } else {
-                    Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다"
-                        ,Toast.LENGTH_LONG).show()
+                    failMessage.show()
                 }
             }
         })
@@ -154,11 +153,12 @@ class RestaurantSignUpActivity : AppCompatActivity() {
 
     private fun sign(restaurantInfo : JsonObject){
         val signUp = networkService.signUpRestaurant(restaurantInfo)
+        val failMessage = Toast.makeText(this@RestaurantSignUpActivity,"회원가입에 실패하였습니다"
+            , Toast.LENGTH_LONG)
 
         signUp.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Toast.makeText(this@RestaurantSignUpActivity,"회원가입에 실패하였습니다"
-                    , Toast.LENGTH_LONG).show()
+                failMessage.show()
             }
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
@@ -170,8 +170,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                         finish()
                     }
                     message.equals("가게 주인 등록 실패") || response.body().toString() == "null" -> {
-                        Toast.makeText(this@RestaurantSignUpActivity,"회원가입에 실패하였습니다"
-                            , Toast.LENGTH_LONG).show()
+                        failMessage.show()
                     }
                 }
             }

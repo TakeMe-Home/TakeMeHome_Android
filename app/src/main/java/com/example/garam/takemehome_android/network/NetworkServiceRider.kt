@@ -21,8 +21,8 @@ interface NetworkServiceRider {
 
     @GET("/api/v1/orders/nearby")
     fun nearBy(
-        @Query("") x : Double,
-        @Query("") y : Double
+        @Query("x") x : Double,
+        @Query("y") y : Double
     ): Call<JsonObject>
 
     @GET("/api/v1/orders/riders/{riderId}")

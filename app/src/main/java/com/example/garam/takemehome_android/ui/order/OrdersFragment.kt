@@ -76,12 +76,9 @@ class OrdersFragment : Fragment() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()?.asJsonObject
                 val message = res?.get("message")?.asString
-
+                val orderArray = res?.get("data")?.asJsonArray
                 when{
-                    message == "주문 조회 성공" -> {
-                        val data = res.get("data")?.asJsonObject
-                        Log.e("데이터", "$data")
-                        val orderArray = data?.get("orderFindRequestStatusResponses")?.asJsonArray
+                    message == "주문 조회 성공" && orderArray?.size() != 0 -> {
                         for (i in 0 ..orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
@@ -105,7 +102,7 @@ class OrdersFragment : Fragment() {
                             )
                         }
                     }
-                    message == "주문 조회 실패" -> {
+                    message == "주문 조회 실패" || orderArray?.size() == 0-> {
                         Toast.makeText(this@OrdersFragment.requireContext(),"조회에 실패했습니다",
                             Toast.LENGTH_LONG).show()
                     }

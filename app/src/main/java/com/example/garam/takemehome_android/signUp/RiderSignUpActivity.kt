@@ -79,11 +79,11 @@ class RiderSignUpActivity : AppCompatActivity() {
     }
     private fun sign(riderInfo : JsonObject){
             val signUp = networkService.signUpRider(riderInfo)
-
+            val failMessage = Toast.makeText(this@RiderSignUpActivity, "회원가입에 실패하였습니다"
+                , Toast.LENGTH_LONG)
            signUp.enqueue(object : Callback<JsonObject>{
                 override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                   Toast.makeText(this@RiderSignUpActivity,"회원가입에 실패하였습니다"
-                       ,Toast.LENGTH_LONG).show()
+                   failMessage.show()
                 }
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     val res = response.body()?.asJsonObject
@@ -96,8 +96,7 @@ class RiderSignUpActivity : AppCompatActivity() {
                          finish()
                      }
                      message.equals("라이더 회원 가입 실패") || response.body().toString().equals("null") -> {
-                         Toast.makeText(this@RiderSignUpActivity, "회원가입에 실패하였습니다"
-                             , Toast.LENGTH_LONG).show()
+                         failMessage.show()
                      }
                     }
                 }

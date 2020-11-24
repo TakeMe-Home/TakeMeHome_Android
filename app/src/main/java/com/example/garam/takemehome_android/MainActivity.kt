@@ -119,14 +119,17 @@ class MainActivity : AppCompatActivity() {
                         val res = response.body()
                         val message = res?.get("message")?.asString
                         Log.e("로그인 정보",res.toString())
-                        when{
-                            message == "로그인 성공" ->{
+                        when (message) {
+                            "로그인 성공" -> {
                                 val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
                                 nextIntent.putExtra("riderId",data.getInt("data"))
                                 startActivity(nextIntent)
-                                IdText.setText("")
                                 passwordText.setText("")
+                                IdText.setText("")
+                            }
+                            "로그인 실패" -> {
+                                failMessage.show()
                             }
                         }
                     }
@@ -146,16 +149,18 @@ class MainActivity : AppCompatActivity() {
                         val res = response.body()
                         val message = res?.get("message")?.asString
                         Log.e("로그인 정보",res.toString())
-                        when{
-                            message == "로그인 성공" ->{
+                        when (message) {
+                            "로그인 성공" -> {
                                 val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
                                 nextIntent.putExtra("customerId",data.getInt("data"))
                                 startActivity(nextIntent)
-                                IdText.setText("")
                                 passwordText.setText("")
+                                IdText.setText("")
                             }
-
+                            "로그인 실패" -> {
+                                failMessage.show()
+                            }
                         }
                     }
                 })
@@ -173,14 +178,17 @@ class MainActivity : AppCompatActivity() {
                         val res = response.body()
                         val message = res?.get("message")?.asString
                         Log.e("로그인 정보",res.toString())
-                        when{
-                            message == "로그인 성공" ->{
+                        when (message) {
+                            "로그인 성공" -> {
                                 val data = res.get("data").asInt
                                 nextIntent = Intent(this@MainActivity, RestaurantManageActivity::class.java)
                                 nextIntent.putExtra("ownerId",data)
                                 startActivity(nextIntent)
-                                IdText.setText("")
                                 passwordText.setText("")
+                                IdText.setText("")
+                            }
+                            "로그인 실패" -> {
+                                failMessage.show()
                             }
                         }
                     }

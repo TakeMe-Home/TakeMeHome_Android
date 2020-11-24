@@ -85,9 +85,11 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun deliveryPriceInquiry(restaurantId: Int,customerId: Int){
+        val failMessage = Toast.makeText(this@PaymentActivity,"배달 가격 조회에 실패하였습니다",
+            Toast.LENGTH_LONG)
         networkService.deliveryPrice(restaurantId, customerId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                failMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -106,8 +108,7 @@ class PaymentActivity : AppCompatActivity() {
 
                     }
                     message.toString() == "배달 가격 조회 실패" -> {
-                        Toast.makeText(this@PaymentActivity,"배달 가격 조회에 실패하였습니다",
-                        Toast.LENGTH_LONG).show()
+                        failMessage.show()
                     }
                 }
             }
