@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
+import androidx.core.graphics.rotationMatrix
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.fragment_restaurant_update.view.*
 import kotlinx.android.synthetic.main.menu_register_dialog_layout.*
 import org.json.JSONObject
 import retrofit2.Call
@@ -47,12 +49,15 @@ class RestaurantUpdateFragment : Fragment() {
         Log.e("레스토랑 아이디",restaurantId.toString())
         menuLookUp(restaurantId?.toInt()!!)
         dialog = Dialog(root.context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.confirm_dialog)
+        dialog.setContentView(R.layout.menu_register_dialog_layout)
 
         menuStatusRecycler = MenuStatusViewAdapter(menuStatusList,root.context){
             menuStatusList ->
 
+        }
+
+        root.menuAddButton.setOnClickListener {
+            menuAddDialog()
         }
 
         recycler.adapter = menuStatusRecycler
@@ -100,13 +105,25 @@ class RestaurantUpdateFragment : Fragment() {
 
 
     private fun menuRegister(menuInfo : JsonObject){
+        val failMessage = Toast.makeText(root.context,"메뉴 등록에 실패하였습니다", Toast.LENGTH_LONG)
         networkService.menuRequest(menuInfo).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                failMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+                val message = res?.get("message")?.asString
+                when(message) {
+                    "메뉴 등록 성공" -> {
+                        dialog.dismiss()
+                        Toast.makeText(root.context,"메뉴를 성공적으로 등록했습니다",Toast.LENGTH_LONG).show()
+                    }
+                    "메뉴 등록 실패" -> {
+                        failMessage.show()
+                    }
 
+                }
             }
         })
     }
@@ -114,6 +131,8 @@ class RestaurantUpdateFragment : Fragment() {
     private fun menuAddDialog(){
         val menu = JSONObject()
         dialog.show()
+        dialog.setCanceledOnTouchOutside(false)
+
         dialog.menuRegisterConfirmButton.setOnClickListener {
             val name = dialog.menuRegisterName.text
             val price = dialog.menuRegisterPrice.text
