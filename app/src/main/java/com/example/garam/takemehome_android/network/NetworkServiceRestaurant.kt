@@ -46,4 +46,9 @@ interface NetworkServiceRestaurant {
         @Path("restaurantId") id : Int
     ): Call<JsonObject>
 
+    @POST("/api/v1/restaurants")
+    fun restaurantAdd(
+        @Body saveRequest : JsonObject
+    ): Call<JsonObject>
+
 }
