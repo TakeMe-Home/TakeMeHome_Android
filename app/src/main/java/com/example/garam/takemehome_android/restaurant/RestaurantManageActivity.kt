@@ -2,12 +2,12 @@ package com.example.garam.takemehome_android.restaurant
 
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
@@ -38,14 +38,13 @@ class RestaurantManageActivity : AppCompatActivity() {
     private var locationJson = JSONObject()
     private var latitude : Double = 0.0
     private var longitude : Double= 0.0
-    private var ownerId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_manage)
         val intent = intent
         val recycler = findViewById<RecyclerView>(R.id.restaurantManageRecycler)
-        ownerId = intent.getIntExtra("ownerId",0)
+        val ownerId = intent.getIntExtra("ownerId",0)
         Log.e("주인 id",ownerId.toString())
         restaurantLookUp(ownerId)
 
@@ -53,7 +52,7 @@ class RestaurantManageActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.restaurant_add_dialog_layout)
 
         restaurantAddButton.setOnClickListener {
-
+            showAddDialog(ownerId)
         }
 
         restaurantManageRecycler = RestaurantManageListViewAdapter(lists,this){
@@ -70,11 +69,9 @@ class RestaurantManageActivity : AppCompatActivity() {
 
     }
 
-    private fun showDialog(){
+    private fun showAddDialog(ownerId: Int){
 
         var textAddress = ""
-
-        val restaurantInfo = JsonParser().parse(restaurantJson.toString()).asJsonObject
 
         dialog.show()
 
@@ -98,12 +95,30 @@ class RestaurantManageActivity : AppCompatActivity() {
         }
 
         dialog.restaurantAddConfirm.setOnClickListener {
-            restaurantJson.put("address",textAddress)
-            restaurantJson.put("location",locationJson)
-            restaurantJson.put("name",dialog.additionalRestaurantName.text.toString())
-            restaurantJson.put("number",dialog.additionalRestaurantNumber.text.toString())
-            restaurantJson.put("ownerId",ownerId)
-            restaurantAdd(restaurantInfo)
+
+            when{
+                textAddress == "" ->{
+                    Toast.makeText(this,"상세 주소를 입력하세요",Toast.LENGTH_LONG).show()
+                }
+                dialog.additionalRestaurantName.text.toString() == "" -> {
+                    Toast.makeText(this,"이름을 입력하세요",Toast.LENGTH_LONG).show()
+                }
+                dialog.additionalRestaurantNumber.text.toString() == "" -> {
+                    Toast.makeText(this,"전화번호를 입력하세요",Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    restaurantJson.put("address",textAddress)
+                    restaurantJson.put("location",locationJson)
+                    restaurantJson.put("name",dialog.additionalRestaurantName.text.toString())
+                    restaurantJson.put("number",dialog.additionalRestaurantNumber.text.toString())
+                    restaurantJson.put("ownerId",ownerId)
+
+                    val restaurantInfo = JsonParser().parse(restaurantJson.toString()).asJsonObject
+
+                    restaurantAdd(restaurantInfo)
+                }
+            }
+
         }
 
         dialog.restaurantAddCancel.setOnClickListener {
@@ -123,10 +138,15 @@ class RestaurantManageActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
-
                 when(res?.get("message")?.asString){
                     "가게 등록 성공" -> {
+                        val resId = res.get("data")?.asInt
+                        lists.add(RestaurantManageList(dialog.additionalDetailAddress.text.toString(),
+                        dialog.additionalRestaurantName.text.toString(), resId!!,latitude,longitude,
+                        dialog.additionalRestaurantNumber.text.toString()))
                         dialog.dismiss()
+
+                        restaurantManageRecycler.notifyDataSetChanged()
                         Toast.makeText(this@RestaurantManageActivity,"가게 등록에 성공했습니다",Toast.LENGTH_LONG
                         ).show()
                     }
@@ -185,7 +205,6 @@ class RestaurantManageActivity : AppCompatActivity() {
             }
         })
     }
-
 
     private fun restaurantLookUp(ownerId : Int){
         val failMessage = Toast.makeText(this@RestaurantManageActivity,"가게 조회에 실패했습니다"
