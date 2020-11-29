@@ -66,7 +66,6 @@ class ForCustomerActivity : AppCompatActivity() {
                 val data = res?.get("data")?.asJsonObject
                 val dataObject = JSONObject(data.toString())
                 val restaurantResponse = dataObject.getJSONArray("restaurantFindAllResponse")
-                Log.e("가게 목록",dataObject.toString() + restaurantResponse.length())
                 when {
                     message == "가게 정보 조회 성공" ->{
                         for (i in 0 until restaurantResponse.length()){

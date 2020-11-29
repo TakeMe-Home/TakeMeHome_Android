@@ -32,7 +32,6 @@ class ForRestaurantActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_restaurant)
         navController.navigate(R.id.navigation_restaurant_home,bundle)
 
-        Log.e("레스토랑" , restaurantId.toString())
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_restaurant_home,R.id.navigation_restaurant_dashboard,
@@ -48,7 +47,6 @@ class ForRestaurantActivity : AppCompatActivity() {
 
     class ItemSelectedListener : BottomNavigationView.OnNavigationItemReselectedListener{
         override fun onNavigationItemReselected(item: MenuItem) {
-            Log.e("메시지","다시 선택")
         }
     }
 

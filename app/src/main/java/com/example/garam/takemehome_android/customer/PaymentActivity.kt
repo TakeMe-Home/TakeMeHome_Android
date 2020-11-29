@@ -41,7 +41,6 @@ class PaymentActivity : AppCompatActivity() {
         receptionInfo = JSONObject(intent.getStringExtra("json"))
 
         orderInfo = JSONObject(intent.getStringExtra("orderInfo"))
-        Log.e("받을때 Json",receptionInfo.toString())
 
         deliveryPriceInquiry(restaurantId,customerId)
 
@@ -72,7 +71,6 @@ class PaymentActivity : AppCompatActivity() {
 
             val orderInfo = JsonParser().parse(orderInfo.toString()).asJsonObject
             order(orderInfo)
-            Log.e("주문 요청 정보",orderInfo.toString())
 
             startActivity(nextIntent)
 

@@ -44,7 +44,6 @@ class CallFragment : Fragment() {
     private var lists = arrayListOf<CallList>()
     private lateinit var dialog : Dialog
     private lateinit var callRecycler : CallViewAdapter
-    private lateinit var callViewModel: CallViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private var locationLists = arrayListOf<LocationList>()
 
@@ -53,8 +52,6 @@ class CallFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        callViewModel =
-            ViewModelProviders.of(this).get(CallViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_call, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)

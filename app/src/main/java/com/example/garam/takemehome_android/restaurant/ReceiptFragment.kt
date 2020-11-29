@@ -53,7 +53,6 @@ class ReceiptFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
         Log.e("될까",sharedViewModel.getId().toString())
       //  val restaurantId = arguments?.getInt("id")
-        //Log.e("아이디",restaurantId.toString())
        // sharedViewModel.setId(restaurantId!!)
         menuList = ReceiptMenuList("케이크",1)
         lists.add(ReceiptList("굴포로81",15000,menuList))

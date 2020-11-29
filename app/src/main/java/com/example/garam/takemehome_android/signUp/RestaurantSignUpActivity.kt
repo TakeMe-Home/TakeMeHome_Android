@@ -93,7 +93,6 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                 signInfo.put("restaurantSaveWithoutIdRequest",restaurantSaveRequest)
 
                 val restaurantObject = JsonParser().parse(signInfo.toString()) as JsonObject
-                Log.e("회원가입 정보",restaurantObject.toString())
                 sign(restaurantObject)
             }
         }

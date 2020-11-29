@@ -9,7 +9,6 @@ class RestaurantSharedViewModel : ViewModel(){
 
     fun setId(id : Int) {
         liveRestaurantId = id
-        Log.e("라이브 레스토랑",liveRestaurantId.toString())
     }
     
     fun getId() : Int?{

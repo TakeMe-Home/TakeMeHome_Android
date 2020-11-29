@@ -89,7 +89,6 @@ class MenuListActivity : AppCompatActivity() {
             val menuNameCounts = JSONObject()
             val menuNameArray = JSONArray()
 
-            Log.e("메뉴 카운트 크기",menuCountSize.toString())
             for (i in 0 until menuCountSize) {
                 menuIdArray.put(i,viewModel.getMenuArray()[i])
                 menuNameArray.put(i,viewModel.getMenuNameArray()[i])
@@ -188,7 +187,6 @@ class MenuListActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.menuNameConfirm.text = menuList.menuName
         var menuCount = 0
-        Log.e("뭐지",menuList.menuStatus)
         dialog.menuCountTextView.text = menuCount.toString()
 
         dialog.menuMinusButton.setOnClickListener {
@@ -230,7 +228,6 @@ class MenuListActivity : AppCompatActivity() {
                     viewModel.setCountInfo(menuList.menuId,(dialog.menuCountTextView.text as String).toInt())
                     viewModel.setLastPayPrice((dialog.menuCountTextView.text as String).toInt()
                             * menuList.menuPrice.toInt())
-                    Log.e("테스트",viewModel.getCountInfo().toString())
                     choiceRecycler.notifyDataSetChanged()
                     dialog.dismiss()
                 }

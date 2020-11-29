@@ -117,9 +117,7 @@ class MainActivity : AppCompatActivity() {
                         response: Response<JsonObject>
                     ) {
                         val res = response.body()
-                        val message = res?.get("message")?.asString
-                        Log.e("로그인 정보",res.toString())
-                        when (message) {
+                        when (res?.get("message")?.asString) {
                             "로그인 성공" -> {
                                 val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForRiderActivity::class.java)
@@ -147,9 +145,7 @@ class MainActivity : AppCompatActivity() {
                         response: Response<JsonObject>
                     ) {
                         val res = response.body()
-                        val message = res?.get("message")?.asString
-                        Log.e("로그인 정보",res.toString())
-                        when (message) {
+                        when (res?.get("message")?.asString) {
                             "로그인 성공" -> {
                                 val data = JSONObject(res.asJsonObject.toString())
                                 nextIntent = Intent(this@MainActivity, ForCustomerActivity::class.java)
@@ -176,9 +172,7 @@ class MainActivity : AppCompatActivity() {
                         response: Response<JsonObject>
                     ) {
                         val res = response.body()
-                        val message = res?.get("message")?.asString
-                        Log.e("로그인 정보",res.toString())
-                        when (message) {
+                        when (res?.get("message")?.asString) {
                             "로그인 성공" -> {
                                 val data = res.get("data").asInt
                                 nextIntent = Intent(this@MainActivity, RestaurantManageActivity::class.java)

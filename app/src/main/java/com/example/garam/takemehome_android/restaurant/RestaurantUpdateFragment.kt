@@ -46,7 +46,6 @@ class RestaurantUpdateFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
         val restaurantId = sharedViewModel.getId()
 
-        Log.e("레스토랑 아이디",restaurantId.toString())
         menuLookUp(restaurantId?.toInt()!!)
         dialog = Dialog(root.context)
         dialog.setContentView(R.layout.menu_register_dialog_layout)
@@ -90,7 +89,6 @@ class RestaurantUpdateFragment : Fragment() {
                             menuStatusList.add(MenuStatusList(dataObject.getString("name"),
                                 dataObject.getInt("price"),
                                 dataObject.getString("menuStatus")))
-                            Log.e("뭐야 대체",dataObject.getString("name"))
                         }
                         menuStatusRecycler.notifyDataSetChanged()
 
@@ -113,8 +111,7 @@ class RestaurantUpdateFragment : Fragment() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
-                val message = res?.get("message")?.asString
-                when(message) {
+                when(res?.get("message")?.asString) {
                     "메뉴 등록 성공" -> {
                         dialog.dismiss()
                         Toast.makeText(root.context,"메뉴를 성공적으로 등록했습니다",Toast.LENGTH_LONG).show()
@@ -139,7 +136,6 @@ class RestaurantUpdateFragment : Fragment() {
 
             menu.put("name",name.toString())
             menu.put("price",price.toString().toInt())
-            Log.e("레스토랑 아이디",sharedViewModel.getId().toString())
             menu.put("restaurantId",sharedViewModel.getId())
 
             val json = JsonParser().parse(menu.toString()).asJsonObject

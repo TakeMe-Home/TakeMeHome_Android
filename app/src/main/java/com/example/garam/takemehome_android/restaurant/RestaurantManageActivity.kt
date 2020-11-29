@@ -31,6 +31,7 @@ class RestaurantManageActivity : AppCompatActivity() {
     private val networkService : NetworkServiceRestaurant by lazy{
         NetworkController.instance.networkServiceRestaurant
     }
+
     private lateinit var restaurantManageRecycler : RestaurantManageListViewAdapter
     private var lists = arrayListOf<RestaurantManageList>()
     private lateinit var dialog : Dialog
@@ -45,7 +46,6 @@ class RestaurantManageActivity : AppCompatActivity() {
         val intent = intent
         val recycler = findViewById<RecyclerView>(R.id.restaurantManageRecycler)
         val ownerId = intent.getIntExtra("ownerId",0)
-        Log.e("주인 id",ownerId.toString())
         restaurantLookUp(ownerId)
 
         dialog = Dialog(this)
@@ -59,7 +59,6 @@ class RestaurantManageActivity : AppCompatActivity() {
                 RestaurantManageList ->
             val nextIntent = Intent(this,ForRestaurantActivity::class.java)
             nextIntent.putExtra("restaurantId",RestaurantManageList.restaurantId)
-            Log.e("뭐지",RestaurantManageList.restaurantId.toString())
             startActivity(nextIntent)
         }
 

@@ -17,14 +17,12 @@ import kotlinx.android.synthetic.main.fragment_update.view.*
 
 class UpdateFragment : Fragment() {
 
-    private lateinit var updateViewModel: UpdateViewModel
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        updateViewModel = ViewModelProviders.of(this).get(UpdateViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_update,container,false)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 

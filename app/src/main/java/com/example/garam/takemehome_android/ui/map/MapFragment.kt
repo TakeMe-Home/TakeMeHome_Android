@@ -23,7 +23,6 @@ import net.daum.mf.map.api.MapView
 
 class MapFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEventListener {
 
-    private lateinit var mapViewModel: MapViewModel
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
@@ -31,8 +30,6 @@ class MapFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEv
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mapViewModel =
-            ViewModelProviders.of(this).get(MapViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_map, container, false)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
