@@ -51,4 +51,11 @@ interface NetworkServiceRestaurant {
         @Body saveRequest : JsonObject
     ): Call<JsonObject>
 
+    @PUT("/api/v1/menus/menu/{id}")
+    fun menuUpdate(
+        @Path("id") id : Int,
+        @Body updateRequest : JsonObject
+    ): Call<JsonObject>
+
+
 }

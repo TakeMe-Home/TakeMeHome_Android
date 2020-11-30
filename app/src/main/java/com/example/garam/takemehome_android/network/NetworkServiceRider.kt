@@ -34,4 +34,21 @@ interface NetworkServiceRider {
     fun orderForRider(
         @Path("riderId") id : Int
     ): Call<JsonObject>
+
+    @PUT("/api/v1/orders/order/{orderId}/assigned/{riderId}")
+    fun orderAssigned(
+        @Path("orderId") orderId : Int,
+        @Path("riderId") riderId: Int
+    ): Call<JsonObject>
+
+    @PUT("/api/v1/orders/order/{orderId}/complete")
+    fun orderComplete(
+        @Path ("orderId") orderId: Int
+    ): Call<JsonObject>
+
+    @PUT("/api/v1/orders/order/{orderId}/pickup")
+    fun orderPickUp(
+        @Path ("orderId") orderId: Int
+    ): Call<JsonObject>
+
 }
