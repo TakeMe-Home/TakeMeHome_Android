@@ -20,6 +20,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.fragment_restaurant_update.view.*
 import kotlinx.android.synthetic.main.menu_register_dialog_layout.*
+import kotlinx.android.synthetic.main.menu_update_dialog_layout.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +34,7 @@ class RestaurantUpdateFragment : Fragment() {
     private var menuStatusList = arrayListOf<MenuStatusList>()
     private lateinit var menuStatusRecycler : MenuStatusViewAdapter
     private lateinit var dialog : Dialog
+    private lateinit var updateDialog : Dialog
     private lateinit var sharedViewModel: RestaurantSharedViewModel
     private lateinit var root : View
 
@@ -46,12 +48,17 @@ class RestaurantUpdateFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
         val restaurantId = sharedViewModel.getId()
 
-        menuLookUp(restaurantId?.toInt()!!)
+        menuLookUp(restaurantId!!)
+
         dialog = Dialog(root.context)
         dialog.setContentView(R.layout.menu_register_dialog_layout)
 
+        updateDialog = Dialog(root.context)
+        updateDialog.setContentView(R.layout.menu_update_dialog_layout)
+
         menuStatusRecycler = MenuStatusViewAdapter(menuStatusList,root.context){
             menuStatusList ->
+            menuUpdateDialog(menuStatusList)
 
         }
 
@@ -88,7 +95,8 @@ class RestaurantUpdateFragment : Fragment() {
                             val dataObject = data.getJSONObject(i)
                             menuStatusList.add(MenuStatusList(dataObject.getString("name"),
                                 dataObject.getInt("price"),
-                                dataObject.getString("menuStatus")))
+                                dataObject.getString("menuStatus"),
+                            dataObject.getInt("id")))
                         }
                         menuStatusRecycler.notifyDataSetChanged()
 
@@ -113,7 +121,10 @@ class RestaurantUpdateFragment : Fragment() {
                 val res = response.body()
                 when(res?.get("message")?.asString) {
                     "메뉴 등록 성공" -> {
+                        //menuStatusList.add(MenuStatusList(menuInfo.get("name").asString,
+                        //menuInfo.get("price").asInt,"SALE"))
                         dialog.dismiss()
+                        //menuStatusRecycler.notifyDataSetChanged()
                         Toast.makeText(root.context,"메뉴를 성공적으로 등록했습니다",Toast.LENGTH_LONG).show()
                     }
                     "메뉴 등록 실패" -> {
@@ -123,6 +134,55 @@ class RestaurantUpdateFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun menuUpdate(id: Int, updateInfo : JsonObject){
+        networkService.menuUpdate(id,updateInfo).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                updateDialog.dismiss()
+
+            }
+        })
+    }
+
+    private fun menuUpdateDialog(menuUpdateInfo: MenuStatusList){
+        updateDialog.show()
+        updateDialog.setCanceledOnTouchOutside(false)
+        val menuUpdateJson = JSONObject()
+        updateDialog.menuUpdateName.setText(menuUpdateInfo.menuName)
+        updateDialog.menuUpdatePrice.setText(menuUpdateInfo.menuPrice.toString())
+
+        var menuStatus = ""
+
+        updateDialog.menuUpdateStatus.setOnCheckedChangeListener { radioGroup, i ->
+            when(i){
+                R.id.menuUpdateSell -> {
+                }
+                R.id.menuUpdateSoldOUt -> {
+                }
+            }
+        }
+
+        updateDialog.menuUpdateConfirmButton.setOnClickListener {
+            val name = updateDialog.menuUpdateName.text
+            val price = updateDialog.menuUpdatePrice.text
+
+            menuUpdateJson.put("name",name.toString())
+            menuUpdateJson.put("price",price.toString().toInt())
+            menuUpdateJson.put("menuStatus","SALE")
+
+            val menuUpdateRequestInfo = JsonParser().parse(menuUpdateJson.toString()).asJsonObject
+
+            menuUpdate(menuUpdateInfo.menuId,menuUpdateRequestInfo)
+        }
+
+        updateDialog.menuUpdateCancelButton.setOnClickListener {
+            updateDialog.dismiss()
+        }
     }
 
     private fun menuAddDialog(){
@@ -142,5 +202,6 @@ class RestaurantUpdateFragment : Fragment() {
             menuRegister(json)
         }
     }
+
 
 }
