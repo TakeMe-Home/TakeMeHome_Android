@@ -109,6 +109,29 @@ class RestaurantUpdateFragment : Fragment() {
         })
     }
 
+    private fun menuSoldOut(id: Int){
+        networkService.menuSoldOut(id).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+            }
+        })
+    }
+
+    private fun menuSale(id: Int){
+        networkService.menuSale(id).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+            }
+        })
+    }
 
     private fun menuRegister(menuInfo : JsonObject){
         val failMessage = Toast.makeText(root.context,"메뉴 등록에 실패하였습니다", Toast.LENGTH_LONG)
@@ -156,15 +179,14 @@ class RestaurantUpdateFragment : Fragment() {
         updateDialog.menuUpdateName.setText(menuUpdateInfo.menuName)
         updateDialog.menuUpdatePrice.setText(menuUpdateInfo.menuPrice.toString())
 
-        var menuStatus = ""
+        updateDialog.menuUpdateSoldOut.setOnClickListener {
+            menuSoldOut(menuUpdateInfo.menuId)
+            updateDialog.dismiss()
+        }
 
-        updateDialog.menuUpdateStatus.setOnCheckedChangeListener { radioGroup, i ->
-            when(i){
-                R.id.menuUpdateSell -> {
-                }
-                R.id.menuUpdateSoldOUt -> {
-                }
-            }
+        updateDialog.menuUpdateSell.setOnClickListener {
+            menuSale(menuUpdateInfo.menuId)
+            updateDialog.dismiss()
         }
 
         updateDialog.menuUpdateConfirmButton.setOnClickListener {
