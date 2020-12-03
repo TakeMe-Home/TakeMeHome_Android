@@ -32,7 +32,7 @@ class ReceiptFragment : Fragment() {
     private lateinit var dialog : Dialog
     private lateinit var receiptRecycler : ReceiptViewAdapter
     private val lists = arrayListOf<ReceiptList>()
-    private lateinit var menuList : ReceiptMenuList
+    private val menuList = arrayListOf<ReceiptMenuList>()
     private var refuseJson = JSONObject()
     private lateinit var root : View
     private lateinit var sharedViewModel : RestaurantSharedViewModel
@@ -49,20 +49,19 @@ class ReceiptFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.receipt_cancel_dialog_layout)
 
-
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
-        Log.e("될까",sharedViewModel.getId().toString())
-      //  val restaurantId = arguments?.getInt("id")
-       // sharedViewModel.setId(restaurantId!!)
-        menuList = ReceiptMenuList("케이크",1)
-        lists.add(ReceiptList("굴포로81",15000,menuList))
-      //  lists.add(ReceiptList("평천로286",20000,(ReceiptMenuList("아메리카노",3))))
+
+        val restaurantId = arguments?.getInt("id")
+        sharedViewModel.setId(restaurantId!!)
+
+    //    findAllOrder(restaurantId)
 
         receiptRecycler = ReceiptViewAdapter(lists,root.context){
-            ReceiptList, ReceiptMenuList ->{
+            ReceiptList ->{
         }
-            refuseDialog(1,ReceiptList,ReceiptMenuList)
+            refuseDialog(1,ReceiptList)
         }
+
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
         recycler.setHasFixedSize(true)
@@ -72,7 +71,7 @@ class ReceiptFragment : Fragment() {
         return root
     }
 
-    private fun refuseDialog(customerId: Int,receiptList: ReceiptList,receiptMenu: ReceiptMenuList){
+    private fun refuseDialog(customerId: Int,receiptList: ReceiptList){
 
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
@@ -121,6 +120,7 @@ class ReceiptFragment : Fragment() {
     private fun receiptAccept(acceptInfo: JsonObject){
 
     }
+
 
     private fun receiptRefuse(refuseInfo: JsonObject){
         networkService.refuseOrder(refuseInfo).enqueue(object: Callback<JsonObject>{

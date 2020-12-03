@@ -57,5 +57,9 @@ interface NetworkServiceRestaurant {
         @Body updateRequest : JsonObject
     ): Call<JsonObject>
 
+    @GET("/api/v1/orders/{restaurantId}")
+    fun findOrder(
+        @Path("restaurantId") id : Int
+    ): Call<JsonObject>
 
 }
