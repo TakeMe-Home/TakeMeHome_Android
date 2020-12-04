@@ -51,9 +51,15 @@ class ReceiptFragment : Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
-        val restaurantId = arguments?.getInt("id")
-        sharedViewModel.setId(restaurantId!!)
+        var restaurantId = arguments?.getInt("id")
 
+        when (restaurantId) {
+            0 -> {
+                restaurantId = sharedViewModel.getId()
+            }
+        }
+        sharedViewModel.setId(restaurantId!!)
+        Log.e("주문 ",restaurantId.toString())
     //    findAllOrder(restaurantId)
 
         receiptRecycler = ReceiptViewAdapter(lists,root.context){

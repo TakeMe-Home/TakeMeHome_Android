@@ -62,4 +62,9 @@ interface NetworkServiceRestaurant {
         @Path("restaurantId") id : Int
     ): Call<JsonObject>
 
+    @DELETE("/api/v1/menus/menu/{id}")
+    fun menuDelete(
+        @Path("id") menuId: Int
+    ): Call<JsonObject>
+
 }
