@@ -1,13 +1,19 @@
 package com.example.garam.takemehome_android
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.garam.takemehome_android.customer.ForCustomerActivity
 import com.example.garam.takemehome_android.network.NetworkController
@@ -94,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                nextActivity(i)
            }.setCancelable(false).show()
         }
+
     }
 
     private fun getToken(){
@@ -219,4 +226,5 @@ class MainActivity : AppCompatActivity() {
     private fun checkEmail(email: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
+
 }
