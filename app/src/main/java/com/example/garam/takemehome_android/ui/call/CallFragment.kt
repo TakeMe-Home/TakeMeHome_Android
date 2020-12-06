@@ -122,11 +122,11 @@ class CallFragment : Fragment() {
                 val orderArray = data?.get("orderFindRequestStatusResponses")?.asJsonArray
                 when {
                     res?.get("message")?.asString == "주문 조회 성공" && orderArray?.size() != 0 -> {
-                        Log.e("데이터", "$data")
+
                         for (i in 0 ..orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
-                            Log.e("고객 이름", customerName)
+
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("phoneNumber")?.toString()
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
@@ -169,7 +169,6 @@ class CallFragment : Fragment() {
                         for (i in 0 ..orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
-                            Log.e("고객 이름", customerName)
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("phoneNumber")?.toString()
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
@@ -205,7 +204,7 @@ class CallFragment : Fragment() {
 
         dialog.testConfirmbutton.setOnClickListener {
             sharedViewModel.setData(callList)
-            searchLocation(callList)
+         //  searchLocation(callList)
             dialog.dismiss()
             lists.remove(callList)
             callRecycler.notifyDataSetChanged()
@@ -215,6 +214,8 @@ class CallFragment : Fragment() {
             dialog.dismiss()
         }
     }
+
+
 
     private fun searchLocation(callList: CallList){
 

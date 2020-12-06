@@ -1,13 +1,14 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.pickup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
+
 class PickUpFragment : Fragment() {
 
     private lateinit var sharedViewModel : RestaurantSharedViewModel
@@ -23,8 +24,6 @@ class PickUpFragment : Fragment() {
 
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
-
-        Log.e("픽업 ",restaurantId.toString())
 
         return root
     }

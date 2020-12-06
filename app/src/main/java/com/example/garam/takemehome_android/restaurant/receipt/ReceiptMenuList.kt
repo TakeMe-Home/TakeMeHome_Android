@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.receipt
 
 data class ReceiptMenuList(
     val orderMenuName : String,

@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.order
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
+import com.example.garam.takemehome_android.restaurant.receipt.ReceiptMenuList
 import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
@@ -62,8 +64,13 @@ class OrderListFragment : Fragment() {
                             val menuDetailCounts = menuCounts.getJSONArray("menuNameCounts")
 
                             for (j in 0 until menuDetailCounts.length()){
-                                menuList.add(ReceiptMenuList(menuDetailCounts.getJSONObject(i).get("name").toString(),
-                                    menuDetailCounts.getJSONObject(i).get("count").toString().toInt()))
+                                menuList.add(
+                                    ReceiptMenuList(
+                                        menuDetailCounts.getJSONObject(i).get("name").toString(),
+                                        menuDetailCounts.getJSONObject(i).get("count").toString()
+                                            .toInt()
+                                    )
+                                )
                             }
                             val paymentType = orderResponse.getJSONObject(i).get("paymentType")
                          //   lists.add(OrderList(paymentType.toString(),totalPrice.toString().toInt()

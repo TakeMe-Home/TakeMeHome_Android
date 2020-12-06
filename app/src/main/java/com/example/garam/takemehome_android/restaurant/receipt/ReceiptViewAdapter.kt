@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.receipt
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ class ReceiptViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ReceiptViewAdapter.ViewHolder {
+    ): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.receipt_list_layout,parent
             ,false), itemClick)
     }
@@ -25,7 +25,7 @@ class ReceiptViewAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: ReceiptViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
@@ -46,7 +46,11 @@ class ReceiptViewAdapter(
                 menuItems.add(list.menuNameCount[i])
             }
 
-            val mAdapter = ReceiptMenuListViewAdapter(menuItems,context)
+            val mAdapter =
+                ReceiptMenuListViewAdapter(
+                    menuItems,
+                    context
+                )
             innerRecycler.adapter = mAdapter
             val layoutManager = LinearLayoutManager(context)
             innerRecycler.layoutManager = layoutManager

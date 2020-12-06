@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.receipt
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.receipt_cancel_dialog_layout.*
@@ -62,11 +63,15 @@ class ReceiptFragment : Fragment() {
         Log.e("주문 ",restaurantId.toString())
     //    findAllOrder(restaurantId)
 
-        receiptRecycler = ReceiptViewAdapter(lists,root.context){
-            ReceiptList ->{
-        }
-            refuseDialog(1,ReceiptList)
-        }
+        receiptRecycler =
+            ReceiptViewAdapter(
+                lists,
+                root.context
+            ) { ReceiptList ->
+                {
+                }
+                refuseDialog(1, ReceiptList)
+            }
 
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)

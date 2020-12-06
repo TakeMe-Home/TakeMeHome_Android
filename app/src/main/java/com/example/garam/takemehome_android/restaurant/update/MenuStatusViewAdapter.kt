@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.update
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ class MenuStatusViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MenuStatusViewAdapter.ViewHolder {
+    ): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.menu_status_layout,parent
             ,false), itemClick)
     }
@@ -25,7 +25,7 @@ class MenuStatusViewAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: MenuStatusViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 

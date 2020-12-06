@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_restaurant_home"
-        android:name="com.example.garam.takemehome_android.restaurant.ReceiptFragment"
+        android:name="com.example.garam.takemehome_android.restaurant.receipt.ReceiptFragment"
         tools:layout="@layout/fragment_receipt"
         android:label="restaurantHome">
 
@@ -19,20 +19,20 @@
 
     <fragment
         android:id="@+id/navigation_restaurant_dashboard"
-        android:name="com.example.garam.takemehome_android.restaurant.OrderListFragment"
+        android:name="com.example.garam.takemehome_android.restaurant.order.OrderListFragment"
         tools:layout="@layout/fragment_order_list"
         android:label="orderList"/>
 
 
     <fragment
         android:id="@+id/navigation_restaurant_notifications"
-        android:name="com.example.garam.takemehome_android.restaurant.PickUpFragment"
+        android:name="com.example.garam.takemehome_android.restaurant.pickup.PickUpFragment"
         tools:layout="@layout/fragment_pick_up"
         android:label="pickUp"/>
 
     <fragment
         android:id="@+id/navigation_restaurant_update"
-        android:name="com.example.garam.takemehome_android.restaurant.RestaurantUpdateFragment"
+        android:name="com.example.garam.takemehome_android.restaurant.update.RestaurantUpdateFragment"
         tools:layout="@layout/fragment_restaurant_update"
         android:label="restaurantUpdate">
         <argument

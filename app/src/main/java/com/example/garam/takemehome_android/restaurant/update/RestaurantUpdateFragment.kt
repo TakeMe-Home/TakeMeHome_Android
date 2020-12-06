@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.update
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Toast
-import androidx.core.graphics.rotationMatrix
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.fragment_restaurant_update.view.*
@@ -57,11 +56,14 @@ class RestaurantUpdateFragment : Fragment() {
         updateDialog = Dialog(root.context)
         updateDialog.setContentView(R.layout.menu_update_dialog_layout)
 
-        menuStatusRecycler = MenuStatusViewAdapter(menuStatusList,root.context){
-            menuStatusList ->
-            menuUpdateDialog(menuStatusList)
+        menuStatusRecycler =
+            MenuStatusViewAdapter(
+                menuStatusList,
+                root.context
+            ) { menuStatusList ->
+                menuUpdateDialog(menuStatusList)
 
-        }
+            }
 
         root.menuAddButton.setOnClickListener {
             menuAddDialog()
@@ -93,10 +95,14 @@ class RestaurantUpdateFragment : Fragment() {
                         val data = resObject.getJSONArray("data")
                         for( i in 0 until data.length()){
                             val dataObject = data.getJSONObject(i)
-                            menuStatusList.add(MenuStatusList(dataObject.getString("name"),
-                                dataObject.getInt("price"),
-                                dataObject.getString("menuStatus"),
-                                dataObject.getInt("id")))
+                            menuStatusList.add(
+                                MenuStatusList(
+                                    dataObject.getString("name"),
+                                    dataObject.getInt("price"),
+                                    dataObject.getString("menuStatus"),
+                                    dataObject.getInt("id")
+                                )
+                            )
                         }
                         menuStatusRecycler.notifyDataSetChanged()
 
@@ -156,8 +162,14 @@ class RestaurantUpdateFragment : Fragment() {
                 val res = response.body()
                 when(res?.get("message")?.asString) {
                     "메뉴 등록 성공" -> {
-                        menuStatusList.add(MenuStatusList(menuInfo.get("name").asString,
-                        menuInfo.get("price").asInt,"SALE",res.get("data").toString().toInt()))
+                        menuStatusList.add(
+                            MenuStatusList(
+                                menuInfo.get("name").asString,
+                                menuInfo.get("price").asInt,
+                                "SALE",
+                                res.get("data").toString().toInt()
+                            )
+                        )
                         dialog.dismiss()
                         menuStatusRecycler.notifyDataSetChanged()
                         Toast.makeText(root.context,"메뉴를 성공적으로 등록했습니다",Toast.LENGTH_LONG).show()
