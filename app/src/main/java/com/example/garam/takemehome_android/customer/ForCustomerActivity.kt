@@ -66,8 +66,9 @@ class ForCustomerActivity : AppCompatActivity() {
                 val data = res?.get("data")?.asJsonObject
                 val dataObject = JSONObject(data.toString())
                 val restaurantResponse = dataObject.getJSONArray("restaurantFindAllResponse")
-                when {
-                    message == "가게 정보 조회 성공" ->{
+
+                when(message) {
+                    "가게 정보 조회 성공" ->{
                         for (i in 0 until restaurantResponse.length()){
                             lists.add(RestaurantList(restaurantResponse.getJSONObject(i).getString("name"),
                                 restaurantResponse.getJSONObject(i).getInt("id")))
@@ -76,7 +77,7 @@ class ForCustomerActivity : AppCompatActivity() {
                         }
                         restaurantRecycler.notifyDataSetChanged()
                     }
-                    message == "가게 정보 조회 실패" -> {
+                    "가게 정보 조회 실패" -> {
                         failMessage.show()
                     }
                 }

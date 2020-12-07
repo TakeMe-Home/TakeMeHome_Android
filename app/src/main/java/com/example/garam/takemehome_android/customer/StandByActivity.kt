@@ -50,7 +50,6 @@ class StandByActivity : AppCompatActivity() {
                 }
                 "주문이 수락 됐어요." -> {
                     Toast.makeText(this,"주문이 수락 됐습니다.",Toast.LENGTH_LONG).show()
-                    receptionRequest(receptionInfoJson)
 
                     finish()
                 }
@@ -58,18 +57,6 @@ class StandByActivity : AppCompatActivity() {
         }
     }
 
-    private fun receptionRequest(receptionInfo: JsonObject){
-        networkService.reception(receptionInfo).enqueue(object : Callback<JsonObject>{
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
-            }
-
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-
-            }
-        })
-
-    }
 
     override fun onStart() {
         super.onStart()

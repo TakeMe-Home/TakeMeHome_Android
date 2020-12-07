@@ -81,7 +81,6 @@ class MenuListActivity : AppCompatActivity() {
         paymentButton.setOnClickListener {
             menuCountSize = viewModel.getCountInfo()
 
-            val receptionObject = JSONObject()
             val menuIdCounts = JSONObject()
             val menuIdArray = JSONArray()
 
@@ -97,11 +96,6 @@ class MenuListActivity : AppCompatActivity() {
 
             menuNameCounts.put("menuNameCounts",menuNameArray)
 
-            receptionObject.put("customerId",customerId)
-            receptionObject.put("menuIdCounts",menuIdCounts)
-            receptionObject.put("paymentStatus","COMPLITE")
-            receptionObject.put("paymentType","CARD")
-            receptionObject.put("restaurantId",restaurantId)
             when {
                 menuCountSize == 0 || (paymentTextView.text as String).toString() == "0원" -> {
                     Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
@@ -114,20 +108,16 @@ class MenuListActivity : AppCompatActivity() {
 
                 else -> {
 
-                    orderInfo.put("customerAddress","")
+                    orderInfo.put("customerId",customerId)
                     orderInfo.put("menuNameCounts",menuNameCounts)
                     orderInfo.put("restaurantId",restaurantId)
                     orderInfo.put("totalPrice",viewModel.getLastPayPrice())
-
-
-                    receptionObject.put("totalPrice",viewModel.getLastPayPrice())
 
                     val nextIntent = Intent(this,PaymentActivity::class.java)
                     nextIntent.putExtra("lastPrice",viewModel.getLastPayPrice())
                     nextIntent.putExtra("restaurantName",restaurantName)
                     nextIntent.putExtra("restaurantId",restaurantId)
                     nextIntent.putExtra("customerId",customerId)
-                    nextIntent.putExtra("json",receptionObject.toString())
 
                     nextIntent.putExtra("orderInfo",orderInfo.toString())
                     startActivity(nextIntent)

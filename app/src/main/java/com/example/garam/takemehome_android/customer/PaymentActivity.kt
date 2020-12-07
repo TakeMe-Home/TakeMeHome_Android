@@ -38,7 +38,6 @@ class PaymentActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId",0)
         val customerId = intent.getIntExtra("customerId",0)
         val restaurantName = intent.getStringExtra("restaurantName")
-        receptionInfo = JSONObject(intent.getStringExtra("json"))
 
         orderInfo = JSONObject(intent.getStringExtra("orderInfo"))
 
@@ -66,13 +65,8 @@ class PaymentActivity : AppCompatActivity() {
 
         lastPaymentButton.setOnClickListener {
 
-            val nextIntent = Intent(this,StandByActivity::class.java)
-            nextIntent.putExtra("receptionInfo",receptionInfo.toString())
-
             val orderInfo = JsonParser().parse(orderInfo.toString()).asJsonObject
             order(orderInfo)
-
-            startActivity(nextIntent)
 
         }
 
@@ -93,8 +87,6 @@ class PaymentActivity : AppCompatActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val message = response.body()?.get("message")
                 var deliveryPrice = 0
-                Log.e("ㄻㅇㄹ",response.body().toString())
-                Log.e("fadfadsf",message.toString())
                 when {
                     response.body()?.get("statusCode")?.asInt == 200 -> {
                         deliveryPrice = response.body()
@@ -120,6 +112,16 @@ class PaymentActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+                when(res?.get("message")?.asString){
+                    "고객 주문 성공" -> {
+                        finish()
+                    }
+                    "고객 주문 실패" -> {
+
+                    }
+
+                }
 
             }
         })

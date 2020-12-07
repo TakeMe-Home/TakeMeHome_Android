@@ -22,11 +22,6 @@ interface NetworkService {
         @Body loginRequest: JsonObject
     ): Call<JsonObject>
 
-    @POST("/api/v1/orders/reception")
-    fun reception(
-        @Body saveRequest : JsonObject
-    ): Call<JsonObject>
-
     @GET("/api/v1/restaurants")
     fun restaurantLookUp() : Call<JsonObject>
 
