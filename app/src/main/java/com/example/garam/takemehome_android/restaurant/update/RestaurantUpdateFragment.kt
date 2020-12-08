@@ -56,14 +56,10 @@ class RestaurantUpdateFragment : Fragment() {
         updateDialog = Dialog(root.context)
         updateDialog.setContentView(R.layout.menu_update_dialog_layout)
 
-        menuStatusRecycler =
-            MenuStatusViewAdapter(
-                menuStatusList,
-                root.context
-            ) { menuStatusList ->
-                menuUpdateDialog(menuStatusList)
-
-            }
+        menuStatusRecycler = MenuStatusViewAdapter(menuStatusList, root.context) {
+                menuStatusList ->
+            menuUpdateDialog(menuStatusList)
+        }
 
         root.menuAddButton.setOnClickListener {
             menuAddDialog()
@@ -115,8 +111,8 @@ class RestaurantUpdateFragment : Fragment() {
         })
     }
 
-    private fun menuSoldOut(id: Int){
-        networkService.menuSoldOut(id).enqueue(object : Callback<JsonObject>{
+    private fun menuSoldOut(menuUpdateInfo: MenuStatusList){
+        networkService.menuSoldOut(menuUpdateInfo.menuId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -127,8 +123,8 @@ class RestaurantUpdateFragment : Fragment() {
         })
     }
 
-    private fun menuSale(id: Int){
-        networkService.menuSale(id).enqueue(object : Callback<JsonObject>{
+    private fun menuSale(menuUpdateInfo: MenuStatusList){
+        networkService.menuSale(menuUpdateInfo.menuId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -139,13 +135,28 @@ class RestaurantUpdateFragment : Fragment() {
         })
     }
 
-    private fun menuDelete(id: Int){
-        networkService.menuDelete(id).enqueue(object : Callback<JsonObject>{
+    private fun menuDelete(menuUpdateInfo: MenuStatusList){
+        networkService.menuDelete(menuUpdateInfo.menuId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+
+                when(res?.get("message")?.asString){
+                    "메뉴 삭제 성공" -> {
+                        menuStatusList.remove(menuUpdateInfo)
+                        Toast.makeText(root.context,"삭제에 성공하였습니다"
+                           ,Toast.LENGTH_SHORT).show()
+                        menuStatusRecycler.notifyDataSetChanged()
+                    }
+
+                    "메뉴 삭제 실패" -> {
+                        Toast.makeText(root.context,"삭제에 실패하였습니다"
+                            ,Toast.LENGTH_SHORT).show()
+                    }
+                }
 
             }
         })
@@ -204,17 +215,17 @@ class RestaurantUpdateFragment : Fragment() {
         updateDialog.menuUpdatePrice.setText(menuUpdateInfo.menuPrice.toString())
 
         updateDialog.menuUpdateSoldOut.setOnClickListener {
-            menuSoldOut(menuUpdateInfo.menuId)
+            menuSoldOut(menuUpdateInfo)
             updateDialog.dismiss()
         }
 
         updateDialog.menuUpdateSell.setOnClickListener {
-            menuSale(menuUpdateInfo.menuId)
+            menuSale(menuUpdateInfo)
             updateDialog.dismiss()
         }
 
         updateDialog.menuUpdateDeleteButton.setOnClickListener {
-            menuDelete(menuUpdateInfo.menuId)
+            menuDelete(menuUpdateInfo)
             menuStatusList.remove(menuUpdateInfo)
             updateDialog.dismiss()
             menuStatusRecycler.notifyDataSetChanged()

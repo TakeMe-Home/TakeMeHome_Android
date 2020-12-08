@@ -59,6 +59,8 @@ class RestaurantManageActivity : AppCompatActivity() {
                 RestaurantManageList ->
             val nextIntent = Intent(this,ForRestaurantActivity::class.java)
             nextIntent.putExtra("restaurantId",RestaurantManageList.restaurantId)
+            nextIntent.putExtra("restaurantAddress",RestaurantManageList.address)
+            nextIntent.putExtra("restaurantName", RestaurantManageList.restaurantName)
             startActivity(nextIntent)
         }
 

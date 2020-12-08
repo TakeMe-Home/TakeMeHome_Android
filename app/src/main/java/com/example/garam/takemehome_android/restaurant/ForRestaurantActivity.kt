@@ -25,9 +25,12 @@ class ForRestaurantActivity : AppCompatActivity() {
         val navView : BottomNavigationView = findViewById(R.id.nav_view_restaurant)
         val intent = intent
         val restaurantId = intent.getIntExtra("restaurantId",0)
+        val restaurantAddress = intent.getStringExtra("restaurantAddress")
+        val restaurantName = intent.getStringExtra("restaurantName")
         sharedViewModel.setId(restaurantId)
 
-        val bundle = bundleOf("id" to restaurantId)
+        val bundle = bundleOf("id" to restaurantId, "address" to restaurantAddress
+            , "restaurantName" to restaurantName)
 
         val navController = findNavController(R.id.nav_host_fragment_restaurant)
         navController.navigate(R.id.navigation_restaurant_home,bundle)

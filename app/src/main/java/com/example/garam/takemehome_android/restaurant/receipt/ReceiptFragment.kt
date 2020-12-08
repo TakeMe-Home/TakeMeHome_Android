@@ -33,7 +33,6 @@ class ReceiptFragment : Fragment() {
     private lateinit var dialog : Dialog
     private lateinit var receiptRecycler : ReceiptViewAdapter
     private val lists = arrayListOf<ReceiptList>()
-    private val menuList = arrayListOf<ReceiptMenuList>()
     private var refuseJson = JSONObject()
     private lateinit var root : View
     private lateinit var sharedViewModel : RestaurantSharedViewModel
@@ -53,6 +52,8 @@ class ReceiptFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
         var restaurantId = arguments?.getInt("id")
+        val restaurantName = arguments?.getString("restaurantName")
+        val restaurantAddress = arguments?.getString("address")
 
         when (restaurantId) {
             0 -> {
@@ -60,14 +61,14 @@ class ReceiptFragment : Fragment() {
             }
         }
         sharedViewModel.setId(restaurantId!!)
-        Log.e("주문 ",restaurantId.toString())
-    //    findAllOrder(restaurantId)
+
+        findAllOrder(restaurantAddress.toString(),restaurantName.toString())
 
         receiptRecycler =
             ReceiptViewAdapter(
                 lists,
                 root.context
-            ) { ReceiptList ->
+            ) { ReceiptList->
                 {
                 }
                 refuseDialog(1, ReceiptList)
@@ -77,7 +78,7 @@ class ReceiptFragment : Fragment() {
         recycler.layoutManager = LinearLayoutManager(root.context)
         recycler.setHasFixedSize(true)
 
-        receiptRecycler.notifyDataSetChanged()
+       // receiptRecycler.notifyDataSetChanged()
 
         return root
     }
@@ -130,6 +131,56 @@ class ReceiptFragment : Fragment() {
 
     private fun receiptAccept(acceptInfo: JsonObject){
 
+    }
+
+    private fun findAllOrder(address: String, name: String){
+        networkService.findWaitForOrder(address, name).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+
+                when(res?.get("message")?.asString){
+                    "주문 조회 성공" -> {
+                        val data = res.getAsJsonObject("data")
+                        val dataObject = JSONObject(data.toString())
+                        val orderResponse = dataObject.getJSONArray("orderFindResponses")
+                        for (i in 0 until orderResponse.length()){
+                            val totalPrice = orderResponse.getJSONObject(i).getInt("totalPrice")
+                            val menuCounts = orderResponse.getJSONObject(i).getJSONObject("menuNameCounts")
+                            val menuDetailCounts = menuCounts.getJSONArray("menuNameCounts")
+                            val orderDelivery = orderResponse.getJSONObject(i).getJSONObject("orderDelivery")
+                            val customerAddress = orderDelivery.getString("address")
+                            val menuList = arrayListOf<ReceiptMenuList>()
+
+                            for (j in 0 until menuDetailCounts.length()){
+                                menuList.add(
+                                    ReceiptMenuList(
+                                        menuDetailCounts.getJSONObject(j).get("name").toString(),
+                                        menuDetailCounts.getJSONObject(j).get("count").toString()
+                                            .toInt()
+                                    )
+                                )
+                            }
+                            Log.e("왜",menuList.toString())
+                            lists.add(ReceiptList(customerAddress,totalPrice,menuList))
+                            val paymentType = orderResponse.getJSONObject(i).get("paymentType")
+
+                            receiptRecycler.notifyDataSetChanged()
+
+                        }
+
+
+                    }
+
+                    "주문 조회 실패" -> {
+
+                    }
+                }
+            }
+        })
     }
 
 

@@ -67,4 +67,10 @@ interface NetworkServiceRestaurant {
         @Path("id") menuId: Int
     ): Call<JsonObject>
 
+    @GET("/api/v1/orders/status/request/restaurant")
+    fun findWaitForOrder(
+        @Query ("address") address : String,
+        @Query ("name") name : String
+    ): Call<JsonObject>
+
 }

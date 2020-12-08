@@ -40,20 +40,19 @@ class ReceiptViewAdapter(
         fun bind(list: ReceiptList) {
 
             orderAddress.text = list.customerAddress
-            orderPrice.text = list.totalPrice.toString()
+            orderPrice.text = list.totalPrice.toString() + "원"
 
-            for (i in 0 until list.menuNameCount.size){
+            /*for (i in 0 until list.menuNameCount.size){
                 menuItems.add(list.menuNameCount[i])
-            }
+            } */
 
-            val mAdapter =
-                ReceiptMenuListViewAdapter(
-                    menuItems,
-                    context
-                )
+
+            val mAdapter = ReceiptMenuListViewAdapter(list.menuNameCount, context)
             innerRecycler.adapter = mAdapter
             val layoutManager = LinearLayoutManager(context)
             innerRecycler.layoutManager = layoutManager
+
+            mAdapter.notifyDataSetChanged()
             innerRecycler.setHasFixedSize(true)
 
             itemView.setOnClickListener {
