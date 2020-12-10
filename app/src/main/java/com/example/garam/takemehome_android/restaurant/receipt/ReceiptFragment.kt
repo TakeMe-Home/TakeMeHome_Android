@@ -19,6 +19,7 @@ import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.receipt_cancel_dialog_layout.*
+import kotlinx.android.synthetic.main.receipt_list_layout.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,15 +53,19 @@ class ReceiptFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
         var restaurantId = arguments?.getInt("id")
-        val restaurantName = arguments?.getString("restaurantName")
-        val restaurantAddress = arguments?.getString("address")
+        var restaurantName = arguments?.getString("restaurantName")
+        var restaurantAddress = arguments?.getString("address")
 
         when (restaurantId) {
             0 -> {
                 restaurantId = sharedViewModel.getId()
+                restaurantName = sharedViewModel.getName()
+                restaurantAddress = sharedViewModel.getAddress()
             }
         }
         sharedViewModel.setId(restaurantId!!)
+        sharedViewModel.setName(restaurantName!!)
+        sharedViewModel.setAddress(restaurantAddress!!)
 
         findAllOrder(restaurantAddress.toString(),restaurantName.toString())
 
@@ -69,16 +74,13 @@ class ReceiptFragment : Fragment() {
                 lists,
                 root.context
             ) { ReceiptList->
-                {
-                }
+
                 refuseDialog(1, ReceiptList)
             }
 
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
         recycler.setHasFixedSize(true)
-
-       // receiptRecycler.notifyDataSetChanged()
 
         return root
     }
@@ -107,6 +109,7 @@ class ReceiptFragment : Fragment() {
                 }
             }
         }
+
         dialog.receiptRefuseButton.setOnClickListener {
 
             when(refuseReason){

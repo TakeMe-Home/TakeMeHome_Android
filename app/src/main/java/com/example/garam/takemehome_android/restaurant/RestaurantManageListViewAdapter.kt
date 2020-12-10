@@ -32,15 +32,19 @@ class RestaurantManageListViewAdapter(
     ) {
         holder.bind(items[position])
     }
+
     inner class ViewHolder(itemView: View, itemClick:(RestaurantManageList)-> Unit)
         : RecyclerView.ViewHolder(itemView){
         private val manageRestaurantName = itemView.findViewById<TextView>(R.id.restaurantNameManage)
 
         fun bind(list: RestaurantManageList){
             manageRestaurantName.text = list.restaurantName
+
             itemView.setOnClickListener {
                  itemClick(list)
             }
+            itemView.isLongClickable = true
+
         }
     }
 }

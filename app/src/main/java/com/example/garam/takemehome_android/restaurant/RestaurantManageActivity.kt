@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,6 +58,7 @@ class RestaurantManageActivity : AppCompatActivity() {
 
         restaurantManageRecycler = RestaurantManageListViewAdapter(lists,this){
                 RestaurantManageList ->
+
             val nextIntent = Intent(this,ForRestaurantActivity::class.java)
             nextIntent.putExtra("restaurantId",RestaurantManageList.restaurantId)
             nextIntent.putExtra("restaurantAddress",RestaurantManageList.address)

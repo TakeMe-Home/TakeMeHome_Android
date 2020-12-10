@@ -26,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestaurantUpdateFragment : Fragment() {
+
     private val networkService: NetworkServiceRestaurant by lazy {
         NetworkController.instance.networkServiceRestaurant
     }
@@ -47,7 +48,7 @@ class RestaurantUpdateFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
-        Log.e("업데이트 ",restaurantId.toString())
+
         menuLookUp(restaurantId)
 
         dialog = Dialog(root.context)
