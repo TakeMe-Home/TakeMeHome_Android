@@ -46,6 +46,7 @@ class CallFragment : Fragment() {
     private lateinit var callRecycler : CallViewAdapter
     private lateinit var sharedViewModel: SharedViewModel
     private var locationLists = arrayListOf<LocationList>()
+    private lateinit var root : View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,17 +54,27 @@ class CallFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_call, container, false)
+        root = inflater.inflate(R.layout.fragment_call, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)
         val locationDetail = JSONObject()
         callLookUp()
+
+        var riderId = arguments?.getInt("id")
+
+        when(riderId){
+            0 -> {
+                riderId = sharedViewModel.getRiderId()
+            }
+        }
+
+        sharedViewModel.setRiderId(riderId!!)
 
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.confirm_dialog)
 
         callRecycler = CallViewAdapter(lists, root.context) { callList ->
-            showDialog(callList)
+            showDialog(callList,riderId)
         }
 
         recycler.adapter = callRecycler
@@ -139,9 +150,10 @@ class CallFragment : Fragment() {
                                 ?.asJsonObject?.get("address")?.toString()
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
+                            val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
 
                             lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
-                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
+                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0, orderId?.toInt()!!))
                         }
                     }
                     res?.get("message")?.asString == "주문 조회 실패" || orderArray?.size() == 0-> {
@@ -166,7 +178,7 @@ class CallFragment : Fragment() {
                 val orderArray = res?.get("data")?.asJsonArray
                 when{
                     message == "주문 조회 성공" && orderArray?.size() != 0-> {
-                        for (i in 0 ..orderArray?.size()!!) {
+                        for (i in 0 until orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
@@ -181,9 +193,11 @@ class CallFragment : Fragment() {
                                 ?.asJsonObject?.get("address")?.toString()
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
+                            val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
 
                             lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
-                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0))
+                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0, orderId?.toInt()!!
+                            ))
                         }
                     }
 
@@ -197,7 +211,7 @@ class CallFragment : Fragment() {
         })
     }
 
-    private fun showDialog(callList: CallList){
+    private fun showDialog(callList: CallList, riderId:Int) {
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
         dialog.testNameConfirm.text = callList.storeName
@@ -206,7 +220,8 @@ class CallFragment : Fragment() {
             sharedViewModel.setData(callList)
          //  searchLocation(callList)
             dialog.dismiss()
-            lists.remove(callList)
+            orderAssign(callList,riderId)
+            //lists.remove(callList)
             callRecycler.notifyDataSetChanged()
         }
 
@@ -215,7 +230,17 @@ class CallFragment : Fragment() {
         }
     }
 
+    private fun orderAssign(callList: CallList, riderId: Int){
+        networkService.orderAssigned(callList.orderId ,riderId).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                lists.remove(callList)
+            }
+        })
+    }
 
     private fun searchLocation(callList: CallList){
 
@@ -227,32 +252,26 @@ class CallFragment : Fragment() {
             KakaoApi.instance.kakaoKey,
             callList.storeAddress
         )
-        Log.e("카카오 키 ", KakaoApi.instance.kakaoKey)
+
         testAddress.enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
                 val body = response.code()
                 val fa = response.message()
-                Log.e("바디", "$body")
-                Log.e("메시지", fa)
-                Log.e("리스폰스", res.toString())
                 when {
                     response.isSuccessful -> {
                         val kakao = res?.getAsJsonArray("documents")
-                        Log.e("카카오","$kakao")
                         val add = kakao?.asJsonArray?.get(0)
-                        Log.e("ㄹㅁ","$add")
                         val addInfo = add?.asJsonObject?.get("address")
                         val x = JSONObject(addInfo.toString()).getString("x")
                         val y = JSONObject(addInfo.toString()).getString("y")
                         locationLists.add(LocationList(x,y))
                         sharedViewModel.setLocation(locationLists[locationLists.lastIndex])
-                        Log.e("검색한 주소 좌표:" , "$x + $y")
                     }
                 }
             }
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.e("에러", t.message.toString())
+
             }
         })
     }

@@ -24,7 +24,6 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var viewModel : MenuSharedViewModel
     private var lastTotalPrice = 0
     private var orderPrice = 0
-    private var receptionInfo = JSONObject()
 
     private var orderInfo = JSONObject()
 
@@ -49,16 +48,16 @@ class PaymentActivity : AppCompatActivity() {
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
                 R.id.unTactCard -> {
-                    receptionInfo.put("paymentStatus","COMPLITE")
-                    receptionInfo.put("paymentType","CARD")
+                    orderInfo.put("paymentStatus","COMPLITE")
+                    orderInfo.put("paymentType","CARD")
                 }
                 R.id.contactCash -> {
-                    receptionInfo.put("paymentStatus","NONE")
-                    receptionInfo.put("paymentType","CASH")
+                    orderInfo.put("paymentStatus","NONE")
+                    orderInfo.put("paymentType","CASH")
                 }
                 R.id.contactCard -> {
-                    receptionInfo.put("paymentStatus","NONE")
-                    receptionInfo.put("paymentType","CARD")
+                    orderInfo.put("paymentStatus","NONE")
+                    orderInfo.put("paymentType","CARD")
                 }
             }
         }
@@ -93,7 +92,7 @@ class PaymentActivity : AppCompatActivity() {
                             ?.getAsJsonObject("data")?.get("price")?.asInt!!
                         paymentDeliveryPriceTextView.text = deliveryPrice.toString() + "원"
                         lastPrice.text = (orderPrice + deliveryPrice.toInt()).toString() + "원"
-                        receptionInfo.put("totalPrice",(orderPrice + deliveryPrice.toInt())
+                        orderInfo.put("totalPrice",(orderPrice + deliveryPrice.toInt())
                             .toString().toInt())
 
                     }

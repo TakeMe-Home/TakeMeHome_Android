@@ -37,7 +37,7 @@ class OrderListFragment : Fragment() {
 
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
-        Log.e("오더 ",restaurantId.toString())
+
         root = inflater.inflate(R.layout.fragment_order_list, container, false)
 
         findAllOrder(restaurantId)

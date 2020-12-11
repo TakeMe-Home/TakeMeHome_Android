@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,9 +25,14 @@ class ForRiderActivity : AppCompatActivity() {
         navView = findViewById(R.id.nav_view)
         val intent = intent
         val riderId = intent.getIntExtra("riderId",0)
-        val navController = findNavController(R.id.nav_host_fragment)
+
         sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
         sharedViewModel.setRiderId(riderId)
+
+        val bundle = bundleOf("id" to riderId)
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(R.id.navigation_home,bundle)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
