@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
@@ -134,7 +132,7 @@ class CallFragment : Fragment() {
                 when {
                     res?.get("message")?.asString == "주문 조회 성공" && orderArray?.size() != 0 -> {
 
-                        for (i in 0 ..orderArray?.size()!!) {
+                        for (i in 0 until orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
 
@@ -155,6 +153,7 @@ class CallFragment : Fragment() {
                             lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
                                 deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0, orderId?.toInt()!!))
                         }
+                        callRecycler.notifyDataSetChanged()
                     }
                     res?.get("message")?.asString == "주문 조회 실패" || orderArray?.size() == 0-> {
                         Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
@@ -199,6 +198,7 @@ class CallFragment : Fragment() {
                                 deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0, orderId?.toInt()!!
                             ))
                         }
+                        callRecycler.notifyDataSetChanged()
                     }
 
                     message == "주문 조회 실패" || orderArray?.size() == 0 -> {
@@ -217,12 +217,9 @@ class CallFragment : Fragment() {
         dialog.testNameConfirm.text = callList.storeName
 
         dialog.testConfirmbutton.setOnClickListener {
-            sharedViewModel.setData(callList)
          //  searchLocation(callList)
             dialog.dismiss()
             orderAssign(callList,riderId)
-            //lists.remove(callList)
-            callRecycler.notifyDataSetChanged()
         }
 
         dialog.testCancelbutton.setOnClickListener {
@@ -238,6 +235,7 @@ class CallFragment : Fragment() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 lists.remove(callList)
+                callRecycler.notifyDataSetChanged()
             }
         })
     }

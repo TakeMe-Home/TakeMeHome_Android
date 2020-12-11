@@ -2,7 +2,6 @@ package com.example.garam.takemehome_android.ui.order
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,12 @@ import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
-import com.example.garam.takemehome_android.ui.call.CallList
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.order_info_dialog.*
 import retrofit2.Call
@@ -31,6 +28,7 @@ class OrdersFragment : Fragment() {
     }
 
     private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var orderRecycler : OrderViewAdapter
     private var lists = arrayListOf<OrderList>()
     private lateinit var dialog : Dialog
 
@@ -46,21 +44,13 @@ class OrdersFragment : Fragment() {
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.order_info_dialog)
-        val sharedData = sharedViewModel.getData()
         val riderId = sharedViewModel.getRiderId()
-        for (i in 0  until sharedData.size)
-        {
-            lists.add(0, OrderList(sharedData[i].storeName,
-                sharedData[i].storeAddress,sharedData[i].deliveryAddress,sharedData[i].deliveryPrice,
-            0.0))
-        }
+
         deliveryList(riderId)
-        val orderRecycler = OrderViewAdapter(lists,root.context){ orderList ->
+        orderRecycler = OrderViewAdapter(lists,root.context){ orderList ->
             showDialog(orderList)
         }
         recycler.adapter = orderRecycler
-        orderRecycler.notifyDataSetChanged()
-
         recycler.layoutManager = LinearLayoutManager(root.context)
         recycler.setHasFixedSize(true)
 
@@ -79,10 +69,9 @@ class OrdersFragment : Fragment() {
                 val orderArray = res?.get("data")?.asJsonArray
                 when{
                     message == "주문 조회 성공" && orderArray?.size() != 0 -> {
-                        for (i in 0 ..orderArray?.size()!!) {
+                        for (i in 0 until orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
-                            Log.e("고객 이름", customerName)
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("phoneNumber")?.toString()
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
@@ -101,6 +90,8 @@ class OrdersFragment : Fragment() {
                                 deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0)
                             )
                         }
+                        orderRecycler.notifyDataSetChanged()
+
                     }
                     message == "주문 조회 실패" || orderArray?.size() == 0-> {
                         Toast.makeText(this@OrdersFragment.requireContext(),"조회에 실패했습니다",
@@ -120,7 +111,7 @@ class OrdersFragment : Fragment() {
         dialog.orderPrice.text = "가격 : $"
         dialog.orderMethod.text = "결제 수단 : "
         dialog.orderRequest.text = "요청 사항 : "
-        dialog.deliveryPriceTextView.text = "배달료 : 원"
+        dialog.deliveryPriceTextView.text = "배달료 : ${orderList.deliveryPrice}원"
         dialog.order_info_confirm.setOnClickListener {
             dialog.dismiss()
         }
