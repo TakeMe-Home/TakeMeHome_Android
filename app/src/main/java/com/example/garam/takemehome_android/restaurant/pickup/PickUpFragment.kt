@@ -7,10 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.network.NetworkController
+import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PickUpFragment : Fragment() {
 
+    private val networkService: NetworkServiceRestaurant by lazy {
+        NetworkController.instance.networkServiceRestaurant
+    }
     private lateinit var sharedViewModel : RestaurantSharedViewModel
     private lateinit var root : View
 
@@ -27,4 +36,5 @@ class PickUpFragment : Fragment() {
 
         return root
     }
+
 }

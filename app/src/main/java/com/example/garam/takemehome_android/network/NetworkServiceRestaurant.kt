@@ -73,4 +73,11 @@ interface NetworkServiceRestaurant {
         @Query ("name") name : String
     ): Call<JsonObject>
 
+    @PUT("/api/v1/orders/order/{orderId}/request/delivery/")
+    fun requestDelivery(
+        @Path ("orderId") orderId : Int,
+        @Body orderDeliveryRequest: JsonObject
+    ): Call<JsonObject>
+
+
 }

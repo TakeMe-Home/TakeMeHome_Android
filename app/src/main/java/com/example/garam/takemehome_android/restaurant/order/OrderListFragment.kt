@@ -26,6 +26,7 @@ class OrderListFragment : Fragment() {
 
     private val lists = arrayListOf<OrderList>()
     private val menuList = arrayListOf<ReceiptMenuList>()
+ //   private lateinit var orderListRecycler : OrderListViewAdapter
     private lateinit var root : View
     private lateinit var sharedViewModel : RestaurantSharedViewModel
 
@@ -37,6 +38,7 @@ class OrderListFragment : Fragment() {
 
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
+
 
         root = inflater.inflate(R.layout.fragment_order_list, container, false)
 
@@ -58,27 +60,8 @@ class OrderListFragment : Fragment() {
                         val data = res.getAsJsonObject("data")
                         val dataObject = JSONObject(data.toString())
                         val orderResponse = dataObject.getJSONArray("orderFindResponses")
-                        for (i in 0 until orderResponse.length()){
-                            val totalPrice = orderResponse.getJSONObject(i).get("totalPrice")
-                            val menuCounts = orderResponse.getJSONObject(i).getJSONObject("menuNameCounts")
-                            val menuDetailCounts = menuCounts.getJSONArray("menuNameCounts")
 
-                            for (j in 0 until menuDetailCounts.length()){
-                                menuList.add(
-                                    ReceiptMenuList(
-                                        menuDetailCounts.getJSONObject(i).get("name").toString(),
-                                        menuDetailCounts.getJSONObject(i).get("count").toString()
-                                            .toInt()
-                                    )
-                                )
-                            }
-                            val paymentType = orderResponse.getJSONObject(i).get("paymentType")
-                         //   lists.add(OrderList(paymentType.toString(),totalPrice.toString().toInt()
-                        //        ,menuList))
-                        }
-
-                      //  receiptRecycler.notifyDataSetChanged()
-
+                      //  orderListRecycler.notifyDataSetChanged()
 
                     }
 
@@ -89,4 +72,18 @@ class OrderListFragment : Fragment() {
             }
         })
     }
+
+
+    private fun requestDeliveryMethod(orderId: Int, deliveryInfo: JsonObject){
+        networkService.requestDelivery(orderId,deliveryInfo).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+            }
+        })
+    }
+
 }
