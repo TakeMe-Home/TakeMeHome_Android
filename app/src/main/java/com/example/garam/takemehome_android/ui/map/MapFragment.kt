@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import net.daum.mf.map.api.MapPOIItem
@@ -63,7 +61,7 @@ class MapFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEv
                 val latitude = location.latitude
                 val longitude = location.longitude
                 val currentLocation = MapPoint.mapPointWithGeoCoord(latitude, longitude)
-                Log.e("위치정보: ", "$latitude , $longitude")
+
                 val marker = MapPOIItem()
                 marker.itemName = "내 위치"
                 marker.mapPoint = currentLocation
@@ -72,7 +70,7 @@ class MapFragment : Fragment(),  MapView.POIItemEventListener, MapView.MapViewEv
                     mark.mapPoint = MapPoint.mapPointWithGeoCoord(
                         shared[i].y.toDouble(), shared[i].x.toDouble() )
                     mark.itemName = "$i 가게"
-                    Log.e("$i 가게", "${shared[i].x} , ${shared[i].y}")
+
                     mapView.addPOIItem(mark)
                 }
                 mapView.setMapCenterPointAndZoomLevel(currentLocation, 3, true)

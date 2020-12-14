@@ -2,7 +2,6 @@ package com.example.garam.takemehome_android.restaurant.receipt
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.receipt_cancel_dialog_layout.*
-import kotlinx.android.synthetic.main.receipt_list_layout.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -167,7 +165,6 @@ class ReceiptFragment : Fragment() {
                                     )
                                 )
                             }
-                            Log.e("왜",menuList.toString())
                             lists.add(ReceiptList(customerAddress,totalPrice,menuList))
                             val paymentType = orderResponse.getJSONObject(i).get("paymentType")
 

@@ -3,7 +3,6 @@ package com.example.garam.takemehome_android.customer
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_menu_list.*
 import kotlinx.android.synthetic.main.menu_dialog.*
 import org.json.JSONArray
@@ -57,8 +55,8 @@ class MenuListActivity : AppCompatActivity() {
 
         menuRecycler = MenuListViewAdapter(menuLists,this){
             menuList ->
-            when {
-                menuList.menuStatus == "SOLD_OUT" ->{
+            when (menuList.menuStatus) {
+                "SOLD_OUT" -> {
                     recycler.isEnabled = false
                 }
                 else -> {
@@ -149,22 +147,21 @@ class MenuListActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
-                val message = res?.get("message")?.asString
 
-                when{
-                    message == "메뉴 조회 성공" ->{
+                when (res?.get("message")?.asString) {
+                    "메뉴 조회 성공" -> {
                         val resObject = JSONObject(res.toString())
                         val data = resObject.getJSONArray("data")
                         for( i in 0 until data.length()){
                             val dataObject = data.getJSONObject(i)
                             menuLists.add(MenuList(dataObject.getString("name"),
-                            dataObject.getInt("price"),
+                                dataObject.getInt("price"),
                                 dataObject.getInt("id"),dataObject.getString("menuStatus")))
                         }
                         menuRecycler.notifyDataSetChanged()
 
                     }
-                    message == "메뉴 조회 실패" -> {
+                    "메뉴 조회 실패" -> {
                         failMessage.show()
                     }
                 }

@@ -1,33 +1,25 @@
 package com.example.garam.takemehome_android
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.garam.takemehome_android.customer.ForCustomerActivity
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.network.NetworkServiceRider
-import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
 import com.example.garam.takemehome_android.restaurant.RestaurantManageActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
 import com.example.garam.takemehome_android.signUp.RiderSignUpActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,7 +28,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
-import com.google.firebase.iid.InstanceIdResult
 
 class MainActivity : AppCompatActivity() {
 
@@ -77,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             loginInfo.put("email",idInfo)
             loginInfo.put("password",pwInfo)
             loginInfo.put("token",token)
-            Log.e("토큰", token)
 
             val loginObj = JsonParser().parse(loginInfo.toString()) as JsonObject
 

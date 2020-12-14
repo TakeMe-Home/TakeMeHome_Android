@@ -3,7 +3,6 @@ package com.example.garam.takemehome_android.signUp
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.garam.takemehome_android.R
@@ -51,19 +50,11 @@ class RestaurantSignUpActivity : AppCompatActivity() {
 
         detailAddress.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
-                s: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
+                s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(
-                s: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
+                s: CharSequence, start: Int, before: Int, count: Int) {
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -133,11 +124,8 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                             latitude = y
                             longitude = x
                             detailAddress.setText(addressName)
-                            Toast.makeText(
-                                this@RestaurantSignUpActivity,
-                                "주소 검색에 성공하였습니다",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this@RestaurantSignUpActivity, "주소 검색에 성공하였습니다",
+                                Toast.LENGTH_LONG).show()
                         }
                         else -> {
                             failMessage.show()

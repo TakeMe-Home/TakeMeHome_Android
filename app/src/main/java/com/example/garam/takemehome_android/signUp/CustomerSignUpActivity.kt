@@ -3,7 +3,6 @@ package com.example.garam.takemehome_android.signUp
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.garam.takemehome_android.R
@@ -97,9 +96,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
                 val test = res?.getAsJsonObject("meta")
                 val totalCount = test?.get("total_count")?.asInt
                 if (totalCount == 1) {
-                    Log.e("카카오", "$documents")
                     val add = documents?.asJsonArray?.get(0)
-                    Log.e("ㄹㅁ", "$add")
                     val addInfo = add?.asJsonObject?.get("address")
                     when {
                         addInfo != null -> {
@@ -111,11 +108,8 @@ class CustomerSignUpActivity : AppCompatActivity() {
                             longitude = x
 
                             customerDetailAddress.setText(addressName)
-                            Toast.makeText(
-                                this@CustomerSignUpActivity,
-                                "주소 검색에 성공하였습니다",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this@CustomerSignUpActivity, "주소 검색에 성공하였습니다",
+                                Toast.LENGTH_LONG).show()
                         }
                         else -> {
                             failMessage.show()

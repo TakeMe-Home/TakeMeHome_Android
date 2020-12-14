@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_update.*

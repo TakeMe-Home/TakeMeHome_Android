@@ -1,7 +1,5 @@
 package com.example.garam.takemehome_android.restaurant
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class RestaurantSharedViewModel : ViewModel(){
