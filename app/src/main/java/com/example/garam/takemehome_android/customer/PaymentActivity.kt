@@ -1,5 +1,6 @@
 package com.example.garam.takemehome_android.customer
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -103,6 +104,8 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun order(orderInfo: JsonObject){
+        val intent = Intent(this@PaymentActivity, ForCustomerActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         networkService.orderRequest(orderInfo).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
@@ -112,10 +115,10 @@ class PaymentActivity : AppCompatActivity() {
                 val res = response.body()
                 when(res?.get("message")?.asString){
                     "고객 주문 성공" -> {
-                        finish()
+                        startActivity(intent)
                     }
                     "고객 주문 실패" -> {
-
+                        
                     }
 
                 }
