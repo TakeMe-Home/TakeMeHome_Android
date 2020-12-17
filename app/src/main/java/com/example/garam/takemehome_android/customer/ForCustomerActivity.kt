@@ -1,11 +1,15 @@
 package com.example.garam.takemehome_android.customer
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
@@ -22,7 +26,7 @@ class ForCustomerActivity : AppCompatActivity() {
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
-
+    private var orderState = ""
     private lateinit var restaurantRecycler: RestaurantListViewAdapter
     private var lists = arrayListOf<RestaurantList>()
 
@@ -84,4 +88,25 @@ class ForCustomerActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            mMessageReceiver,
+            IntentFilter("MyData")
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver)
+    }
+
+    private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            orderState = intent.getStringExtra("test")
+            Log.e("???",intent.getStringExtra("test"))
+        }
+    }
+
 }

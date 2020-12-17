@@ -118,7 +118,7 @@ class PaymentActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     "고객 주문 실패" -> {
-                        
+
                     }
 
                 }

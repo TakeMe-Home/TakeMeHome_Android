@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,8 @@ class ReceiptViewAdapter(
         private val menuItems = ArrayList<ReceiptMenuList>()
         private val orderAddress = itemView.findViewById<TextView>(R.id.orderCustomerAddress)
         private val orderPrice = itemView.findViewById<TextView>(R.id.orderTotalPrice)
+        private val cancelButton = itemView.findViewById<Button>(R.id.receiptCancelButton)
+        private val acceptButton = itemView.findViewById<Button>(R.id.receiptConfirmButton)
 
         fun bind(list: ReceiptList) {
 
@@ -55,7 +58,15 @@ class ReceiptViewAdapter(
             mAdapter.notifyDataSetChanged()
             innerRecycler.setHasFixedSize(true)
 
-            itemView.setOnClickListener {
+          /*  itemView.setOnClickListener {
+                itemClick(list)
+            } */
+
+            acceptButton.setOnClickListener {
+                itemClick(list)
+            }
+
+            cancelButton.setOnClickListener {
                 itemClick(list)
             }
         }

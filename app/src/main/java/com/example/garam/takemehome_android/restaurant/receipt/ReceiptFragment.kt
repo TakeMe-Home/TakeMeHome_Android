@@ -17,7 +17,9 @@ import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.receipt_accept_dialog_layout.*
 import kotlinx.android.synthetic.main.receipt_cancel_dialog_layout.*
+import kotlinx.android.synthetic.main.receipt_list_layout.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +32,7 @@ class ReceiptFragment : Fragment() {
     }
 
     private lateinit var dialog : Dialog
+    private lateinit var acceptDialog : Dialog
     private lateinit var receiptRecycler : ReceiptViewAdapter
     private val lists = arrayListOf<ReceiptList>()
     private var refuseJson = JSONObject()
@@ -47,6 +50,10 @@ class ReceiptFragment : Fragment() {
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.receipt_cancel_dialog_layout)
+
+        acceptDialog = Dialog(root.context)
+        acceptDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        acceptDialog.setContentView(R.layout.receipt_accept_dialog_layout)
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
@@ -67,14 +74,18 @@ class ReceiptFragment : Fragment() {
 
         findAllOrder(restaurantAddress.toString(),restaurantName.toString())
 
-        receiptRecycler =
-            ReceiptViewAdapter(
-                lists,
-                root.context
-            ) { ReceiptList->
+        receiptRecycler = ReceiptViewAdapter(lists, root.context) { ReceiptList->
 
-                refuseDialog(1, ReceiptList)
+            receiptCancelButton.setOnClickListener {
+                refuseDialog(ReceiptList)
             }
+            receiptConfirmButton.setOnClickListener {
+                acceptDialogShow(ReceiptList)
+            }
+        }
+
+
+
 
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
@@ -83,12 +94,28 @@ class ReceiptFragment : Fragment() {
         return root
     }
 
-    private fun refuseDialog(customerId: Int,receiptList: ReceiptList){
+    private fun acceptDialogShow(receiptList: ReceiptList){
+        acceptDialog.show()
+        acceptDialog.setCanceledOnTouchOutside(false)
+
+        val requiredTime = acceptDialog.requiredTimeEditText.text
+
+        val receiptJson = JSONObject()
+
+        acceptDialog.acceptButton.setOnClickListener {
+            receiptJson.put("requiredTime",requiredTime)
+            val receiptObject = JsonParser().parse(receiptJson.toString()).asJsonObject
+            receiptAccept(receiptList.orderId,receiptObject)
+        }
+
+    }
+
+    private fun refuseDialog(receiptList: ReceiptList){
 
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
         var refuseReason = ""
-        refuseJson.put("customerId",customerId)
+        refuseJson.put("customerId",receiptList.customerId)
 
         dialog.receiptRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
 
@@ -117,7 +144,7 @@ class ReceiptFragment : Fragment() {
                 else -> {
 
                     val refuseInfoJson = JsonParser().parse(refuseJson.toString()).asJsonObject
-                    receiptRefuse(refuseInfoJson)
+                    receiptRefuse(receiptList.orderId, refuseInfoJson)
                     dialog.dismiss()
                     lists.remove(receiptList)
                     receiptRecycler.notifyDataSetChanged()
@@ -130,8 +157,16 @@ class ReceiptFragment : Fragment() {
         }
     }
 
-    private fun receiptAccept(acceptInfo: JsonObject){
+    private fun receiptAccept(orderId: Int, acceptInfo: JsonObject){
+        networkService.orderReception(orderId, acceptInfo).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+            }
+        })
     }
 
     private fun findAllOrder(address: String, name: String){
@@ -165,7 +200,10 @@ class ReceiptFragment : Fragment() {
                                     )
                                 )
                             }
-                            lists.add(ReceiptList(customerAddress,totalPrice,menuList))
+                            val orderId = orderResponse.getJSONObject(i).getInt("orderId")
+                            val customerInfo = orderResponse.getJSONObject(i).getJSONObject("orderCustomer")
+                            val customerId = customerInfo.getInt("id")
+                            lists.add(ReceiptList(customerAddress,totalPrice,menuList,orderId,customerId))
                             val paymentType = orderResponse.getJSONObject(i).get("paymentType")
 
                             receiptRecycler.notifyDataSetChanged()
@@ -184,8 +222,8 @@ class ReceiptFragment : Fragment() {
     }
 
 
-    private fun receiptRefuse(refuseInfo: JsonObject){
-        networkService.refuseOrder(refuseInfo).enqueue(object: Callback<JsonObject>{
+    private fun receiptRefuse(orderId: Int, refuseInfo: JsonObject){
+        networkService.refuseOrder(orderId, refuseInfo).enqueue(object: Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }

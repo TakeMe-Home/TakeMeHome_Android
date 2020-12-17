@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,9 +108,19 @@ class CallFragment : Fragment() {
                     val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                     val latitude = location.latitude
                     val longitude = location.longitude
+                    Log.e("x",latitude.toString())
+                    Log.e("y",longitude.toString())
+                    for (i in 0 until lists.size){
+                        lists.removeAt(i)
+                    }
+                    callRecycler.notifyDataSetChanged()
                     nearByCall(latitude,longitude)
                 }
                 else -> {
+                    for (i in 0 until lists.size){
+                        lists.removeAt(i)
+                    }
+                    callRecycler.notifyDataSetChanged()
                     callLookUp()
                 }
 

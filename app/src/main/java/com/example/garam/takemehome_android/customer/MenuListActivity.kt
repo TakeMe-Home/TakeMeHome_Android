@@ -43,10 +43,13 @@ class MenuListActivity : AppCompatActivity() {
         val choiceRecyclerView = findViewById<RecyclerView>(R.id.choiceRecyclerView)
         val intent = intent
         val restaurantId = intent.getIntExtra("restaurantId",0)
-        val customerId = intent.getIntExtra("customerId",0)
+        var customerId = intent.getIntExtra("customerId",0)
+
         val restaurantName = intent.getStringExtra("restaurantName")
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
 
+        viewModel.setCustomerId(customerId)
+        customerId = viewModel.getCustomerId()
         menuLookUp(restaurantId)
 
         dialog = Dialog(this)
