@@ -64,7 +64,7 @@ class PaymentActivity : AppCompatActivity() {
         lastPaymentButton.setOnClickListener {
 
             val orderInfo = JsonParser().parse(orderInfo.toString()).asJsonObject
-            order(orderInfo)
+            order(orderInfo,customerId)
 
         }
 
@@ -103,9 +103,10 @@ class PaymentActivity : AppCompatActivity() {
         })
     }
 
-    private fun order(orderInfo: JsonObject){
+    private fun order(orderInfo: JsonObject, customerId: Int){
         val intent = Intent(this@PaymentActivity, ForCustomerActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.putExtra("customerId",customerId)
         networkService.orderRequest(orderInfo).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
