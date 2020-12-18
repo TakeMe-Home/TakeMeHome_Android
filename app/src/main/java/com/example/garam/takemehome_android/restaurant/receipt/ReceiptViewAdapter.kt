@@ -1,6 +1,7 @@
 package com.example.garam.takemehome_android.restaurant.receipt
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
+import kotlinx.android.synthetic.main.receipt_list_layout.view.*
 
 class ReceiptViewAdapter(
     private val items: ArrayList<ReceiptList>,
     val context: Context,
     private val itemClick:(ReceiptList)-> Unit) : RecyclerView.Adapter<ReceiptViewAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,6 +31,11 @@ class ReceiptViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
+
+        holder.itemView.receiptCancelButton.setOnClickListener {
+            Log.e("테스트",items[position].toString())
+            itemClick(items[position])
+        }
     }
 
     inner class ViewHolder(itemView: View, itemClick: (ReceiptList) -> Unit) :
@@ -58,17 +66,20 @@ class ReceiptViewAdapter(
             mAdapter.notifyDataSetChanged()
             innerRecycler.setHasFixedSize(true)
 
-          /*  itemView.setOnClickListener {
-                itemClick(list)
-            } */
+            itemView.setOnClickListener {
 
-            acceptButton.setOnClickListener {
-                itemClick(list)
+          //      itemClick(list)
+
+               /* acceptButton.setOnClickListener {
+                    itemClick(list)
+                }
+
+                cancelButton.setOnClickListener {
+                    itemClick(list)
+                } */
             }
 
-            cancelButton.setOnClickListener {
-                itemClick(list)
-            }
+
         }
     }
 }

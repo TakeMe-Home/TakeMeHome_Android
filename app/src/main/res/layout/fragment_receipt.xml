@@ -22,7 +22,7 @@
         android:paddingTop="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/receiptRecycler"
+            android:id="@+id/receiptRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

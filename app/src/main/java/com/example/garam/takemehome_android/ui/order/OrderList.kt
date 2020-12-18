@@ -5,5 +5,7 @@ data class OrderList  (
     val storeAddress: String,
     val deliveryAddress: String,
     val deliveryPrice: Int,
-    val nearByDistance: Double
+    val nearByDistance: Double,
+    val orderId : Int,
+    val orderStatus : String
 )

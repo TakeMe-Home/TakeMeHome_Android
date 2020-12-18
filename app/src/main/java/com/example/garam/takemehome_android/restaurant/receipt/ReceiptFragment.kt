@@ -45,7 +45,7 @@ class ReceiptFragment : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.fragment_receipt, container, false)
 
-        val recycler = root.findViewById<RecyclerView>(R.id.receiptRecycler)
+        val recycler = root.findViewById<RecyclerView>(R.id.receiptRecyclerView)
 
         dialog = Dialog(root.context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -83,8 +83,6 @@ class ReceiptFragment : Fragment() {
                 acceptDialogShow(ReceiptList)
             }
         }
-
-
 
 
         recycler.adapter = receiptRecycler

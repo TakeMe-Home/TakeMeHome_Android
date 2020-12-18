@@ -70,6 +70,8 @@ class OrdersFragment : Fragment() {
                 when{
                     message == "주문 조회 성공" && orderArray?.size() != 0 -> {
                         for (i in 0 until orderArray?.size()!!) {
+                            val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
+                            val orderStatus = orderArray.get(i).asJsonObject?.get("orderStatus")?.asString
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
                                 ?.asJsonObject?.get("name")?.toString()
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
@@ -87,7 +89,8 @@ class OrdersFragment : Fragment() {
 
                             lists.add(
                                 OrderList(restaurantName.toString(),restaurantAddress.toString(),
-                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0)
+                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0,orderId?.toInt()!!
+                                ,orderStatus.toString())
                             )
                         }
                         orderRecycler.notifyDataSetChanged()
@@ -106,14 +109,35 @@ class OrdersFragment : Fragment() {
     private fun showDialog(orderList: OrderList){
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.orderAddress.text = "가게 주소 : ${orderList.storeAddress}"
-        dialog.orderDeliveryAddressTextView.text = "배달 주소 : ${orderList.deliveryAddress}"
+        dialog.orderAddress.text = orderList.storeAddress
+        dialog.orderDeliveryAddressTextView.text = orderList.deliveryAddress
         dialog.orderPrice.text = "가격 : $"
         dialog.orderMethod.text = "결제 수단 : "
         dialog.orderRequest.text = "요청 사항 : "
-        dialog.deliveryPriceTextView.text = "배달료 : ${orderList.deliveryPrice}원"
+        dialog.deliveryPriceTextView.text = "${orderList.deliveryPrice}원"
+
+        dialog.deliveryCompleteButton.setOnClickListener {
+
+        }
+
+        dialog.pickUpButton.setOnClickListener {
+            deliveryPickUp(orderList.orderId)
+        }
+
         dialog.order_info_confirm.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun deliveryPickUp(orderId: Int){
+        networkService.orderPickUp(orderId).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.pickUpButton.isEnabled = false
+            }
+        })
     }
 }
