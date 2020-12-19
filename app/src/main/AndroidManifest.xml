@@ -13,11 +13,9 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".customer.StandByActivity"></activity>
         <activity android:name=".restaurant.RestaurantManageActivity" />
         <activity android:name=".customer.PaymentActivity" />
         <activity android:name=".customer.MenuListActivity" />
@@ -47,9 +45,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="8198cd8f49557b66286f0d3b25578e7f" />
     </application>
 
 </manifest>

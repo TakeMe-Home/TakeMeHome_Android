@@ -7,10 +7,11 @@
     tools:context=".restaurant.pickup.PickUpFragment">
 
     <TextView
-        android:textSize="25sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="배차 대기 목록"/>
+        android:gravity="center"
+        android:text="배차 대기 목록"
+        android:textSize="25sp" />
 
     <ScrollView
         android:layout_width="match_parent"

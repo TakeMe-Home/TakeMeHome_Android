@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("loginInfo",loginInfo.toString())
                 networkService.loginCustomer(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        Log.e("이유",t.message.toString())
                         failMessage.show()
                     }
 

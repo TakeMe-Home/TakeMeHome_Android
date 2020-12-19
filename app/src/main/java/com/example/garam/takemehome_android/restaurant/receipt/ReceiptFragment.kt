@@ -106,6 +106,10 @@ class ReceiptFragment : Fragment() {
             receiptAccept(receiptList.orderId,receiptObject)
         }
 
+        acceptDialog.acceptCancelButton.setOnClickListener {
+            acceptDialog.dismiss()
+        }
+
     }
 
     private fun refuseDialog(receiptList: ReceiptList){
@@ -162,6 +166,15 @@ class ReceiptFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                val res = response.body()
+                when(res?.get("message")?.asString){
+                    "주문 접수 성공" -> {
+                        acceptDialog.dismiss()
+                    }
+                    "주문 접수 실패" -> {
+
+                    }
+                }
 
             }
         })
