@@ -20,9 +20,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.garam.takemehome_android.ui.map.MapFragment"
+        android:name="com.example.garam.takemehome_android.ui.assignedOrder.AssignedOrderFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_assigned" />
 
     <fragment
         android:id="@+id/navigation_notifications"

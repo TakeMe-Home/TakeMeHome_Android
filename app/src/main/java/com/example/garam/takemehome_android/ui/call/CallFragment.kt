@@ -23,7 +23,7 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
-import com.example.garam.takemehome_android.ui.map.LocationList
+import com.example.garam.takemehome_android.ui.assignedOrder.AssignedOrderList
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import kotlinx.android.synthetic.main.fragment_call.view.*
@@ -44,7 +44,7 @@ class CallFragment : Fragment() {
     private lateinit var dialog : Dialog
     private lateinit var callRecycler : CallViewAdapter
     private lateinit var sharedViewModel: SharedViewModel
-    private var locationLists = arrayListOf<LocationList>()
+    private var locationLists = arrayListOf<AssignedOrderList>()
     private lateinit var root : View
 
     override fun onCreateView(
@@ -228,7 +228,6 @@ class CallFragment : Fragment() {
         dialog.testNameConfirm.text = callList.storeName
 
         dialog.testConfirmbutton.setOnClickListener {
-         //  searchLocation(callList)
             dialog.dismiss()
             orderAssign(callList,riderId)
         }
@@ -247,40 +246,6 @@ class CallFragment : Fragment() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 lists.remove(callList)
                 callRecycler.notifyDataSetChanged()
-            }
-        })
-    }
-
-    private fun searchLocation(callList: CallList){
-
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL).addConverterFactory(
-            GsonConverterFactory.create()).build()
-
-        val networkService = retrofit.create(NetworkService::class.java)
-        val testAddress : Call<JsonObject> = networkService.address(
-            KakaoApi.instance.kakaoKey,
-            callList.storeAddress
-        )
-
-        testAddress.enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                val res = response.body()
-                val body = response.code()
-                val fa = response.message()
-                when {
-                    response.isSuccessful -> {
-                        val kakao = res?.getAsJsonArray("documents")
-                        val add = kakao?.asJsonArray?.get(0)
-                        val addInfo = add?.asJsonObject?.get("address")
-                        val x = JSONObject(addInfo.toString()).getString("x")
-                        val y = JSONObject(addInfo.toString()).getString("y")
-                        locationLists.add(LocationList(x,y))
-                        sharedViewModel.setLocation(locationLists[locationLists.lastIndex])
-                    }
-                }
-            }
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
             }
         })
     }
