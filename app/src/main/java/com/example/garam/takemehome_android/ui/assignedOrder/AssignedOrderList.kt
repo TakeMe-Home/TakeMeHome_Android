@@ -7,5 +7,6 @@ data class AssignedOrderList (
     val deliveryPrice: Int,
     val nearByDistance: Double,
     val orderId : Int,
-    val orderStatus : String
+    val orderStatus : String,
+    val deliveryStatus : String
 )

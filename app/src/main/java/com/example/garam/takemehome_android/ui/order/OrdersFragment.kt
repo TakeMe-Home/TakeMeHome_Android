@@ -116,9 +116,6 @@ class OrdersFragment : Fragment() {
         dialog.orderRequest.text = "요청 사항 : "
         dialog.deliveryPriceTextView.text = "${orderList.deliveryPrice}원"
 
-        dialog.deliveryCompleteButton.setOnClickListener {
-
-        }
 
         dialog.pickUpButton.setOnClickListener {
             deliveryPickUp(orderList.orderId)

@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -28,7 +27,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/orderAddress"
+            android:id="@+id/deliveryStoreAddressTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -51,7 +50,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/orderDeliveryAddressTextView"
+            android:id="@+id/deliveryAddressTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -67,7 +66,7 @@
         android:paddingBottom="5dp">
 
         <TextView
-            android:id="@+id/orderPrice"
+            android:id="@+id/deliveryOrderPriceTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="가격 : "
@@ -90,7 +89,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/orderMethod"
+            android:id="@+id/deliveryPaymentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -116,7 +115,7 @@
 
 
         <TextView
-            android:id="@+id/orderRequest"
+            android:id="@+id/deliveryRequestsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -139,7 +138,28 @@
             android:textSize="18sp"/>
 
         <TextView
-            android:id="@+id/deliveryPriceTextView"
+            android:id="@+id/deliveryFeeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="현재 상태"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/deliveryCurrentStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -168,19 +188,18 @@
             android:paddingBottom="5dp">
 
             <Button
-                android:id="@+id/pickUpButton"
+                android:id="@+id/deliveryCompleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="픽업"
+                android:text="배달완료"
                 android:layout_weight="1"/>
-
 
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/order_info_confirm"
+        android:id="@+id/deliveryInfoConfirmButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

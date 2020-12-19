@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
 import com.google.gson.JsonObject
+import kotlinx.android.synthetic.main.confirm_dialog.*
+import kotlinx.android.synthetic.main.delivery_info_dialog_layout.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +31,7 @@ class AssignedOrderFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var assignedRecycler : AssignedOrderViewAdapter
     private var lists = arrayListOf<AssignedOrderList>()
-  //  private lateinit var dialog : Dialog
+    private lateinit var dialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +43,15 @@ class AssignedOrderFragment : Fragment() {
         val recycler = root.findViewById<RecyclerView>(R.id.assignedOrderRecyclerView)
         val riderId = sharedViewModel.getRiderId()
 
+        dialog = Dialog(root.context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.delivery_info_dialog_layout)
+
         assignedOrder(riderId)
 
         assignedRecycler = AssignedOrderViewAdapter(lists,root.context) {
             assignedOrderList ->
-
+            showDialog(assignedOrderList)
         }
 
         recycler.adapter = assignedRecycler
@@ -53,9 +60,34 @@ class AssignedOrderFragment : Fragment() {
         return root
     }
 
+    private fun showDialog(assignedOrderList: AssignedOrderList) {
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(false)
+
+        when(assignedOrderList.deliveryStatus) {
+            "COMPLETE" ->
+            {
+                dialog.deliveryCompleteButton.isEnabled = false
+            }
+            "ASSIGNED" -> {
+                dialog.deliveryCompleteButton.isEnabled = false
+            }
+            "PICK_UP" -> {
+                dialog.deliveryCompleteButton.isEnabled = true
+                dialog.deliveryCompleteButton.setOnClickListener {
+                    deliveryComplete(assignedOrderList.orderId)
+                }
+            }
+
+        }
+
+        dialog.deliveryInfoConfirmButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
     private fun assignedOrder(riderId: Int){
         networkService.orderListForRider(riderId).enqueue(object : Callback<JsonObject>{
-
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -83,11 +115,13 @@ class AssignedOrderFragment : Fragment() {
                                 ?.asJsonObject?.get("address")?.toString()
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
+                            val deliveryStatus = orderArray.get(i).asJsonObject?.get("orderDelivery")
+                                ?.asJsonObject?.get("status")?.asString
 
                             lists.add(
                                 AssignedOrderList(restaurantName.toString(),restaurantAddress.toString(),
                                     deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0,orderId?.toInt()!!
-                                    ,orderStatus.toString())
+                                    ,orderStatus.toString(),deliveryStatus.toString())
                             )
                         }
                         assignedRecycler.notifyDataSetChanged()
@@ -100,6 +134,18 @@ class AssignedOrderFragment : Fragment() {
                 }
             }
 
+        })
+    }
+
+    private fun deliveryComplete(orderId: Int) {
+        networkService.orderComplete(orderId).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.deliveryCompleteButton.isEnabled = false
+            }
         })
     }
 
