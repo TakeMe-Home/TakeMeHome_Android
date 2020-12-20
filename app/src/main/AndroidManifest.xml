@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".restaurant.RestaurantManageActivity" />
+        <activity android:name=".restaurant.manage.RestaurantManageActivity" />
         <activity android:name=".customer.PaymentActivity" />
         <activity android:name=".customer.MenuListActivity" />
         <activity android:name=".customer.ForCustomerActivity" />

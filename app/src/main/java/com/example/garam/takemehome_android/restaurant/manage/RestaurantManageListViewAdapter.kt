@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.manage
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ class RestaurantManageListViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RestaurantManageListViewAdapter.ViewHolder {
+    ): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(
             R.layout.restaurant_manage_recycler_layout,parent,false),itemClick)
     }

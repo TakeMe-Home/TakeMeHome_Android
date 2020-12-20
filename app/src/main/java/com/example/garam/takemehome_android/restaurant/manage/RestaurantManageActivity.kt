@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.restaurant
+package com.example.garam.takemehome_android.restaurant.manage
 
 import android.app.Dialog
 import android.content.Intent
@@ -15,6 +15,7 @@ import com.example.garam.takemehome_android.network.KakaoApi
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.ForRestaurantActivity
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_restaurant_manage.*
@@ -55,15 +56,21 @@ class RestaurantManageActivity : AppCompatActivity() {
             showAddDialog(ownerId)
         }
 
-        restaurantManageRecycler = RestaurantManageListViewAdapter(lists,this){
-                RestaurantManageList ->
+        restaurantManageRecycler =
+            RestaurantManageListViewAdapter(
+                lists,
+                this
+            ) { RestaurantManageList ->
 
-            val nextIntent = Intent(this,ForRestaurantActivity::class.java)
-            nextIntent.putExtra("restaurantId",RestaurantManageList.restaurantId)
-            nextIntent.putExtra("restaurantAddress",RestaurantManageList.address)
-            nextIntent.putExtra("restaurantName", RestaurantManageList.restaurantName)
-            startActivity(nextIntent)
-        }
+                val nextIntent = Intent(
+                    this,
+                    ForRestaurantActivity::class.java
+                )
+                nextIntent.putExtra("restaurantId", RestaurantManageList.restaurantId)
+                nextIntent.putExtra("restaurantAddress", RestaurantManageList.address)
+                nextIntent.putExtra("restaurantName", RestaurantManageList.restaurantName)
+                startActivity(nextIntent)
+            }
 
         recycler.adapter = restaurantManageRecycler
         recycler.layoutManager = LinearLayoutManager(this)
@@ -143,9 +150,16 @@ class RestaurantManageActivity : AppCompatActivity() {
                 when(res?.get("message")?.asString){
                     "가게 등록 성공" -> {
                         val resId = res.get("data")?.asInt
-                        lists.add(RestaurantManageList(dialog.additionalDetailAddress.text.toString(),
-                        dialog.additionalRestaurantName.text.toString(), resId!!,latitude,longitude,
-                        dialog.additionalRestaurantNumber.text.toString()))
+                        lists.add(
+                            RestaurantManageList(
+                                dialog.additionalDetailAddress.text.toString(),
+                                dialog.additionalRestaurantName.text.toString(),
+                                resId!!,
+                                latitude,
+                                longitude,
+                                dialog.additionalRestaurantNumber.text.toString()
+                            )
+                        )
                         dialog.dismiss()
 
                         restaurantManageRecycler.notifyDataSetChanged()
@@ -229,12 +243,19 @@ class RestaurantManageActivity : AppCompatActivity() {
                         val dataObject = JSONObject(data.toString())
                         val restaurantResponse = dataObject.getJSONArray("restaurantFindAllResponse")
                         for (i in 0 until restaurantResponse.length()){
-                            lists.add(RestaurantManageList(restaurantResponse.getJSONObject(i)
-                                .getString("address"),restaurantResponse.getJSONObject(i).getString("name"),
-                            restaurantResponse.getJSONObject(i).getInt("id"),
-                            restaurantResponse.getJSONObject(i).getJSONObject("location").getDouble("x"),
-                                restaurantResponse.getJSONObject(i).getJSONObject("location").getDouble("y"),
-                                restaurantResponse.getJSONObject(i).getString("number")))
+                            lists.add(
+                                RestaurantManageList(
+                                    restaurantResponse.getJSONObject(i)
+                                        .getString("address"),
+                                    restaurantResponse.getJSONObject(i).getString("name"),
+                                    restaurantResponse.getJSONObject(i).getInt("id"),
+                                    restaurantResponse.getJSONObject(i).getJSONObject("location")
+                                        .getDouble("x"),
+                                    restaurantResponse.getJSONObject(i).getJSONObject("location")
+                                        .getDouble("y"),
+                                    restaurantResponse.getJSONObject(i).getString("number")
+                                )
+                            )
                             Log.e("가게 아이디",lists[i].restaurantId.toString())
                         }
                         restaurantManageRecycler.notifyDataSetChanged()
