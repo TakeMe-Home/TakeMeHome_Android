@@ -217,10 +217,8 @@ class ReceiptFragment : Fragment() {
                             lists.add(ReceiptList(customerAddress,totalPrice,menuList,orderId,customerId))
                             val paymentType = orderResponse.getJSONObject(i).get("paymentType")
 
-                            receiptRecycler.notifyDataSetChanged()
-
                         }
-
+                        receiptRecycler.notifyDataSetChanged()
 
                     }
 
