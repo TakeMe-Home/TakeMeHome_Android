@@ -1,10 +1,11 @@
 package com.example.garam.takemehome_android.restaurant.pickup
 
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.pick_up_request_dialog_layout.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +31,7 @@ class PickUpFragment : Fragment() {
     private lateinit var root : View
     private val lists = arrayListOf<PickUpWaitingList>()
     private lateinit var pickUpRecycler : PickUpWaitListViewAdapter
+    private lateinit var dialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +43,10 @@ class PickUpFragment : Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
+        dialog = Dialog(root.context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.pick_up_request_dialog_layout)
+
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
 
@@ -46,7 +54,7 @@ class PickUpFragment : Fragment() {
 
         pickUpRecycler = PickUpWaitListViewAdapter(lists,root.context){
             pickUpWaitingList ->
-
+            requestDeliveryDialog(pickUpWaitingList)
         }
 
         recycler.adapter = pickUpRecycler
@@ -75,17 +83,18 @@ class PickUpFragment : Fragment() {
                             val totalPrice = orderResponse.getJSONObject(i).getInt("totalPrice")
                             val orderDelivery = orderResponse.getJSONObject(i).getJSONObject("orderDelivery")
                             val customerAddress = orderDelivery.getString("address")
+                            val deliveryStatus = orderDelivery.getString("status")
                             val orderId = orderResponse.getJSONObject(i).getInt("orderId")
                             val paymentType = orderResponse.getJSONObject(i).getString("paymentType")
                             val paymentStatus = orderResponse.getJSONObject(i).getString("paymentStatus")
 
                             val customerInfo = orderResponse.getJSONObject(i).getJSONObject("orderCustomer")
                             val customerPhone = customerInfo.getString("phoneNumber")
-                            Log.e("오더 스테이트",orderStatus)
-                            when(orderStatus) {
-                                "RECEPTION" -> {
+
+                            when(deliveryStatus) {
+                                "NONE" -> {
                                     lists.add(PickUpWaitingList(customerAddress,customerPhone,totalPrice,
-                                    paymentType,paymentStatus))
+                                    paymentType,paymentStatus,orderId))
                                 }
                             }
 
@@ -104,4 +113,34 @@ class PickUpFragment : Fragment() {
         })
     }
 
+    private fun requestDeliveryDialog(pickUpWaitingList: PickUpWaitingList){
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(false)
+
+        dialog.pickupRequestButton.setOnClickListener {
+            val deliveryInfo = JSONObject()
+            val cookingTime = dialog.cookingTimeEditText.text.toString()
+
+            deliveryInfo.put("cookingTime",cookingTime.toInt())
+            val deliveryInfoJson = JsonParser().parse(deliveryInfo.toString()).asJsonObject
+
+            requestDeliveryMethod(pickUpWaitingList.orderId,deliveryInfoJson)
+        }
+        dialog.pickUpRequestCancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+
+    private fun requestDeliveryMethod(orderId: Int, deliveryInfo: JsonObject){
+        networkService.requestDelivery(orderId,deliveryInfo).enqueue(object : Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+            }
+        })
+    }
 }

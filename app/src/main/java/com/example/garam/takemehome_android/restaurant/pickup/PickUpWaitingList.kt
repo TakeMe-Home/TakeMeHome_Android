@@ -5,5 +5,6 @@ data class PickUpWaitingList (
     val customerPhone : String,
     val totalPrice : Int,
     val paymentType : String,
-    val paymentStatus : String
+    val paymentStatus : String,
+    val orderId : Int
 )

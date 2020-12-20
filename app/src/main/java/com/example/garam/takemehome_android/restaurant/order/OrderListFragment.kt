@@ -73,16 +73,4 @@ class OrderListFragment : Fragment() {
     }
 
 
-    private fun requestDeliveryMethod(orderId: Int, deliveryInfo: JsonObject){
-        networkService.requestDelivery(orderId,deliveryInfo).enqueue(object : Callback<JsonObject>{
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
-            }
-
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-
-            }
-        })
-    }
-
 }
