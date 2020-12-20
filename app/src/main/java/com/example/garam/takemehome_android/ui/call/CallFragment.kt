@@ -108,18 +108,16 @@ class CallFragment : Fragment() {
                     val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                     val latitude = location.latitude
                     val longitude = location.longitude
-                    Log.e("x",latitude.toString())
-                    Log.e("y",longitude.toString())
-                    for (i in 0 until lists.size){
-                        lists.removeAt(i)
-                    }
+
+                    lists.clear()
+
                     callRecycler.notifyDataSetChanged()
                     nearByCall(latitude,longitude)
                 }
                 else -> {
-                    for (i in 0 until lists.size){
-                        lists.removeAt(i)
-                    }
+
+                    lists.clear()
+
                     callRecycler.notifyDataSetChanged()
                     callLookUp()
                 }
