@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
@@ -25,7 +27,7 @@ class OrderListFragment : Fragment() {
 
     private val lists = arrayListOf<OrderList>()
     private val menuList = arrayListOf<ReceiptMenuList>()
- //   private lateinit var orderListRecycler : OrderListViewAdapter
+    private lateinit var orderListRecycler : OrderListViewAdapter
     private lateinit var root : View
     private lateinit var sharedViewModel : RestaurantSharedViewModel
 
@@ -34,14 +36,21 @@ class OrderListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
+        root = inflater.inflate(R.layout.fragment_order_list, container, false)
 
+        val recycler = root.findViewById<RecyclerView>(R.id.orderListRecyclerView)
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
 
 
-        root = inflater.inflate(R.layout.fragment_order_list, container, false)
-
         findAllOrder(restaurantId)
+
+        orderListRecycler = OrderListViewAdapter(lists,root.context){
+            orderList ->
+        }
+        recycler.adapter = orderListRecycler
+        recycler.layoutManager = LinearLayoutManager(root.context)
+
 
         return root
     }
@@ -60,8 +69,38 @@ class OrderListFragment : Fragment() {
                         val dataObject = JSONObject(data.toString())
                         val orderResponse = dataObject.getJSONArray("orderFindResponses")
 
-                      //  orderListRecycler.notifyDataSetChanged()
+                        for (i in 0 until orderResponse.length()) {
+                            val orderStatus =
+                                orderResponse.getJSONObject(i).getString("orderStatus")
+                            val totalPrice = orderResponse.getJSONObject(i).getInt("totalPrice")
+                            val orderDelivery =
+                                orderResponse.getJSONObject(i).getJSONObject("orderDelivery")
+                            val customerAddress = orderDelivery.getString("address")
+                            val deliveryStatus = orderDelivery.getString("status")
+                            val orderId = orderResponse.getJSONObject(i).getInt("orderId")
+                            val paymentType =
+                                orderResponse.getJSONObject(i).getString("paymentType")
+                            val paymentStatus =
+                                orderResponse.getJSONObject(i).getString("paymentStatus")
 
+                            val customerInfo =
+                                orderResponse.getJSONObject(i).getJSONObject("orderCustomer")
+                            val customerPhone = customerInfo.getString("phoneNumber")
+
+                            when{
+                                deliveryStatus == "NONE" || deliveryStatus == "REQUEST"-> {
+
+                                }
+                                else -> {
+                                    lists.add(OrderList(customerAddress,customerPhone,totalPrice,paymentType
+                                        ,paymentStatus, orderId)
+                                    )
+                                }
+                            }
+
+
+                        }
+                        orderListRecycler.notifyDataSetChanged()
                     }
 
                     "주문 조회 실패" -> {

@@ -36,11 +36,33 @@ class OrderListViewAdapter(
 
         private val orderPrice = itemView.findViewById<TextView>(R.id.orderListTotalPrice)
         private val orderAddress = itemView.findViewById<TextView>(R.id.orderListAddress)
+        private val orderCustomerPhone = itemView.findViewById<TextView>(R.id.orderListCustomerPhone)
+        private val orderPaymentStatus = itemView.findViewById<TextView>(R.id.orderListPaymentStatus)
+        private val orderPaymentType = itemView.findViewById<TextView>(R.id.orderListPaymentType)
 
         fun bind(list: OrderList) {
 
-            orderAddress.text = list.deliveryAddress
+            orderAddress.text = list.customerAddress
             orderPrice.text = list.totalPrice.toString() + "원"
+            orderCustomerPhone.text = list.customerPhone
+
+            when(list.paymentStatus){
+                "COMPLITE" -> {
+                    orderPaymentStatus.text = "결제완료"
+                }
+                "NONE" -> {
+                    orderPaymentStatus.text = "미결제"
+                    when(list.paymentType){
+                        "CARD" -> {
+                            orderPaymentType.text = "카드"
+                        }
+                        "CASH" -> {
+                            orderPaymentType.text = "현금"
+                        }
+                    }
+                }
+
+            }
 
             itemView.setOnClickListener {
                 itemClick(list)
