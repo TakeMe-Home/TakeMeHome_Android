@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.AllOrderListDataClass
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.example.garam.takemehome_android.restaurant.receipt.ReceiptMenuList
 import com.google.gson.JsonObject
@@ -25,7 +26,7 @@ class OrderListFragment : Fragment() {
         NetworkController.instance.networkServiceRestaurant
     }
 
-    private val lists = arrayListOf<OrderList>()
+    private val lists = arrayListOf<AllOrderListDataClass>()
     private val menuList = arrayListOf<ReceiptMenuList>()
     private lateinit var orderListRecycler : OrderListViewAdapter
     private lateinit var root : View
@@ -92,8 +93,11 @@ class OrderListFragment : Fragment() {
 
                                 }
                                 else -> {
-                                    lists.add(OrderList(customerAddress,customerPhone,totalPrice,paymentType
-                                        ,paymentStatus, orderId)
+                                    lists.add(
+                                        AllOrderListDataClass(
+                                            customerAddress, customerPhone, totalPrice, paymentType
+                                            , paymentStatus, orderId
+                                        )
                                     )
                                 }
                             }

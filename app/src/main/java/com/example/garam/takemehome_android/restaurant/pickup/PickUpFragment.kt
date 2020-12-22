@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
+import com.example.garam.takemehome_android.restaurant.AllOrderListDataClass
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -29,7 +30,7 @@ class PickUpFragment : Fragment() {
     }
     private lateinit var sharedViewModel : RestaurantSharedViewModel
     private lateinit var root : View
-    private val lists = arrayListOf<PickUpWaitingList>()
+    private val lists = arrayListOf<AllOrderListDataClass>()
     private lateinit var pickUpRecycler : PickUpWaitListViewAdapter
     private lateinit var dialog : Dialog
 
@@ -53,8 +54,8 @@ class PickUpFragment : Fragment() {
         waitForPickUpOrder(restaurantId)
 
         pickUpRecycler = PickUpWaitListViewAdapter(lists,root.context){
-            pickUpWaitingList ->
-            requestDeliveryDialog(pickUpWaitingList)
+                allOrderListDataClass ->
+            requestDeliveryDialog(allOrderListDataClass)
         }
 
         recycler.adapter = pickUpRecycler
@@ -93,7 +94,7 @@ class PickUpFragment : Fragment() {
 
                             when(deliveryStatus) {
                                 "NONE" -> {
-                                    lists.add(PickUpWaitingList(customerAddress,customerPhone,totalPrice,
+                                    lists.add(AllOrderListDataClass(customerAddress,customerPhone,totalPrice,
                                     paymentType,paymentStatus,orderId))
                                 }
                             }
@@ -113,7 +114,7 @@ class PickUpFragment : Fragment() {
         })
     }
 
-    private fun requestDeliveryDialog(pickUpWaitingList: PickUpWaitingList){
+    private fun requestDeliveryDialog(pickUpWaitingList: AllOrderListDataClass){
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
 

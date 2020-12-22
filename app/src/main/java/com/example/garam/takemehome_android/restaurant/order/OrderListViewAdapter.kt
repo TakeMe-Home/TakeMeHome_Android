@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.restaurant.AllOrderListDataClass
 
 class OrderListViewAdapter(
-    private val items: ArrayList<OrderList>,
+    private val items: ArrayList<AllOrderListDataClass>,
     val context: Context,
-    private val itemClick:(OrderList) -> Unit ) : RecyclerView.Adapter<OrderListViewAdapter.ViewHolder>() {
+    private val itemClick:(AllOrderListDataClass) -> Unit ) : RecyclerView.Adapter<OrderListViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,7 +32,7 @@ class OrderListViewAdapter(
 
     }
 
-    inner class ViewHolder(itemView: View, itemClick: (OrderList) -> Unit):
+    inner class ViewHolder(itemView: View, itemClick: (AllOrderListDataClass) -> Unit):
             RecyclerView.ViewHolder(itemView){
 
         private val orderPrice = itemView.findViewById<TextView>(R.id.orderListTotalPrice)
@@ -40,7 +41,7 @@ class OrderListViewAdapter(
         private val orderPaymentStatus = itemView.findViewById<TextView>(R.id.orderListPaymentStatus)
         private val orderPaymentType = itemView.findViewById<TextView>(R.id.orderListPaymentType)
 
-        fun bind(list: OrderList) {
+        fun bind(list: AllOrderListDataClass) {
 
             orderAddress.text = list.customerAddress
             orderPrice.text = list.totalPrice.toString() + "원"

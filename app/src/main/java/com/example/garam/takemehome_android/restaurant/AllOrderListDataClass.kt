@@ -1,8 +1,6 @@
-package com.example.garam.takemehome_android.restaurant.order
+package com.example.garam.takemehome_android.restaurant
 
-import com.example.garam.takemehome_android.restaurant.receipt.ReceiptMenuList
-
-data class OrderList(
+data class AllOrderListDataClass(
     val customerAddress: String,
     val customerPhone : String,
     val totalPrice : Int,

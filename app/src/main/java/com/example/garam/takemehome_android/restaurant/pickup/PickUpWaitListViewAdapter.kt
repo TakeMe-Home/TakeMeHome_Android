@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.restaurant.AllOrderListDataClass
 
 class PickUpWaitListViewAdapter(
-    private val items: ArrayList<PickUpWaitingList>,
+    private val items: ArrayList<AllOrderListDataClass>,
     val context: Context,
-    private val itemClick:(PickUpWaitingList) -> Unit) : RecyclerView.Adapter<PickUpWaitListViewAdapter.ViewHolder>(){
+    private val itemClick:(AllOrderListDataClass) -> Unit) : RecyclerView.Adapter<PickUpWaitListViewAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,7 +30,7 @@ class PickUpWaitListViewAdapter(
         holder.bind(items[position])
     }
 
-    inner class ViewHolder(itemView:View, itemClick: (PickUpWaitingList) -> Unit) : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView:View, itemClick: (AllOrderListDataClass) -> Unit) : RecyclerView.ViewHolder(itemView){
 
         private val customerAddress = itemView.findViewById<TextView>(R.id.waitPickUpCustomerAddress)
         private val customerPhone = itemView.findViewById<TextView>(R.id.waitPickUpCustomerPhone)
@@ -37,7 +38,7 @@ class PickUpWaitListViewAdapter(
         private val paymentStatus = itemView.findViewById<TextView>(R.id.waitPickUpPaymentStatus)
         private val paymentType = itemView.findViewById<TextView>(R.id.waitPickUpPaymentType)
 
-        fun bind (list: PickUpWaitingList){
+        fun bind (list: AllOrderListDataClass){
             customerAddress.text = list.customerAddress
             customerPhone.text = list.customerPhone
             totalPrice.text = list.totalPrice.toString() + "원"
