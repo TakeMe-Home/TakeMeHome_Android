@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,6 @@ class OrderListFragment : Fragment() {
     }
 
     private val lists = arrayListOf<AllOrderListDataClass>()
-    private val menuList = arrayListOf<ReceiptMenuList>()
     private lateinit var orderListRecycler : OrderListViewAdapter
     private lateinit var root : View
     private lateinit var sharedViewModel : RestaurantSharedViewModel
@@ -49,6 +49,7 @@ class OrderListFragment : Fragment() {
         orderListRecycler = OrderListViewAdapter(lists,root.context){
             orderList ->
         }
+
         recycler.adapter = orderListRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
 
@@ -57,9 +58,11 @@ class OrderListFragment : Fragment() {
     }
 
     private fun findAllOrder(restaurantId : Int){
+        val errorMessage = Toast.makeText(root.context,"주문 조회에 실패했습니다", Toast.LENGTH_SHORT)
+
         networkService.findOrder(restaurantId).enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -89,26 +92,19 @@ class OrderListFragment : Fragment() {
                             val customerPhone = customerInfo.getString("phoneNumber")
 
                             when{
-                                deliveryStatus == "NONE" || deliveryStatus == "REQUEST"-> {
-
-                                }
-                                else -> {
-                                    lists.add(
-                                        AllOrderListDataClass(
+                                !(deliveryStatus == "NONE" || deliveryStatus == "REQUEST")-> {
+                                    lists.add(AllOrderListDataClass(
                                             customerAddress, customerPhone, totalPrice, paymentType
-                                            , paymentStatus, orderId
-                                        )
+                                            , paymentStatus, orderId)
                                     )
                                 }
                             }
-
-
                         }
                         orderListRecycler.notifyDataSetChanged()
                     }
 
                     "주문 조회 실패" -> {
-
+                        errorMessage.show()
                     }
                 }
             }

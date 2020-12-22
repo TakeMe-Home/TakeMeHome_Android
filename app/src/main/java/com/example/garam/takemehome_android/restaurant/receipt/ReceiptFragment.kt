@@ -160,9 +160,10 @@ class ReceiptFragment : Fragment() {
     }
 
     private fun receiptAccept(orderId: Int, acceptInfo: JsonObject){
+        val errorMessage = Toast.makeText(root.context,"주문 접수에 실패하였습니다",Toast.LENGTH_SHORT)
         networkService.orderReception(orderId, acceptInfo).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -170,9 +171,10 @@ class ReceiptFragment : Fragment() {
                 when(res?.get("message")?.asString){
                     "주문 접수 성공" -> {
                         acceptDialog.dismiss()
+                        Toast.makeText(root.context,"주문 접수에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     }
                     "주문 접수 실패" -> {
-
+                        errorMessage.show()
                     }
                 }
 
@@ -181,9 +183,10 @@ class ReceiptFragment : Fragment() {
     }
 
     private fun findAllOrder(address: String, name: String){
+        val errorMessage = Toast.makeText(root.context,"주문 조회에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.findWaitForOrder(address, name).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -223,7 +226,7 @@ class ReceiptFragment : Fragment() {
                     }
 
                     "주문 조회 실패" -> {
-
+                        errorMessage.show()
                     }
                 }
             }
@@ -232,13 +235,22 @@ class ReceiptFragment : Fragment() {
 
 
     private fun receiptRefuse(orderId: Int, refuseInfo: JsonObject){
+        val errorMessage = Toast.makeText(root.context,"주문 취소에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.refuseOrder(orderId, refuseInfo).enqueue(object: Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-
+                val res = response.body()
+                when(res?.get("message")?.asString){
+                    "주문 취소 성공" -> {
+                        Toast.makeText(root.context,"주문 취소에 성공하였습니다",Toast.LENGTH_SHORT).show()
+                    }
+                    "주문 취소 실패" -> {
+                        errorMessage.show()
+                    }
+                }
             }
         })
     }

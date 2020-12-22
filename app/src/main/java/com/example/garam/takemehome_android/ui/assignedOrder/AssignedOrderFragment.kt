@@ -87,9 +87,11 @@ class AssignedOrderFragment : Fragment() {
     }
 
     private fun assignedOrder(riderId: Int){
+        val errorMessage = Toast.makeText(this@AssignedOrderFragment.requireContext(),"주문 조회에 실패했습니다",Toast.LENGTH_SHORT)
+
         networkService.orderListForRider(riderId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -128,8 +130,7 @@ class AssignedOrderFragment : Fragment() {
 
                     }
                     message == "주문 조회 실패" || orderArray?.size() == 0-> {
-                        Toast.makeText(this@AssignedOrderFragment.requireContext(),"조회에 실패했습니다",
-                            Toast.LENGTH_LONG).show()
+                        errorMessage.show()
                     }
                 }
             }
@@ -138,13 +139,23 @@ class AssignedOrderFragment : Fragment() {
     }
 
     private fun deliveryComplete(orderId: Int) {
+        val errorMessage = Toast.makeText(this@AssignedOrderFragment.requireContext(),"배달 완료에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.orderComplete(orderId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.deliveryCompleteButton.isEnabled = false
+                val res = response.body()
+                when(res?.get("message")?.asString){
+                    "주문 완료 성공" -> {
+                        dialog.deliveryCompleteButton.isEnabled = false
+                    }
+                    "주문 완료 실패" -> {
+                        errorMessage.show()
+                    }
+                }
+
             }
         })
     }

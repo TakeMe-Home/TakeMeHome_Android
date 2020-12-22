@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,9 +66,10 @@ class PickUpFragment : Fragment() {
     }
 
     private fun waitForPickUpOrder(restaurantId: Int) {
+        val errorMessage = Toast.makeText(root.context,"주문 조회에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.findOrder(restaurantId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -98,18 +100,14 @@ class PickUpFragment : Fragment() {
                                     paymentType,paymentStatus,orderId))
                                 }
                             }
-
                         }
                         pickUpRecycler.notifyDataSetChanged()
-
-
                     }
 
                     "주문 조회 실패" -> {
-
+                        errorMessage.show()
                     }
                 }
-
             }
         })
     }
@@ -134,13 +132,25 @@ class PickUpFragment : Fragment() {
 
 
     private fun requestDeliveryMethod(orderId: Int, deliveryInfo: JsonObject){
+        val errorMessage = Toast.makeText(root.context,"배달 요청에 실패했습니다",Toast.LENGTH_SHORT)
+
         networkService.requestDelivery(orderId,deliveryInfo).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
+                val res = response.body()
+                when(res?.get("message")?.asString){
+                    "주문 배달 요청 성공" -> {
+                        dialog.dismiss()
+                        Toast.makeText(root.context,"배달 요청에 성공하였습니다",Toast.LENGTH_SHORT).show()
+                    }
+
+                    "주문 배달 요청 실패" -> {
+                        errorMessage.show()
+                    }
+                }
             }
         })
     }

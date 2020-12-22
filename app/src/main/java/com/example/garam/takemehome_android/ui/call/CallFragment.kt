@@ -129,9 +129,10 @@ class CallFragment : Fragment() {
     }
 
     private fun callLookUp(){
+        val errorMessage = Toast.makeText(this@CallFragment.requireContext(),"주문 조회에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.callLookUp().enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -165,8 +166,7 @@ class CallFragment : Fragment() {
                         callRecycler.notifyDataSetChanged()
                     }
                     res?.get("message")?.asString == "주문 조회 실패" || orderArray?.size() == 0-> {
-                        Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
-                            Toast.LENGTH_LONG).show()
+                        errorMessage.show()
                     }
 
                 }
@@ -175,9 +175,10 @@ class CallFragment : Fragment() {
     }
 
     private fun nearByCall(x: Double, y: Double) {
+        val errorMessage = Toast.makeText(this@CallFragment.requireContext(),"주문 조회에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.nearBy(x,y).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -211,8 +212,7 @@ class CallFragment : Fragment() {
                     }
 
                     message == "주문 조회 실패" || orderArray?.size() == 0 -> {
-                        Toast.makeText(this@CallFragment.requireContext(),"조회에 실패했습니다",
-                            Toast.LENGTH_LONG).show()
+                        errorMessage.show()
                     }
 
                 }
@@ -236,14 +236,25 @@ class CallFragment : Fragment() {
     }
 
     private fun orderAssign(callList: CallList, riderId: Int){
+        val errorMessage = Toast.makeText(this@CallFragment.requireContext(),"배차에 실패했습니다",Toast.LENGTH_SHORT)
         networkService.orderAssigned(callList.orderId ,riderId).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
+                errorMessage.show()
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                lists.remove(callList)
-                callRecycler.notifyDataSetChanged()
+                val res = response.body()
+
+                when(res?.get("message")?.asString){
+                    "주문 배차 완료" -> {
+                        lists.remove(callList)
+                        callRecycler.notifyDataSetChanged()
+                    }
+                    "주문 배차 실패" -> {
+                        errorMessage.show()
+                    }
+                }
+
             }
         })
     }
