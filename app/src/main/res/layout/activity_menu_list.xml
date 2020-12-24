@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/round_corner"
-    tools:context=".customer.MenuListActivity">
+    tools:context=".customer.ordering.MenuListActivity">
 
     <LinearLayout
         android:id="@+id/scrollLayout"

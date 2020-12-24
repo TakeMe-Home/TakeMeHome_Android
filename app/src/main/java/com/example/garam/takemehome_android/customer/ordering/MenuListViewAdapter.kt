@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.customer
+package com.example.garam.takemehome_android.customer.ordering
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ class MenuListViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MenuListViewAdapter.ViewHolder {
+    ): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.menu_list,parent,false)
             ,itemClick)
     }
@@ -25,7 +25,7 @@ class MenuListViewAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: MenuListViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 

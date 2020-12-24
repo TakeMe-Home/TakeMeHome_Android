@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.customer
+package com.example.garam.takemehome_android.customer.ordering
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ class ChoiceListViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ChoiceListViewAdapter.ViewHolder {
+    ): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.choicelayout,parent,false))
     }
 
@@ -23,7 +23,7 @@ class ChoiceListViewAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: ChoiceListViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 

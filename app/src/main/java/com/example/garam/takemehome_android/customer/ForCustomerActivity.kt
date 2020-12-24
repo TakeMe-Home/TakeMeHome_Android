@@ -13,6 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.customer.ordering.MenuListActivity
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
@@ -38,7 +39,8 @@ class ForCustomerActivity : AppCompatActivity() {
         val customerId = intent.getIntExtra("customerId",0)
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
         lookUp()
-        val nextIntent = Intent(this,MenuListActivity::class.java)
+        val nextIntent = Intent(this,
+            MenuListActivity::class.java)
 
         restaurantRecycler = RestaurantListViewAdapter(lists,this){
             RestaurantList->

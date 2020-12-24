@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.customer
+package com.example.garam.takemehome_android.customer.ordering
 
 import android.app.Dialog
 import android.content.Intent
@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.customer.*
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
@@ -32,7 +33,7 @@ class MenuListActivity : AppCompatActivity() {
     private var menuCountSize = 0
 
     private lateinit var dialog: Dialog
-    private lateinit var menuRecycler:MenuListViewAdapter
+    private lateinit var menuRecycler: MenuListViewAdapter
     private lateinit var choiceRecycler: ChoiceListViewAdapter
 
 
@@ -56,24 +57,31 @@ class MenuListActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.menu_dialog)
 
-        menuRecycler = MenuListViewAdapter(menuLists,this){
-            menuList ->
-            when (menuList.menuStatus) {
-                "SOLD_OUT" -> {
-                    recycler.isEnabled = false
+        menuRecycler =
+            MenuListViewAdapter(
+                menuLists,
+                this
+            ) { menuList ->
+                when (menuList.menuStatus) {
+                    "SOLD_OUT" -> {
+                        recycler.isEnabled = false
+                    }
+                    else -> {
+                        showDialog(menuList)
+                    }
                 }
-                else -> {
-                    showDialog(menuList)
-                }
-            }
 
-        }
+            }
 
         recycler.adapter = menuRecycler
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.setHasFixedSize(true)
 
-        choiceRecycler = ChoiceListViewAdapter(choiceLists,this)
+        choiceRecycler =
+            ChoiceListViewAdapter(
+                choiceLists,
+                this
+            )
 
         choiceRecyclerView.adapter = choiceRecycler
         choiceRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -114,7 +122,8 @@ class MenuListActivity : AppCompatActivity() {
                     orderInfo.put("restaurantId",restaurantId)
                     orderInfo.put("totalPrice",viewModel.getLastPayPrice())
 
-                    val nextIntent = Intent(this,PaymentActivity::class.java)
+                    val nextIntent = Intent(this,
+                        PaymentActivity::class.java)
                     nextIntent.putExtra("lastPrice",viewModel.getLastPayPrice())
                     nextIntent.putExtra("restaurantName",restaurantName)
                     nextIntent.putExtra("restaurantId",restaurantId)
@@ -157,9 +166,13 @@ class MenuListActivity : AppCompatActivity() {
                         val data = resObject.getJSONArray("data")
                         for( i in 0 until data.length()){
                             val dataObject = data.getJSONObject(i)
-                            menuLists.add(MenuList(dataObject.getString("name"),
-                                dataObject.getInt("price"),
-                                dataObject.getInt("id"),dataObject.getString("menuStatus")))
+                            menuLists.add(
+                                MenuList(
+                                    dataObject.getString("name"),
+                                    dataObject.getInt("price"),
+                                    dataObject.getInt("id"), dataObject.getString("menuStatus")
+                                )
+                            )
                         }
                         menuRecycler.notifyDataSetChanged()
 
@@ -200,9 +213,13 @@ class MenuListActivity : AppCompatActivity() {
 
             when{
                 (dialog.menuCountTextView.text as String).toInt() != 0 -> {
-                    choiceLists.add(MenuChoiceList(menuList.menuName,menuList.menuPrice.toInt(),
-                        ((dialog.menuCountTextView.text as String).toInt()
-                                * menuList.menuPrice.toInt())))
+                    choiceLists.add(
+                        MenuChoiceList(
+                            menuList.menuName, menuList.menuPrice.toInt(),
+                            ((dialog.menuCountTextView.text as String).toInt()
+                                    * menuList.menuPrice.toInt())
+                        )
+                    )
                     val menuArray = JSONObject()
                     val menuNameArray = JSONObject()
 

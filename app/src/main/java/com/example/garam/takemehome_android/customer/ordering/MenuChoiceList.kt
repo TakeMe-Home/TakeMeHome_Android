@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.customer
+package com.example.garam.takemehome_android.customer.ordering
 
 data class MenuChoiceList(
     val choiceMenuName: String,

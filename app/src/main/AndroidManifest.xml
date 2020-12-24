@@ -17,8 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".restaurant.manage.RestaurantManageActivity" />
-        <activity android:name=".customer.PaymentActivity" />
-        <activity android:name=".customer.MenuListActivity" />
+        <activity android:name=".customer.ordering.PaymentActivity" />
+        <activity android:name=".customer.ordering.MenuListActivity" />
         <activity android:name=".customer.ForCustomerActivity" />
         <activity android:name=".restaurant.ForRestaurantActivity" />
         <activity android:name=".signUp.RestaurantSignUpActivity" />

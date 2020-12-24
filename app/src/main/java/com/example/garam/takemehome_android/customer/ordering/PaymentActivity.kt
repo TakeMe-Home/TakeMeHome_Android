@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.customer
+package com.example.garam.takemehome_android.customer.ordering
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.customer.ForCustomerActivity
+import com.example.garam.takemehome_android.customer.MenuSharedViewModel
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
