@@ -4,40 +4,58 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/cookingTimeEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:hint="조리 완료 시간을 입력하세요(분)"
-            android:inputType="number"/>
-
-    </LinearLayout>
+        android:text="배차 요청"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@drawable/round_corner">
 
-        <Button
-            android:id="@+id/pickupRequestButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="확인"
-            android:layout_weight="1"/>
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/pickUpRequestCancelButton"
+            <EditText
+                android:id="@+id/cookingTimeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:hint="조리 완료 시간을 입력하세요(분)"
+                android:inputType="number"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="취소"
-            android:layout_weight="1"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/pickupRequestButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/pickUpRequestCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+    
+
 
 </LinearLayout>

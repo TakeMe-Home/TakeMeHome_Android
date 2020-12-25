@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.*
+import org.json.JSONObject
 
 class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagingService() {
 
@@ -25,7 +26,6 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
-        Log.e("FCM" , p0.data.toString())
         Log.e("message1",p0.notification?.title.toString())
         Log.e("message2",p0.notification?.body.toString())
 
@@ -35,13 +35,27 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
 
         when(title){
             "주문 요청" -> {
+                val orderBody = JSONObject(body)
+                val orderObject = orderBody.getJSONObject("menuNameCounts")
+                val orderArray = orderObject.getJSONArray("menuNameCounts")
+
+                val style = NotificationCompat.InboxStyle()
+                Log.e("뭐지 ",orderObject.toString())
+
+                for (i in 0 until orderArray.length()) {
+                    style.addLine(orderArray.getJSONObject(i).getString("name")
+                            + " ${orderArray.getJSONObject(i).getInt("count")}인분")
+                }
+                style.addLine("결제 금액 : ${orderBody.getInt("totalPrice")} 원")
+                style.addLine("고객 주소 : ${orderBody.getString("customerAddress")}")
+
+
                 val builder = createNotificationChannel("id", "name")
                     .setTicker("Ticker")
                     .setSmallIcon(android.R.drawable.ic_menu_search)
                     .setNumber(10)
                     .setAutoCancel(true)
                     .setContentTitle("주문 요청이 있습니다")
-                    .setContentText(body)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(style)
 
@@ -49,6 +63,7 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
                     notify(0, builder.build())
                 }
             }
+
             "주문이 취소 됐어요." -> {
                 val builder = createNotificationChannel("id", "name")
                     .setTicker("Ticker")
@@ -65,15 +80,39 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
                 }
             }
 
+            "배달 요청!" -> {
+                val builder = createNotificationChannel("id", "name")
+                    .setTicker("Ticker")
+                    .setSmallIcon(android.R.drawable.ic_menu_search)
+                    .setNumber(10)
+                    .setAutoCancel(true)
+                    .setContentTitle("새로운 배달 요청이 있습니다")
+                    .setContentText(body)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setStyle(style)
+
+                with(NotificationManagerCompat.from(this)) {
+                    notify(0, builder.build())
+                }
+            }
+
+            "주문 접수 완료!" -> {
+                val builder = createNotificationChannel("id", "name")
+                    .setTicker("Ticker")
+                    .setSmallIcon(android.R.drawable.ic_menu_search)
+                    .setNumber(10)
+                    .setAutoCancel(true)
+                    .setContentTitle("주문이 접수되었습니다.")
+                    .setContentText(body)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setStyle(style)
+
+                with(NotificationManagerCompat.from(this)) {
+                    notify(0, builder.build())
+                }
+            }
+
         }
-
-
-
-        val intent = Intent("MyData")
-        intent.putExtra("test",p0.notification?.title.toString())
-        intent.putExtra("test2",p0.notification?.body.toString())
-
-        broadcaster.sendBroadcast(intent)
     }
 
 
