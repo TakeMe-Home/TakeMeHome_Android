@@ -42,7 +42,6 @@ class ReceiptViewAdapter(
         RecyclerView.ViewHolder(itemView) {
 
         private val innerRecycler = itemView.findViewById<RecyclerView>(R.id.menuNameRecycler)
-        private val menuItems = ArrayList<ReceiptMenuList>()
         private val orderAddress = itemView.findViewById<TextView>(R.id.orderCustomerAddress)
         private val orderPrice = itemView.findViewById<TextView>(R.id.orderTotalPrice)
         private val cancelButton = itemView.findViewById<Button>(R.id.receiptCancelButton)
@@ -52,11 +51,6 @@ class ReceiptViewAdapter(
 
             orderAddress.text = list.customerAddress
             orderPrice.text = list.totalPrice.toString() + "원"
-
-            /*for (i in 0 until list.menuNameCount.size){
-                menuItems.add(list.menuNameCount[i])
-            } */
-
 
             val mAdapter = ReceiptMenuListViewAdapter(list.menuNameCount, context)
             innerRecycler.adapter = mAdapter
@@ -68,15 +62,8 @@ class ReceiptViewAdapter(
 
             itemView.setOnClickListener {
 
-          //      itemClick(list)
+                itemClick(list)
 
-               /* acceptButton.setOnClickListener {
-                    itemClick(list)
-                }
-
-                cancelButton.setOnClickListener {
-                    itemClick(list)
-                } */
             }
 
 

@@ -3,13 +3,12 @@ package com.example.garam.takemehome_android.firebase
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.firebase.messaging.*
+import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
 
 class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagingService() {
@@ -40,7 +39,6 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
                 val orderArray = orderObject.getJSONArray("menuNameCounts")
 
                 val style = NotificationCompat.InboxStyle()
-                Log.e("뭐지 ",orderObject.toString())
 
                 for (i in 0 until orderArray.length()) {
                     style.addLine(orderArray.getJSONObject(i).getString("name")
@@ -114,7 +112,6 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
 
         }
     }
-
 
     private fun createNotificationChannel(id :String, name :String) : NotificationCompat.Builder{
 

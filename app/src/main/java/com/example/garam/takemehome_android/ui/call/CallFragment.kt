@@ -77,7 +77,6 @@ class CallFragment : Fragment() {
         }
 
         recycler.adapter = callRecycler
-        //  callRecycler.notifyDataSetChanged()
         recycler.layoutManager = LinearLayoutManager(root.context)
         recycler.setHasFixedSize(true)
 

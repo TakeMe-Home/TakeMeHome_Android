@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                nextActivity(i)
            }.setCancelable(false).show()
         }
-
     }
 
     private fun getToken(){

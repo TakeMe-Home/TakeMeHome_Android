@@ -103,7 +103,7 @@ class ReceiptFragment : Fragment() {
         acceptDialog.acceptButton.setOnClickListener {
             receiptJson.put("requiredTime",requiredTime)
             val receiptObject = JsonParser().parse(receiptJson.toString()).asJsonObject
-            receiptAccept(receiptList.orderId,receiptObject)
+            receiptAccept(receiptList,receiptObject)
         }
 
         acceptDialog.acceptCancelButton.setOnClickListener {
@@ -159,9 +159,9 @@ class ReceiptFragment : Fragment() {
         }
     }
 
-    private fun receiptAccept(orderId: Int, acceptInfo: JsonObject){
+    private fun receiptAccept(receiptList: ReceiptList, acceptInfo: JsonObject){
         val errorMessage = Toast.makeText(root.context,"주문 접수에 실패하였습니다",Toast.LENGTH_SHORT)
-        networkService.orderReception(orderId, acceptInfo).enqueue(object : Callback<JsonObject>{
+        networkService.orderReception(receiptList.orderId, acceptInfo).enqueue(object : Callback<JsonObject>{
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 errorMessage.show()
             }
@@ -171,6 +171,7 @@ class ReceiptFragment : Fragment() {
                 when(res?.get("message")?.asString){
                     "주문 접수 성공" -> {
                         acceptDialog.dismiss()
+                        lists.remove(receiptList)
                         Toast.makeText(root.context,"주문 접수에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     }
                     "주문 접수 실패" -> {

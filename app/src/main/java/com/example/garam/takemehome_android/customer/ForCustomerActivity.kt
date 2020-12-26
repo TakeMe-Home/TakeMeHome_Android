@@ -1,15 +1,11 @@
 package com.example.garam.takemehome_android.customer
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
@@ -18,7 +14,9 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkService
 import com.google.gson.JsonObject
 import org.json.JSONObject
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ForCustomerActivity : AppCompatActivity() {
 
@@ -27,7 +25,6 @@ class ForCustomerActivity : AppCompatActivity() {
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
-    private var orderState = ""
     private lateinit var restaurantRecycler: RestaurantListViewAdapter
     private var lists = arrayListOf<RestaurantList>()
 
@@ -39,6 +36,7 @@ class ForCustomerActivity : AppCompatActivity() {
         val customerId = intent.getIntExtra("customerId",0)
         viewModel = ViewModelProvider(this).get(MenuSharedViewModel::class.java)
         lookUp()
+
         val nextIntent = Intent(this,
             MenuListActivity::class.java)
 
@@ -89,26 +87,6 @@ class ForCustomerActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            mMessageReceiver,
-            IntentFilter("MyData")
-        )
-    }
-
-    override fun onStop() {
-        super.onStop()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver)
-    }
-
-    private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            orderState = intent.getStringExtra("test")
-            Log.e("???",intent.getStringExtra("test"))
-        }
     }
 
 }

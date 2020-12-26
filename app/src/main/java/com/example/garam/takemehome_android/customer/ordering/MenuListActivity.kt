@@ -122,8 +122,7 @@ class MenuListActivity : AppCompatActivity() {
                     orderInfo.put("restaurantId",restaurantId)
                     orderInfo.put("totalPrice",viewModel.getLastPayPrice())
 
-                    val nextIntent = Intent(this,
-                        PaymentActivity::class.java)
+                    val nextIntent = Intent(this, PaymentActivity::class.java)
                     nextIntent.putExtra("lastPrice",viewModel.getLastPayPrice())
                     nextIntent.putExtra("restaurantName",restaurantName)
                     nextIntent.putExtra("restaurantId",restaurantId)

@@ -23,9 +23,7 @@ class PaymentActivity : AppCompatActivity() {
         NetworkController.instance.networkService
     }
     private lateinit var viewModel : MenuSharedViewModel
-    private var lastTotalPrice = 0
     private var orderPrice = 0
-
     private var orderInfo = JSONObject()
 
     override fun onCreate(savedInstanceState: Bundle?) {

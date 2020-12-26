@@ -43,7 +43,6 @@ class OrderListFragment : Fragment() {
         val restaurantId = sharedViewModel.getId()
         sharedViewModel.setId(restaurantId!!)
 
-
         findAllOrder(restaurantId)
 
         orderListRecycler = OrderListViewAdapter(lists,root.context){
@@ -110,6 +109,5 @@ class OrderListFragment : Fragment() {
             }
         })
     }
-
 
 }
