@@ -1,16 +1,13 @@
 package com.example.garam.takemehome_android.restaurant.receipt
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
-import kotlinx.android.synthetic.main.receipt_list_layout.view.*
 
 class ReceiptViewAdapter(
     private val items: ArrayList<ReceiptList>,
@@ -32,10 +29,6 @@ class ReceiptViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
 
-        holder.itemView.receiptCancelButton.setOnClickListener {
-            Log.e("테스트",items[position].toString())
-            itemClick(items[position])
-        }
     }
 
     inner class ViewHolder(itemView: View, itemClick: (ReceiptList) -> Unit) :
@@ -44,8 +37,6 @@ class ReceiptViewAdapter(
         private val innerRecycler = itemView.findViewById<RecyclerView>(R.id.menuNameRecycler)
         private val orderAddress = itemView.findViewById<TextView>(R.id.orderCustomerAddress)
         private val orderPrice = itemView.findViewById<TextView>(R.id.orderTotalPrice)
-        private val cancelButton = itemView.findViewById<Button>(R.id.receiptCancelButton)
-        private val acceptButton = itemView.findViewById<Button>(R.id.receiptConfirmButton)
 
         fun bind(list: ReceiptList) {
 

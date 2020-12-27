@@ -51,10 +51,6 @@ class ReceiptFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.receipt_cancel_dialog_layout)
 
-        acceptDialog = Dialog(root.context)
-        acceptDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        acceptDialog.setContentView(R.layout.receipt_accept_dialog_layout)
-
         sharedViewModel = ViewModelProvider(requireActivity()).get(RestaurantSharedViewModel::class.java)
 
         var restaurantId = arguments?.getInt("id")
@@ -75,15 +71,9 @@ class ReceiptFragment : Fragment() {
         findAllOrder(restaurantAddress.toString(),restaurantName.toString())
 
         receiptRecycler = ReceiptViewAdapter(lists, root.context) { ReceiptList->
+            refuseDialog(ReceiptList)
 
-            receiptCancelButton.setOnClickListener {
-                refuseDialog(ReceiptList)
-            }
-            receiptConfirmButton.setOnClickListener {
-                acceptDialogShow(ReceiptList)
-            }
         }
-
 
         recycler.adapter = receiptRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
@@ -92,32 +82,26 @@ class ReceiptFragment : Fragment() {
         return root
     }
 
-    private fun acceptDialogShow(receiptList: ReceiptList){
-        acceptDialog.show()
-        acceptDialog.setCanceledOnTouchOutside(false)
-
-        val requiredTime = acceptDialog.requiredTimeEditText.text
-
-        val receiptJson = JSONObject()
-
-        acceptDialog.acceptButton.setOnClickListener {
-            receiptJson.put("requiredTime",requiredTime)
-            val receiptObject = JsonParser().parse(receiptJson.toString()).asJsonObject
-            receiptAccept(receiptList,receiptObject)
-        }
-
-        acceptDialog.acceptCancelButton.setOnClickListener {
-            acceptDialog.dismiss()
-        }
-
-    }
-
     private fun refuseDialog(receiptList: ReceiptList){
 
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
         var refuseReason = ""
         refuseJson.put("customerId",receiptList.customerId)
+
+        val requiredTime = dialog.requiredTimeEditText.text
+
+        val receiptJson = JSONObject()
+
+        dialog.acceptButton.setOnClickListener {
+            receiptJson.put("requiredTime",requiredTime)
+            val receiptObject = JsonParser().parse(receiptJson.toString()).asJsonObject
+            receiptAccept(receiptList,receiptObject)
+        }
+
+        dialog.acceptCancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
 
         dialog.receiptRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
 
@@ -154,9 +138,6 @@ class ReceiptFragment : Fragment() {
             }
         }
 
-        dialog.receiptAcceptButton.setOnClickListener{
-            dialog.dismiss()
-        }
     }
 
     private fun receiptAccept(receiptList: ReceiptList, acceptInfo: JsonObject){
@@ -170,7 +151,7 @@ class ReceiptFragment : Fragment() {
                 val res = response.body()
                 when(res?.get("message")?.asString){
                     "주문 접수 성공" -> {
-                        acceptDialog.dismiss()
+                        dialog.dismiss()
                         lists.remove(receiptList)
                         Toast.makeText(root.context,"주문 접수에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     }

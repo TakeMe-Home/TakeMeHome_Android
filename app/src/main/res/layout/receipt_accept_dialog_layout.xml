@@ -4,46 +4,5 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:text="배달 소요 시간 : "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"/>
-
-        <EditText
-            android:hint="배달 소요 시간을 입력해주세요"
-            android:id="@+id/requiredTimeEditText"
-            android:inputType="number"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/acceptButton"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="확인"/>
-
-        <Button
-            android:id="@+id/acceptCancelButton"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="취소"/>
-
-    </LinearLayout>
 
 </LinearLayout>

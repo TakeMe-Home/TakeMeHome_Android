@@ -120,6 +120,7 @@ class OrdersFragment : Fragment() {
 
         dialog.pickUpButton.setOnClickListener {
             deliveryPickUp(orderList.orderId)
+            dialog.pickUpButton.isEnabled = false
         }
 
         dialog.order_info_confirm.setOnClickListener {
@@ -139,8 +140,9 @@ class OrdersFragment : Fragment() {
 
                 when(res?.get("message")?.asString){
                     "주문 픽업 성공" -> {
-                        dialog.pickUpButton.isEnabled = false
+
                     }
+
                     "주문 픽업 실패" -> {
                         errorMessage.show()
                     }

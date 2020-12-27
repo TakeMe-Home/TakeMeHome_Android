@@ -64,18 +64,30 @@ class AssignedOrderFragment : Fragment() {
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
 
+        dialog.deliveryStoreAddressTextView.text = assignedOrderList.storeAddress
+        dialog.deliveryAddressTextView.text = assignedOrderList.deliveryAddress
+        dialog.deliveryOrderPriceTextView.text = assignedOrderList.totalPrice.toString() +"원"
+        dialog.deliveryPaymentTextView.text = ""
+        dialog.deliveryRequestsTextView.text = ""
+        dialog.deliveryFeeTextView.text = assignedOrderList.deliveryPrice.toString() + "원"
+
+
         when(assignedOrderList.deliveryStatus) {
             "COMPLETE" ->
             {
+                dialog.deliveryCurrentStatusTextView.text = "배달 완료"
                 dialog.deliveryCompleteButton.isEnabled = false
             }
             "ASSIGNED" -> {
+                dialog.deliveryCurrentStatusTextView.text = "배차"
                 dialog.deliveryCompleteButton.isEnabled = false
             }
             "PICK_UP" -> {
+                dialog.deliveryCurrentStatusTextView.text = "픽업"
                 dialog.deliveryCompleteButton.isEnabled = true
                 dialog.deliveryCompleteButton.setOnClickListener {
                     deliveryComplete(assignedOrderList.orderId)
+                    dialog.deliveryCompleteButton.isEnabled = false
                 }
             }
 
@@ -119,11 +131,14 @@ class AssignedOrderFragment : Fragment() {
                                 ?.asJsonObject?.get("price")?.asInt
                             val deliveryStatus = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("status")?.asString
+                            val distance = orderArray.get(i).asJsonObject?.get("orderDelivery")
+                                ?.asJsonObject?.get("distance")?.asDouble
+                            val totalPrice = orderArray.get(i).asJsonObject?.get("totalPrice")?.asInt
 
                             lists.add(
                                 AssignedOrderList(restaurantName.toString(),restaurantAddress.toString(),
-                                    deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0,orderId?.toInt()!!
-                                    ,orderStatus.toString(),deliveryStatus.toString())
+                                    deliveryAddress.toString(), deliveryPrice!!,distance!!, orderId!!
+                                    ,orderStatus.toString(),deliveryStatus.toString(), totalPrice!!)
                             )
                         }
                         assignedRecycler.notifyDataSetChanged()
@@ -149,7 +164,7 @@ class AssignedOrderFragment : Fragment() {
                 val res = response.body()
                 when(res?.get("message")?.asString){
                     "주문 완료 성공" -> {
-                        dialog.deliveryCompleteButton.isEnabled = false
+
                     }
                     "주문 완료 실패" -> {
                         errorMessage.show()

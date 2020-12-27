@@ -9,7 +9,59 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingBottom="10dp"
+        android:background="@drawable/round_corner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="배달 소요 시간(분) "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"/>
+
+            <EditText
+                android:hint="배달 소요 시간을 입력해주세요"
+                android:id="@+id/requiredTimeEditText"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/acceptButton"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="확인"/>
+
+            <Button
+                android:id="@+id/acceptCancelButton"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="취소"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:background="@drawable/round_corner">
 
         <TextView
             android:layout_width="match_parent"
@@ -54,36 +106,22 @@
                 android:text="거리가 멀음"
                 android:textSize="20sp" />
         </RadioGroup>
-        
-        
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-
-        <Button
-            android:id="@+id/receiptAcceptButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="수락하기" />
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
-        <Button
-            android:id="@+id/receiptRefuseButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="취소 하기" />
+            <Button
+                android:id="@+id/receiptRefuseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="취소 하기" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>

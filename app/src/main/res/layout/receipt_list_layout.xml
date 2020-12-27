@@ -63,25 +63,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/receiptConfirmButton"
-            android:text="수락"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/receiptCancelButton"
-            android:text="취소"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
 </LinearLayout>
