@@ -6,5 +6,6 @@ data class AllOrderListDataClass(
     val totalPrice : Int,
     val paymentType : String,
     val paymentStatus : String,
-    val orderId : Int
+    val orderId : Int,
+    val deliveryStatus : String
 )

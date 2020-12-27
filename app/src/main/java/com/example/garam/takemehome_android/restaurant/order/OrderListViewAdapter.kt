@@ -40,6 +40,7 @@ class OrderListViewAdapter(
         private val orderCustomerPhone = itemView.findViewById<TextView>(R.id.orderListCustomerPhone)
         private val orderPaymentStatus = itemView.findViewById<TextView>(R.id.orderListPaymentStatus)
         private val orderPaymentType = itemView.findViewById<TextView>(R.id.orderListPaymentType)
+        private val orderDeliveryStatus = itemView.findViewById<TextView>(R.id.orderListDeliveryStatus)
 
         fun bind(list: AllOrderListDataClass) {
 
@@ -62,7 +63,19 @@ class OrderListViewAdapter(
                         }
                     }
                 }
+            }
+            when(list.deliveryStatus) {
+                "PICK_UP" -> {
+                    orderDeliveryStatus.text = "픽업"
+                }
 
+                "ASSIGNED" -> {
+                    orderDeliveryStatus.text = "배차"
+                }
+
+                "COMPLETE" -> {
+                    orderDeliveryStatus.text = "배달 완료"
+                }
             }
 
             itemView.setOnClickListener {

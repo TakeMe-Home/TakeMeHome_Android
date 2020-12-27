@@ -97,7 +97,7 @@ class PickUpFragment : Fragment() {
                             when(deliveryStatus) {
                                 "NONE" -> {
                                     lists.add(AllOrderListDataClass(customerAddress,customerPhone,totalPrice,
-                                    paymentType,paymentStatus,orderId))
+                                    paymentType,paymentStatus,orderId,deliveryStatus))
                                 }
                             }
                         }

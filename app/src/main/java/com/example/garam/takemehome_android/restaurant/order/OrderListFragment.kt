@@ -94,7 +94,7 @@ class OrderListFragment : Fragment() {
                                 !(deliveryStatus == "NONE" || deliveryStatus == "REQUEST")-> {
                                     lists.add(AllOrderListDataClass(
                                             customerAddress, customerPhone, totalPrice, paymentType
-                                            , paymentStatus, orderId)
+                                            , paymentStatus, orderId,deliveryStatus)
                                     )
                                 }
                             }
