@@ -75,17 +75,17 @@ class OrdersFragment : Fragment() {
                             val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
                             val orderStatus = orderArray.get(i).asJsonObject?.get("orderStatus")?.asString
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
-                                ?.asJsonObject?.get("name")?.toString()
+                                ?.asJsonObject?.get("name")?.asString
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
-                                ?.asJsonObject?.get("phoneNumber")?.toString()
+                                ?.asJsonObject?.get("phoneNumber")?.asString
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("name")?.toString()
+                                ?.asJsonObject?.get("name")?.asString
                             val restaurantNumber = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("number")?.toString()
+                                ?.asJsonObject?.get("number")?.asString
                             val restaurantAddress = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryAddress = orderArray.get(i).asJsonObject?.get("orderDelivery")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
 
@@ -112,9 +112,9 @@ class OrdersFragment : Fragment() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.orderAddress.text = orderList.storeAddress
         dialog.orderDeliveryAddressTextView.text = orderList.deliveryAddress
-        dialog.orderPrice.text = "가격 : $"
-        dialog.orderMethod.text = "결제 수단 : "
-        dialog.orderRequest.text = "요청 사항 : "
+        dialog.orderPrice.text = "가격 : "
+        dialog.orderMethod.text = ""
+        dialog.orderRequest.text = ""
         dialog.deliveryPriceTextView.text = "${orderList.deliveryPrice}원"
 
 

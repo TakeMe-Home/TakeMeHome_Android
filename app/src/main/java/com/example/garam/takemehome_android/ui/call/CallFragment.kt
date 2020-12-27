@@ -146,15 +146,15 @@ class CallFragment : Fragment() {
                                 ?.asJsonObject?.get("name")?.toString()
 
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
-                                ?.asJsonObject?.get("phoneNumber")?.toString()
+                                ?.asJsonObject?.get("phoneNumber")?.asString
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("name")?.toString()
+                                ?.asJsonObject?.get("name")?.asString
                             val restaurantNumber = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("number")?.toString()
+                                ?.asJsonObject?.get("number")?.asString
                             val restaurantAddress = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryAddress = orderArray.get(i).asJsonObject?.get("orderDelivery")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
                             val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
@@ -188,23 +188,23 @@ class CallFragment : Fragment() {
                     message == "주문 조회 성공" && orderArray?.size() != 0-> {
                         for (i in 0 until orderArray?.size()!!) {
                             val customerName = orderArray.get(i).asJsonObject?.get("orderCustomer")
-                                ?.asJsonObject?.get("name")?.toString()
+                                ?.asJsonObject?.get("name")?.asString
                             val customerPhoneNumber  = orderArray.get(i).asJsonObject?.get("orderCustomer")
-                                ?.asJsonObject?.get("phoneNumber")?.toString()
+                                ?.asJsonObject?.get("phoneNumber")?.asString
                             val restaurantName = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("name")?.toString()
+                                ?.asJsonObject?.get("name")?.asString
                             val restaurantNumber = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("number")?.toString()
+                                ?.asJsonObject?.get("number")?.asString
                             val restaurantAddress = orderArray.get(i).asJsonObject?.get("orderRestaurant")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryAddress = orderArray.get(i).asJsonObject?.get("orderDelivery")
-                                ?.asJsonObject?.get("address")?.toString()
+                                ?.asJsonObject?.get("address")?.asString
                             val deliveryPrice = orderArray.get(i).asJsonObject?.get("orderDelivery")
                                 ?.asJsonObject?.get("price")?.asInt
                             val orderId = orderArray.get(i).asJsonObject?.get("orderId")?.asInt
 
                             lists.add(CallList(restaurantName.toString(),restaurantAddress.toString(),
-                                deliveryAddress.toString(),deliveryPrice?.toInt()!!,0.0, orderId?.toInt()!!
+                                deliveryAddress.toString(), deliveryPrice!!,0.0, orderId!!
                             ))
                         }
                         callRecycler.notifyDataSetChanged()

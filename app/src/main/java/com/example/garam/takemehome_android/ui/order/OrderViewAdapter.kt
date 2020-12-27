@@ -35,10 +35,10 @@ class OrderViewAdapter (
         private val orderDeliveryPrice = itemView.findViewById<TextView>(R.id.orderDeliveryPrice)
 
         fun bind(list:OrderList){
-            storeName.text = list.storeName
-            storeAddress.text = list.storeAddress
-            orderDeliveryAddress.text = list.deliveryAddress
-            orderDeliveryPrice.text = list.deliveryPrice.toString()
+            storeName.text = "가게 명 : " + list.storeName
+            storeAddress.text = "가게 주소 : " + list.storeAddress
+            orderDeliveryAddress.text = "배달 주소 : " + list.deliveryAddress
+            orderDeliveryPrice.text = "배달료 : " + list.deliveryPrice.toString()
 
             itemView.setOnClickListener { itemClick(list) }
         }

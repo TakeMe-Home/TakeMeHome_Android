@@ -16,34 +16,48 @@
         android:gravity="center_vertical"
         android:text="TextView"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/orderstoreAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="18sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/orderDeliveryAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="18sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/orderDeliveryPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="TextView"/>
+        android:textSize="18sp"
+        android:text="TextView"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 
     <TextView
         android:id="@+id/orderDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text=""/>
+        android:text=""
+        android:textSize="18sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 
 </LinearLayout>
