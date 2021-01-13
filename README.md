@@ -42,4 +42,9 @@
 
 - Kotlin
 - Retrofit2 2.7.0
-- Firebase
+- Firebase Cloud Messaging
+
+## 테스트 환경
+
+- 갤럭시 S20
+- 갤럭시 A8 2018
