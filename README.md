@@ -43,6 +43,8 @@
 - Kotlin
 - Retrofit2 2.7.0
 - Firebase Cloud Messaging
+- Androidx
+  - recyclerview 1.1.0
 
 ## 테스트 환경
 
