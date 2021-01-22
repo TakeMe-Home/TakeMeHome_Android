@@ -129,7 +129,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
                         }
                         else -> {
                             failMessage.show()
-                    }
+                        }
                     }
                 } else {
                     failMessage.show()
@@ -164,7 +164,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
         })
     }
     private fun textCheck(email: String, name: String, ownerName: String,password: String
-                          , phone: String, x: Double, y: Double): Boolean{
+                          , phone: String, x: Double, y: Double): Boolean {
 
         when {
             email == "" || !checkEmail(email) -> {

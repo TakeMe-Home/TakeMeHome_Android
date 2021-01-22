@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,21 +17,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
-import com.example.garam.takemehome_android.network.KakaoApi
 import com.example.garam.takemehome_android.network.NetworkController
-import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.ui.SharedViewModel
-import com.example.garam.takemehome_android.ui.assignedOrder.AssignedOrderList
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import kotlinx.android.synthetic.main.fragment_call.view.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class CallFragment : Fragment() {
 
@@ -44,7 +37,6 @@ class CallFragment : Fragment() {
     private lateinit var dialog : Dialog
     private lateinit var callRecycler : CallViewAdapter
     private lateinit var sharedViewModel: SharedViewModel
-    private var locationLists = arrayListOf<AssignedOrderList>()
     private lateinit var root : View
 
     override fun onCreateView(
@@ -55,7 +47,6 @@ class CallFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_call, container, false)
         val recycler = root.findViewById<RecyclerView>(R.id.callRecycler)
-        val locationDetail = JSONObject()
         callLookUp()
 
         var riderId = arguments?.getInt("id")
@@ -109,20 +100,15 @@ class CallFragment : Fragment() {
                     val longitude = location.longitude
 
                     lists.clear()
-
                     callRecycler.notifyDataSetChanged()
                     nearByCall(latitude,longitude)
                 }
                 else -> {
-
                     lists.clear()
-
                     callRecycler.notifyDataSetChanged()
                     callLookUp()
                 }
-
             }
-
         }
             return root
     }

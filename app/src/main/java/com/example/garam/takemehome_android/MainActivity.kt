@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -130,10 +129,8 @@ class MainActivity : AppCompatActivity() {
                 })
             }
             1 -> {
-                Log.e("loginInfo",loginInfo.toString())
                 networkService.loginCustomer(loginInfo).enqueue(object : Callback<JsonObject>{
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        Log.e("이유",t.message.toString())
                         failMessage.show()
                     }
 

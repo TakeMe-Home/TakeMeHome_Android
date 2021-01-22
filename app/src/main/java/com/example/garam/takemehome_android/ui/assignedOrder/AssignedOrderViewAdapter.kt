@@ -46,9 +46,6 @@ class AssignedOrderViewAdapter(
             itemView.setOnClickListener{
                 itemClick(list)
             }
-
-
         }
     }
-
 }

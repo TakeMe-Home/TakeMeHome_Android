@@ -48,11 +48,7 @@ class RiderSignUpActivity : AppCompatActivity() {
     private fun textCheck(email: String, name: String, password: String, phone: String): Boolean{
 
         when {
-            email == "" -> {
-                Toast.makeText(this,"이메일을 입력하세요",Toast.LENGTH_LONG).show()
-                return false
-            }
-            !checkEmail(email) -> {
+            !checkEmail(email) && email == "" -> {
                 Toast.makeText(this, "올바른 이메일 형식으로 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
@@ -64,15 +60,11 @@ class RiderSignUpActivity : AppCompatActivity() {
                 Toast.makeText(this,"비밀번호를 입력하세요",Toast.LENGTH_LONG).show()
                 return false
             }
-            phone == "" -> {
-                Toast.makeText(this,"휴대폰 번호를 입력하세요",Toast.LENGTH_LONG).show()
-                return false
-            }
-            !checkPhone(phone) -> {
+            !checkPhone(phone) && phone == "" -> {
                 Toast.makeText(this, "올바른 휴대폰 번호 형식으로 입력하세요", Toast.LENGTH_LONG).show()
                 return false
             }
-            else ->{
+            else -> {
                 return true
             }
         }

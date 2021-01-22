@@ -1,7 +1,6 @@
 package com.example.garam.takemehome_android.ui
 
 import androidx.lifecycle.ViewModel
-import com.example.garam.takemehome_android.ui.assignedOrder.AssignedOrderList
 import com.example.garam.takemehome_android.ui.call.CallList
 
 class SharedViewModel : ViewModel() {

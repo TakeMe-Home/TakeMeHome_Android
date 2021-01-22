@@ -14,7 +14,6 @@ import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.restaurant.AllOrderListDataClass
 import com.example.garam.takemehome_android.restaurant.RestaurantSharedViewModel
-import com.example.garam.takemehome_android.restaurant.receipt.ReceiptMenuList
 import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
@@ -51,7 +50,6 @@ class OrderListFragment : Fragment() {
 
         recycler.adapter = orderListRecycler
         recycler.layoutManager = LinearLayoutManager(root.context)
-
 
         return root
     }

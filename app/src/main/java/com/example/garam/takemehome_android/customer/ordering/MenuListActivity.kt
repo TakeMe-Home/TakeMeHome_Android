@@ -29,7 +29,6 @@ class MenuListActivity : AppCompatActivity() {
     private val networkService: NetworkService by lazy {
         NetworkController.instance.networkService
     }
-    private var totalPayPrice = 0
     private var menuCountSize = 0
 
     private lateinit var dialog: Dialog
@@ -57,11 +56,7 @@ class MenuListActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.menu_dialog)
 
-        menuRecycler =
-            MenuListViewAdapter(
-                menuLists,
-                this
-            ) { menuList ->
+        menuRecycler = MenuListViewAdapter(menuLists, this) { menuList ->
                 when (menuList.menuStatus) {
                     "SOLD_OUT" -> {
                         recycler.isEnabled = false
@@ -70,18 +65,13 @@ class MenuListActivity : AppCompatActivity() {
                         showDialog(menuList)
                     }
                 }
-
             }
 
         recycler.adapter = menuRecycler
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.setHasFixedSize(true)
 
-        choiceRecycler =
-            ChoiceListViewAdapter(
-                choiceLists,
-                this
-            )
+        choiceRecycler = ChoiceListViewAdapter(choiceLists, this )
 
         choiceRecyclerView.adapter = choiceRecycler
         choiceRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -104,14 +94,14 @@ class MenuListActivity : AppCompatActivity() {
             menuIdCounts.put("menuIdCounts",menuIdArray)
 
             menuNameCounts.put("menuNameCounts",menuNameArray)
+            val paymentPrice = paymentTextView.text.toString()
 
             when {
-                menuCountSize == 0 || (paymentTextView.text as String).toString() == "0원" -> {
+                menuCountSize == 0 || paymentPrice == "0원" -> {
                     Toast.makeText(this,"메뉴를 선택해주세요",Toast.LENGTH_LONG).show()
                 }
 
-                 (paymentTextView.text as String).toString() == "" ||
-                         (paymentTextView.text as String).toString() == "0원" ->{
+                 paymentPrice == "" || paymentPrice == "0원" ->{
                     Toast.makeText(this,"결제 금액 조회를 눌러주세요",Toast.LENGTH_LONG).show()
                 }
 
@@ -237,6 +227,7 @@ class MenuListActivity : AppCompatActivity() {
                     choiceRecycler.notifyDataSetChanged()
                     dialog.dismiss()
                 }
+
                 (dialog.menuCountTextView.text as String).toInt() == 0 -> {
                     dialog.dismiss()
                 }

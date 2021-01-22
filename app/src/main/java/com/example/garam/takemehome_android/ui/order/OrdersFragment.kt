@@ -117,7 +117,6 @@ class OrdersFragment : Fragment() {
         dialog.orderRequest.text = ""
         dialog.deliveryPriceTextView.text = "${orderList.deliveryPrice}원"
 
-
         dialog.pickUpButton.setOnClickListener {
             deliveryPickUp(orderList.orderId)
             dialog.pickUpButton.isEnabled = false

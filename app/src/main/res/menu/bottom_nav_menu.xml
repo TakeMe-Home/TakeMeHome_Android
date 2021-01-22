@@ -4,21 +4,16 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Call" />
+        android:title="Call 목록" />
 
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="접수" />
+        android:title="접수 목록" />
 
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="지도" />
-
-    <item
-        android:id="@+id/navigation_update"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="수정" />
+        android:title="주문 목록" />
 
 </menu>
