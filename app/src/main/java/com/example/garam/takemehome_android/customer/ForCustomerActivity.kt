@@ -77,7 +77,6 @@ class ForCustomerActivity : AppCompatActivity() {
                             lists.add(RestaurantList(restaurantResponse.getJSONObject(i).getString("name"),
                                 restaurantResponse.getJSONObject(i).getInt("id")))
                             Log.e("가게 이름",restaurantResponse.getJSONObject(i).toString())
-                            viewModel.setRestaurantId(restaurantResponse.getJSONObject(i).getInt("id"))
                         }
                         restaurantRecycler.notifyDataSetChanged()
                     }

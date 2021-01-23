@@ -1,9 +1,6 @@
 package com.example.garam.takemehome_android.customer
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonObject
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -24,15 +21,6 @@ class MenuSharedViewModel : ViewModel() {
 
     fun getCustomerId() : Int {
         return customerId
-    }
-
-    fun setRestaurantId(id: Int)
-    {
-        restaurantId.add(id)
-    }
-
-    fun getRestaurantId() : ArrayList<Int>{
-        return restaurantId
     }
 
     fun setCountInfo(menuId: Int, count: Int){
