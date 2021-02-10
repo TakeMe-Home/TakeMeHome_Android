@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.assignedOrder
+package com.example.garam.takemehome_android.rider.ui.assignedOrder
 
 data class AssignedOrderList (
     val storeName: String,

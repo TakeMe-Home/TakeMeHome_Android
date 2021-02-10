@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.order.OrdersFragment">
+    tools:context=".rider.ui.order.OrdersFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/orderRecycler"

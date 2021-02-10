@@ -14,6 +14,7 @@ import com.example.garam.takemehome_android.network.NetworkService
 import com.example.garam.takemehome_android.network.NetworkServiceRestaurant
 import com.example.garam.takemehome_android.network.NetworkServiceRider
 import com.example.garam.takemehome_android.restaurant.manage.RestaurantManageActivity
+import com.example.garam.takemehome_android.rider.ForRiderActivity
 import com.example.garam.takemehome_android.signUp.CustomerSignUpActivity
 import com.example.garam.takemehome_android.signUp.RestaurantSignUpActivity
 import com.example.garam.takemehome_android.signUp.RiderSignUpActivity

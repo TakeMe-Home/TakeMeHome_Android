@@ -1,11 +1,10 @@
-package com.example.garam.takemehome_android.ui.order
+package com.example.garam.takemehome_android.rider.ui.call
 
-data class OrderList  (
+data class CallList (
     val storeName: String,
     val storeAddress: String,
     val deliveryAddress: String,
     val deliveryPrice: Int,
     val nearByDistance: Double,
-    val orderId : Int,
-    val orderStatus : String
+    val orderId: Int
 )

@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.call
+package com.example.garam.takemehome_android.rider.ui.call
 
 import android.content.Context
 import android.view.LayoutInflater

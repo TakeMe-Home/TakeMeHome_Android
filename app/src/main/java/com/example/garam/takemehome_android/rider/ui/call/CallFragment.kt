@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.call
+package com.example.garam.takemehome_android.rider.ui.call
 
 import android.Manifest
 import android.app.Dialog
@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRider
-import com.example.garam.takemehome_android.ui.SharedViewModel
+import com.example.garam.takemehome_android.rider.ui.SharedViewModel
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import kotlinx.android.synthetic.main.fragment_call.view.*

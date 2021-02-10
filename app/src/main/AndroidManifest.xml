@@ -25,7 +25,7 @@
         <activity android:name=".signUp.CustomerSignUpActivity" />
         <activity android:name=".signUp.RiderSignUpActivity" />
         <activity
-            android:name=".ForRiderActivity"
+            android:name=".rider.ForRiderActivity"
             android:label="@string/title_activity_map_test" />
         <activity android:name=".MainActivity">
             <intent-filter>

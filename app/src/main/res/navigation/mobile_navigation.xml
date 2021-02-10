@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.garam.takemehome_android.ui.call.CallFragment"
+        android:name="com.example.garam.takemehome_android.rider.ui.call.CallFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_call">
 
@@ -20,13 +20,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.garam.takemehome_android.ui.assignedOrder.AssignedOrderFragment"
+        android:name="com.example.garam.takemehome_android.rider.ui.assignedOrder.AssignedOrderFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_assigned" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.garam.takemehome_android.ui.order.OrdersFragment"
+        android:name="com.example.garam.takemehome_android.rider.ui.order.OrdersFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_order" />
 

@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.order
+package com.example.garam.takemehome_android.rider.ui.order
 
 import android.content.Context
 import android.view.LayoutInflater

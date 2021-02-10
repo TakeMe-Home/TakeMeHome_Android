@@ -1,7 +1,7 @@
-package com.example.garam.takemehome_android.ui
+package com.example.garam.takemehome_android.rider.ui
 
 import androidx.lifecycle.ViewModel
-import com.example.garam.takemehome_android.ui.call.CallList
+import com.example.garam.takemehome_android.rider.ui.call.CallList
 
 class SharedViewModel : ViewModel() {
 

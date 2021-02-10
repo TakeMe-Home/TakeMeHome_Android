@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android
+package com.example.garam.takemehome_android.rider
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -10,7 +10,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.garam.takemehome_android.ui.SharedViewModel
+import com.example.garam.takemehome_android.R
+import com.example.garam.takemehome_android.rider.ui.SharedViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ForRiderActivity : AppCompatActivity() {
@@ -36,7 +37,8 @@ class ForRiderActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard,
-                R.id.navigation_notifications)
+                R.id.navigation_notifications
+            )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

@@ -1,4 +1,4 @@
-package com.example.garam.takemehome_android.ui.assignedOrder
+package com.example.garam.takemehome_android.rider.ui.assignedOrder
 
 import android.app.Dialog
 import android.os.Bundle
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
 import com.example.garam.takemehome_android.network.NetworkController
 import com.example.garam.takemehome_android.network.NetworkServiceRider
-import com.example.garam.takemehome_android.ui.SharedViewModel
+import com.example.garam.takemehome_android.rider.ui.SharedViewModel
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.confirm_dialog.*
 import kotlinx.android.synthetic.main.delivery_info_dialog_layout.*

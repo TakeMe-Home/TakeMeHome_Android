@@ -1,10 +1,9 @@
-package com.example.garam.takemehome_android.ui.assignedOrder
+package com.example.garam.takemehome_android.rider.ui.assignedOrder
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.garam.takemehome_android.R
