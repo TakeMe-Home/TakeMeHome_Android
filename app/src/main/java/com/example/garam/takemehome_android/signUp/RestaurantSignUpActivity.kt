@@ -95,7 +95,7 @@ class RestaurantSignUpActivity : AppCompatActivity() {
     private fun restaurantAddress(keyword: String) {
         val failMessage = Toast.makeText(this@RestaurantSignUpActivity,"주소 검색에 실패하였습니다"
             ,Toast.LENGTH_LONG)
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL)
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.kakaoURL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
         val networkService = retrofit.create(NetworkService::class.java)

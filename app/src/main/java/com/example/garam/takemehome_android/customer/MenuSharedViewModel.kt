@@ -9,7 +9,6 @@ class MenuSharedViewModel : ViewModel() {
 
     private var lastPayPrice = 0
     private var lastTotalPrice = 0
-    private var restaurantId = ArrayList<Int>()
     private var menuIdCount = Hashtable<Int,Int>()
     private var menuArray = ArrayList<JSONObject>()
     private var menuNameArray = ArrayList<JSONObject>()

@@ -38,14 +38,14 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
                 val orderObject = orderBody.getJSONObject("menuNameCounts")
                 val orderArray = orderObject.getJSONArray("menuNameCounts")
 
-                val style = NotificationCompat.InboxStyle()
+                val notificationStyle = NotificationCompat.InboxStyle()
 
                 for (i in 0 until orderArray.length()) {
-                    style.addLine(orderArray.getJSONObject(i).getString("name")
+                    notificationStyle.addLine(orderArray.getJSONObject(i).getString("name")
                             + " ${orderArray.getJSONObject(i).getInt("count")}인분")
                 }
-                style.addLine("결제 금액 : ${orderBody.getInt("totalPrice")} 원")
-                style.addLine("고객 주소 : ${orderBody.getString("customerAddress")}")
+                notificationStyle.addLine("결제 금액 : ${orderBody.getInt("totalPrice")} 원")
+                notificationStyle.addLine("고객 주소 : ${orderBody.getString("customerAddress")}")
 
 
                 val builder = createNotificationChannel("id", "name")
@@ -55,7 +55,7 @@ class FirebaseMessagingServices : com.google.firebase.messaging.FirebaseMessagin
                     .setAutoCancel(true)
                     .setContentTitle("주문 요청이 있습니다")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setStyle(style)
+                    .setStyle(notificationStyle)
 
                 with(NotificationManagerCompat.from(this)) {
                     notify(0, builder.build())

@@ -119,7 +119,7 @@ class PaymentActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     "고객 주문 실패" -> {
-
+                        Toast.makeText(this@PaymentActivity,"주문에 실패했습니다",Toast.LENGTH_SHORT).show()
                     }
 
                 }

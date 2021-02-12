@@ -37,11 +37,11 @@ class MenuListViewAdapter(
         fun bind(list: MenuList){
             menuName.text = list.menuName
             menuPrice.text = list.menuPrice.toString() + "원"
-            when {
-                list.menuStatus == "SALE" ->{
+            when (list.menuStatus) {
+                "SALE" -> {
                     menuStatus.text = "판매 중"
                 }
-                list.menuStatus == "SOLD_OUT" ->{
+                "SOLD_OUT" -> {
                     menuStatus.text = "품절"
                 }
             }

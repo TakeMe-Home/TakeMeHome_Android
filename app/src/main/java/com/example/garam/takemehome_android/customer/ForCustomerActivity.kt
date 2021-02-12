@@ -2,7 +2,6 @@ package com.example.garam.takemehome_android.customer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -76,7 +75,6 @@ class ForCustomerActivity : AppCompatActivity() {
                         for (i in 0 until restaurantResponse.length()){
                             lists.add(RestaurantList(restaurantResponse.getJSONObject(i).getString("name"),
                                 restaurantResponse.getJSONObject(i).getInt("id")))
-                            Log.e("가게 이름",restaurantResponse.getJSONObject(i).toString())
                         }
                         restaurantRecycler.notifyDataSetChanged()
                     }

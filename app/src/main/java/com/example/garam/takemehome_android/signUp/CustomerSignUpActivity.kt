@@ -77,7 +77,7 @@ class CustomerSignUpActivity : AppCompatActivity() {
     }
 
     private fun customerAddress(keyword: String) {
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL).addConverterFactory(
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.kakaoURL).addConverterFactory(
             GsonConverterFactory.create()).build()
         val failMessage = Toast.makeText(this@CustomerSignUpActivity,"주소 검색에 실패하였습니다",Toast.LENGTH_LONG)
         val networkService = retrofit.create(NetworkService::class.java)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -178,7 +177,7 @@ class RestaurantManageActivity : AppCompatActivity() {
     private fun restaurantAddress(keyword: String) {
         val failMessage = Toast.makeText(this,"주소 검색에 실패하였습니다"
             ,Toast.LENGTH_LONG)
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.KakaoURL)
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(KakaoApi.instance.kakaoURL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
         val networkService = retrofit.create(NetworkService::class.java)
@@ -234,7 +233,6 @@ class RestaurantManageActivity : AppCompatActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val res = response.body()
                 val message = res?.get("message")?.asString
-                Log.e("데이터",res.toString())
 
                 when{
                     message.toString() == "가게 정보 조회 성공" ->{
@@ -256,7 +254,6 @@ class RestaurantManageActivity : AppCompatActivity() {
                                     restaurantResponse.getJSONObject(i).getString("number")
                                 )
                             )
-                            Log.e("가게 아이디",lists[i].restaurantId.toString())
                         }
                         restaurantManageRecycler.notifyDataSetChanged()
 
